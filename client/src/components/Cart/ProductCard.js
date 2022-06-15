@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, Typography,IconButton } from "@mui/material";
+import { Box, Grid, TextField, Typography,IconButton, Button } from "@mui/material";
 import React from "react";
 import { Image } from "mui-image";
 import { Theme } from "@mui/material";
@@ -47,17 +47,24 @@ function ProductCard() {
             <Typography variant="body2" color="text.secondary">
               This is a short product description
             </Typography>
-            <IconButton sx={{ mt: 2 }}>
+            <Box sx={{mt:2}}>
+            <IconButton sx={{mt:1,color:"blue"}}>
                 <Subtract />
               </IconButton>
               <TextField
-                outlined
+                variant="filled"
+                inputProps={{
+                  style: {
+                    height:"1vh",
+                  },
+                }}
                 value={defaultValue}
-                sx={{ maxWidth:"20%",mt:1 }}
+                sx={{ maxWidth:"20%",mt:1,maxHeight:"1" }}
               />
-              <IconButton sx={{ mt: 2 }}>
+              <IconButton sx={{mt:1,color:"blue"}}>
                 <Plus />
               </IconButton>
+              </Box>
           </Grid>
           <Grid item md={2}>
             <TextField

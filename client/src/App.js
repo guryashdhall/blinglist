@@ -9,8 +9,6 @@ import ReviewPage from "./components/Review/ReviewPage";
 import PreviousOrder from "./components/Orders/PreviousOrder"
 import OrderDetails from "./components/Orders/OrderDetails"
 import MapDemo from "./components/Map/MapDemo"
-import Cart from "./components/Cart/Cart";
-import ReviewPage from "./components/Review/ReviewPage";
 
 const App = () => {
   return (
