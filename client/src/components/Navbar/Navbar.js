@@ -66,7 +66,7 @@ const Navbar = () => {
             }}
           />
 
-          <Link to="/">
+          <Link to="/map">
             <LocationOnOutlinedIcon
               style={{
                 width: "50px",
@@ -86,7 +86,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/">
+          <Link to="/previousorders">
             <PersonOutlineOutlinedIcon
               style={{
                 width: "50px",
