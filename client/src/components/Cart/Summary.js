@@ -71,6 +71,9 @@ function Summary() {
           </TableBody>
           </TableContainer>
         </Grid>
+        <Grid item md={12} xs={12}>
+          <Button variant="outlined" color="secondary" onClick={()=>{}} sx={{m:2}}>Checkout</Button>
+        </Grid>
       </Grid>
       </Paper>
     </>
