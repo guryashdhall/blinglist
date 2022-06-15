@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Checkout from "./components/Checkout/Checkout";
 import GiftCard from "./components/GiftCard/GiftCard";
+import Cart from "./components/Cart/Cart";
+import ReviewPage from "./components/Review/ReviewPage";
 import PreviousOrder from "./components/Orders/PreviousOrder"
 import OrderDetails from "./components/Orders/OrderDetails"
 import MapDemo from "./components/Map/MapDemo"
@@ -27,6 +29,12 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path="/map" element={<MapDemo />} />
+        </Routes>
+        <Routes>
+          <Route path = "/cart" element={<Cart/>}/>
+        </Routes>
+        <Routes>
+          <Route path = "/reviews" element={<ReviewPage/>}/>
         </Routes>
       </Container>
     </BrowserRouter>
