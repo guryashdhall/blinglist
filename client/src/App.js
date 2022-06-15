@@ -29,6 +29,12 @@ const App = () => {
         <Routes>
           <Route path = "/reviews" element={<ReviewPage/>}/>
         </Routes>
+        <Routes>
+          <Route path = "/cart" element={<Cart/>}/>
+        </Routes>
+        <Routes>
+          <Route path = "/reviews" element={<ReviewPage/>}/>
+        </Routes>
       </Container>
     </BrowserRouter>
   );
