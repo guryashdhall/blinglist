@@ -24,10 +24,13 @@ const App = () => {
           <Route path="/giftcard" element={<GiftCard />} />
         </Routes>
         <Routes>
-          <Route path = "/cart" element={<Cart/>}/>
+          <Route path="/previousorders" element={<PreviousOrder />} />
         </Routes>
         <Routes>
-          <Route path = "/reviews" element={<ReviewPage/>}/>
+          <Route path="/orderDetails" element={<OrderDetails />} />
+        </Routes>
+        <Routes>
+          <Route path="/map" element={<MapDemo />} />
         </Routes>
         <Routes>
           <Route path = "/cart" element={<Cart/>}/>
