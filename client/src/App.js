@@ -11,12 +11,16 @@ import OrderDetails from "./components/Orders/OrderDetails"
 import MapDemo from "./components/Map/MapDemo"
 import Jewels from "./components/Admin/Jewels/Jewels"
 import Favourites from "./components/Favourites/Favourites"
+import Search from "./components/Search/Search"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Container maxWidth="100%">
         <Navbar />
+        <Routes>
+          <Route path="/search" element={<Search />} />
+        </Routes>
         <Routes>
           <Route path="/admin" element={<Jewels />} />
         </Routes>
