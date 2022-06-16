@@ -179,7 +179,7 @@ function OrderDetails() {
                         }}
 
                     >
-                        <Grid item xs style={{ paddingRight: 10 }}>
+                        <Grid item xs={12} style={{ paddingRight: 10 }}>
                             <Typography sx={{ color: 'black', fontWeight: 'bold' }} variant="caption" gutterBottom component="div">Billing Information</Typography>
                             <Divider />
                             <Typography sx={{ color: '#808080' }} variant="body2" gutterBottom component="div">UserName - Phone Number</Typography>
@@ -187,7 +187,7 @@ function OrderDetails() {
 
                         </Grid>
 
-                        <Grid item xs >
+                        <Grid item xs={12} >
                             <Typography sx={{ color: 'black', fontWeight: 'bold' }} variant="caption" gutterBottom component="div">Shipping Information</Typography>
                             <Divider />
                             <Typography sx={{ color: '#808080' }} variant="body2" gutterBottom component="div">User Name</Typography>
@@ -205,14 +205,14 @@ function OrderDetails() {
                         }}
 
                     >
-                        <Grid item xs style={{ paddingRight: 10 }}>
+                        <Grid item xs={12} style={{ paddingRight: 10 }}>
                             <Typography sx={{ color: 'black', fontWeight: 'bold' }} variant="caption" gutterBottom component="div">Shipping Method</Typography>
                             <Divider />
                             <Typography sx={{ color: '#808080' }} variant="body2" gutterBottom component="div">Standard Shipping</Typography>
 
                         </Grid>
 
-                        <Grid item xs >
+                        <Grid item xs={12} >
                             <Typography sx={{ color: 'black', fontWeight: 'bold' }} variant="caption" gutterBottom component="div">Payment Method</Typography>
                             <Divider />
                             <Typography sx={{ color: '#808080' }} variant="body2" gutterBottom component="div">Credit Card/Gift Card</Typography>

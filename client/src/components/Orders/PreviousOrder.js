@@ -146,16 +146,16 @@ function PreviousOrder() {
                             }}
 
                         >
-                            <Grid item xs style={{ maxInlineSize: 'max-content' }}>
+                            <Grid item xs={6} md={3} style={{ maxInlineSize: 'max-content' }}>
                                 <Typography sx={{ color: 'black' }} variant="body2" gutterBottom component="div">DELIVERED Feb. 8, 2022</Typography>
                                 <img src={item2} alt="earring1" width="100" height="70" alignitems='left' /><br></br>
 
                             </Grid>
-                            <Grid item xs style={{ padding: 5 }}>
+                            <Grid item xs={6} md={5} style={{ padding: 5 }}>
                                 <br></br>
                                 <Link href="#" sx={{ color: 'purple' }} underline="hover" >Classic Multi Chain Necklace</Link>
                             </Grid>
-                            <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
+                            <Grid item xs={12} md={2} style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
                                 <Button sx={{
                                     color: '#800080',
@@ -163,9 +163,9 @@ function PreviousOrder() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }} onClick={toReviews}>Write a product review</Button>
+                                }} onClick={toReviews}>Write a review</Button>
                             </Grid>
-                            <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
+                            <Grid item xs={12} md={1} style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
                                 <Button sx={{
                                     color: '#800080',
@@ -175,7 +175,7 @@ function PreviousOrder() {
                                     },
                                 }} onClick={toCart}>Repurchase</Button>
                             </Grid>
-                            <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
+                            <Grid item xs={12} md={2} style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
                                 <Button sx={{
                                     color: '#800080',
@@ -251,16 +251,16 @@ function PreviousOrder() {
                             }}
 
                         >
-                            <Grid item xs style={{ maxInlineSize: 'max-content' }}>
+                            <Grid item xs={6} md={3} style={{ maxInlineSize: 'max-content' }}>
                                 <Typography sx={{ color: 'black' }} variant="body2" gutterBottom component="div">DELIVERED Feb. 4, 2022</Typography>
                                 <img src={item1} alt="earring1" width="100" height="70" alignitems='left' /><br></br>
 
                             </Grid>
-                            <Grid item xs style={{ padding: 5 }}>
+                            <Grid item xs={6} md={5} style={{ padding: 5 }}>
                                 <br></br>
                                 <Link href="#" sx={{ color: 'purple' }} underline="hover" >Sparkling Triangle Drop Earrings</Link>
                             </Grid>
-                            <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
+                            <Grid item xs={12} md={2} style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
                                 <Button sx={{
                                     color: '#800080',
@@ -268,9 +268,9 @@ function PreviousOrder() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }} onClick={toReviews}>Write a product review</Button>
+                                }} onClick={toReviews}>Write a review</Button>
                             </Grid>
-                            <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
+                            <Grid item xs={12} md={1} style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
                                 <Button sx={{
                                     color: '#800080',
@@ -280,7 +280,7 @@ function PreviousOrder() {
                                     },
                                 }} onClick={toCart}>RePurchase</Button>
                             </Grid>
-                            <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
+                            <Grid item xs={12} md={2} style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
                                 <Button sx={{
                                     color: '#800080',
