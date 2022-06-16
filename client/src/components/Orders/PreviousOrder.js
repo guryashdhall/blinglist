@@ -8,10 +8,14 @@ import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import item1 from "../../images/j2.jpg";
-import item2 from "../../images/ring1.jpg";
+import item1 from "../../images/ring1.jpg";
+import item2 from "../../images/j2.jpg";
 import OrderDetails from "./OrderDetails";
-import { useNavigate } from "react-router-dom";
+import MapIcon from "@mui/icons-material/Map";
+import MapDemo from "../Map/MapDemo";
+import ReviewPage from "../Review/ReviewPage";
+import Cart from "../Cart/Cart";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -21,6 +25,18 @@ function PreviousOrder() {
     e.preventDefault();
     <OrderDetails />;
     navigate("/orderDetails");
+  };
+
+  const toReviews = (e) => {
+    e.preventDefault();
+    <ReviewPage />;
+    navigate("/reviews");
+  };
+
+  const toCart = (e) => {
+    e.preventDefault();
+    <Cart />;
+    navigate("/cart");
   };
 
   return (
@@ -210,7 +226,7 @@ function PreviousOrder() {
                 justifyContent: "left",
               }}
             >
-              <Grid item xs style={{ maxInlineSize: "max-content" }}>
+              <Grid item xs={6} md={3} style={{ maxInlineSize: "max-content" }}>
                 <Typography
                   sx={{ color: "black" }}
                   variant="body2"
@@ -228,7 +244,7 @@ function PreviousOrder() {
                 />
                 <br></br>
               </Grid>
-              <Grid item xs style={{ padding: 5 }}>
+              <Grid item xs={6} md={5} style={{ padding: 5 }}>
                 <br></br>
                 <Link href="#" sx={{ color: "purple" }} underline="hover">
                   Classic Multi Chain Necklace
@@ -236,7 +252,8 @@ function PreviousOrder() {
               </Grid>
               <Grid
                 item
-                xs
+                xs={12}
+                md={2}
                 style={{
                   textAlign: "right",
                   maxInlineSize: "max-content",
@@ -253,13 +270,15 @@ function PreviousOrder() {
                       opacity: [0.9, 0.8, 0.7],
                     },
                   }}
+                  onClick={toReviews}
                 >
-                  Write a product review
+                  Write a review
                 </Button>
               </Grid>
               <Grid
                 item
-                xs
+                xs={12}
+                md={1}
                 style={{
                   textAlign: "right",
                   maxInlineSize: "max-content",
@@ -276,13 +295,15 @@ function PreviousOrder() {
                       opacity: [0.9, 0.8, 0.7],
                     },
                   }}
+                  onClick={toCart}
                 >
                   Repurchase
                 </Button>
               </Grid>
               <Grid
                 item
-                xs
+                xs={12}
+                md={2}
                 style={{
                   textAlign: "right",
                   maxInlineSize: "max-content",
@@ -415,7 +436,7 @@ function PreviousOrder() {
                 justifyContent: "left",
               }}
             >
-              <Grid item xs style={{ maxInlineSize: "max-content" }}>
+              <Grid item xs={6} md={3} style={{ maxInlineSize: "max-content" }}>
                 <Typography
                   sx={{ color: "black" }}
                   variant="body2"
@@ -433,7 +454,7 @@ function PreviousOrder() {
                 />
                 <br></br>
               </Grid>
-              <Grid item xs style={{ padding: 5 }}>
+              <Grid item xs={6} md={5} style={{ padding: 5 }}>
                 <br></br>
                 <Link href="#" sx={{ color: "purple" }} underline="hover">
                   Sparkling Triangle Drop Earrings
@@ -441,7 +462,8 @@ function PreviousOrder() {
               </Grid>
               <Grid
                 item
-                xs
+                xs={12}
+                md={2}
                 style={{
                   textAlign: "right",
                   maxInlineSize: "max-content",
@@ -458,13 +480,15 @@ function PreviousOrder() {
                       opacity: [0.9, 0.8, 0.7],
                     },
                   }}
+                  onClick={toReviews}
                 >
-                  Write a product review
+                  Write a review
                 </Button>
               </Grid>
               <Grid
                 item
-                xs
+                xs={12}
+                md={1}
                 style={{
                   textAlign: "right",
                   maxInlineSize: "max-content",
@@ -481,13 +505,15 @@ function PreviousOrder() {
                       opacity: [0.9, 0.8, 0.7],
                     },
                   }}
+                  onClick={toCart}
                 >
                   RePurchase
                 </Button>
               </Grid>
               <Grid
                 item
-                xs
+                xs={12}
+                md={2}
                 style={{
                   textAlign: "right",
                   maxInlineSize: "max-content",

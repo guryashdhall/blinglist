@@ -1,10 +1,12 @@
 import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./Product.css";
 
 const ViewProduct = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <Grid align="center" mt={4} mb={4}>
@@ -57,7 +59,14 @@ const ViewProduct = () => {
                         <button className="product-btn">
                           ADD TO FAVORITES
                         </button>
-                        <button className="product-btn">ADD TO CART</button>
+                        <button
+                          onClick={() => {
+                            navigate("/cart");
+                          }}
+                          className="product-btn"
+                        >
+                          ADD TO CART
+                        </button>
                       </Stack>
                     </div>
                   </Grid>

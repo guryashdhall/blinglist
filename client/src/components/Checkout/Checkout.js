@@ -172,6 +172,7 @@ const Checkout = () => {
         draggable: true,
         progress: undefined,
       });
+      navigate("/reviews");
     }
   };
 

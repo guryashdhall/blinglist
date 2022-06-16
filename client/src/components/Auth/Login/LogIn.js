@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -18,6 +19,7 @@ import validate from "../../../Helpers/validateInfo";
 const theme = createTheme();
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const { values, errors, handleSubmit, handleChange } = useForm(validate);
 
   return (
@@ -117,9 +119,9 @@ export default function SignIn() {
                 label="Remember me"
               />
               <Button
-                type="submit"
-                // onClick={() => {
-                //   setLoggedInStatus(true)}}
+                onClick={() => {
+                  navigate("/recommendation");
+                }}
                 fullWidth
                 variant="outlined"
                 sx={{ mt: 3, mb: 2, backgroundColor: "black", color: "white" }}
