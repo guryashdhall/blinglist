@@ -1,6 +1,6 @@
 import React from 'react';
-import useForm from '../../../helpers/useForm';
-import validate from '../../../helpers/validateInfo';
+import useForm from '../../../Helpers/useForm';
+import validate from '../../../Helpers/validateInfo';
 // import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -31,6 +31,7 @@ const PasswordReset = () => {
             className='form-label'>
           </label>
           <TextField
+          color="secondary"
           label="New Password"
             id="newpassword"
             type="password"
@@ -47,6 +48,7 @@ const PasswordReset = () => {
             className='form-label'>
           </label>
           <TextField
+          color="secondary"
           label="Confirm New Password"
             id="confirmNewPassword"
             type="password"

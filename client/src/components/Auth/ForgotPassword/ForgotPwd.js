@@ -1,6 +1,6 @@
 import React from 'react';
-import useForm from '../../../helpers/useForm';
-import validate from '../../../helpers/validateInfo';
+import useForm from '../../../Helpers/useForm';
+import validate from '../../../Helpers/validateInfo';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import NavBar from '../../NavBar';
@@ -20,13 +20,13 @@ const ForgotPwd = () => {
   const [color, setColor] = React.useState("#000000");
   return (
     <div>
-       <Box>
-        <Typography variant="h2" sx={{ p:2 }}>
+       {/* <Box>
+        <Typography variant="h3" sx={{ p:2 }}>
         Forgot Password ?
           </Typography>
-    </Box>
+    </Box> */}
       {/* <h2 textAlign='center' alignItems='center'width="100%" >Forgot Password ?</h2> */}
-        {/* <NavBar title={title} color={color}></NavBar> */}
+        <NavBar title={title} color={color}></NavBar>
       <form className='form' onSubmit={handleSubmit} 
       style={{
         display:'flex',
@@ -57,6 +57,7 @@ const ForgotPwd = () => {
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Security Question</InputLabel>
         <Select
+         color="secondary"
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={SecurityQuestion}
@@ -73,12 +74,12 @@ const ForgotPwd = () => {
       </FormControl>
     </Box>
     <br/>
-        <br/>
     <div className='form-inputs'>
           <label htmlFor='Security Answer'
             className='form-label'>
           </label>
           <TextField
+           color="secondary"
             label="Security Answer"
             id='securityAnswer'
             type="text"
@@ -92,6 +93,7 @@ const ForgotPwd = () => {
         </div>
   <br/>
   <Button href="/resetPwd" 
+   color="secondary"
               className='form-input-btn'
               variant="contained"
               type='submit'

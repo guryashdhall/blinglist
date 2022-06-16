@@ -12,6 +12,8 @@ import MapDemo from "./components/Map/MapDemo"
 import Jewels from "./components/Admin/Jewels/Jewels"
 import ViewBlog from "./components/Blog/ViewBlog";
 import LogIn from "../src/components/Auth/Login/LogIn"
+import ForgotPwd from "../src/components/Auth/ForgotPassword/ForgotPwd"
+import ResetPassword from "../src/components/Auth/ForgotPassword/ResetPassword"
 
 const App = () => {
   return (
@@ -21,6 +23,13 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LogIn />} />
         </Routes>
+        <Routes>
+          <Route path = "/forgotPwd" element={<ForgotPwd/>}/>
+        </Routes>
+        <Routes>
+        <Route path="/resetPwd" element={
+          <ResetPassword/>}/>
+          </Routes>
         <Routes>
           <Route path="/admin" element={<Jewels />} />
         </Routes>
