@@ -68,10 +68,13 @@ const Recommendation = () => {
   return (
     <div>
       <Poster />
+        
       <Category />
 
       <div style={{ margin: "70px" }}>
         <Divider style={{ width: "100%" }} />
+        <br></br>
+        <br></br>
         <Typography variant="h4" align="center">
           New Arrivals
         </Typography>
@@ -106,6 +109,8 @@ const Recommendation = () => {
 
       <div style={{ margin: "70px" }}>
         <Divider style={{ width: "100%" }} />
+        <br></br>
+        <br></br>
         <Typography variant="h4" align="center">
           You May Also Like
         </Typography>
@@ -140,6 +145,8 @@ const Recommendation = () => {
 
       <div style={{ margin: "70px" }}>
         <Divider style={{ width: "100%" }} />
+        <br></br>
+        <br></br>
         <Typography variant="h4" align="center">
           Most Popular
         </Typography>

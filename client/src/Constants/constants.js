@@ -14,6 +14,7 @@ export const CARD_CVV_NUMBER = "cardCvvNumber";
 export const CARD_EXPIRATION_DATE = "cardExpirationDate"
 
 export const ALPHABET_REGEX = /^[A-Za-z ]*$/;
+// eslint-disable-next-line
 export const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 export const NUMBER_REGEX = /^[0-9]*$/;
 
