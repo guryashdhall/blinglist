@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
+import { useState } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
@@ -15,12 +16,25 @@ import blingsvg from "../../../images/LOGO BLING SVG.svg";
 import useForm from "../../../Helpers/useForm";
 import validate from "../../../Helpers/validateInfo";
 // import LoggedInAlert from './components/SuccessAlert';
+import Switch from '@mui/material/Switch';
 
 const theme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
   const { values, errors, handleSubmit, handleChange } = useForm(validate);
+
+  const [ checked, setChecked ] = useState(true)
+
+  const handleUserSubmit = () => {
+    console.log(handleSubmit)
+    if(checked !== true){
+      navigate("/recommendation")
+    }
+    else{
+      navigate("/admin")
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,10 +91,12 @@ export default function SignIn() {
             <br />
             <br />
             <br /> */}
-            <Box component="form" onSubmit={handleSubmit} noValidate>
+            <Box >
               <Typography component="h1" variant="h5">
                 Already a member?
               </Typography>
+
+              <form onSubmit={handleUserSubmit}>
 
               <TextField
                 margin="normal"
@@ -118,16 +134,37 @@ export default function SignIn() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+              <FormControlLabel
+                control={
+                  <Switch checked={checked} onChange={(e) => {setChecked(e.target.checked)}} name="admin" />
+                }
+                label="Login as admin"
+              />
               <Button
-                onClick={() => {
-                  navigate("/recommendation");
-                }}
+                type="submit"
+                // onClick={() => {
+                //   //navigate("/recommendation");
+                //   setUserType("customer")
+                // }}
                 fullWidth
                 variant="outlined"
                 sx={{ mt: 3, mb: 2, backgroundColor: "black", color: "white" }}
               >
                 Log In
               </Button>
+              {/* <Typography textAlign={"center"}>OR</Typography> */}
+              {/* <Button
+                type="submit"
+                // onClick={() => {
+                //   //navigate("/admin");
+                //   setUserType("admin")
+                // }}
+                // fullWidth
+                variant="outlined"
+                sx={{ mt: 3, mb: 2, backgroundColor: "black", color: "white" }}
+              >
+                Log In As Admin
+              </Button> */}
               <Grid container>
                 <Grid item xs>
                   <Link href="/forgotPwd" variant="body2">
@@ -140,6 +177,7 @@ export default function SignIn() {
                   </Link>
                 </Grid>
               </Grid>
+              </form>
               {/* {loggedInStatus?<LoggedInAlert alertMsg={"Logged In Successfully !"}/>:<></>} */}
             </Box>
           </Box>

@@ -86,10 +86,8 @@ function MapDemo() {
                 width: '100%',
 
             }}>
-                <Grid container
-
-                >
-                    <Grid item xs>
+                <Grid container >
+                    <Grid item xs={12} sm={6} md={6}>
                         
                             <Container component="main" style={{ marginRight: 20, marginLeft: 10 }} alignitems='left'>
                                 <Box
@@ -145,14 +143,14 @@ function MapDemo() {
                             </Container>
                         
                     </Grid>
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} md={6} >
                         
                             <MapContainer
                                 className="map"
                                 center={[44.649310, -63.618780]}
 
                                 zoom={15}
-                                style={{ width: '90%', height: '410px' }}
+                                style={{ width: '90%', height: '410px',margin:'auto' }}
                             >
                                 <TileLayer
 
