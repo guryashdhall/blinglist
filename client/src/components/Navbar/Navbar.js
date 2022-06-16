@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <div>
       <AppBar className={classes.appBar} color="inherit">
-        <Link to="/" className={classes.brandContainer}>
+        <Link to="/recommendation" className={classes.brandContainer}>
           <img src={bling} alt="TheBlingList" height="42px" />
           {/* <img
             className={classes.image}
@@ -46,12 +46,12 @@ const Navbar = () => {
         >
           <Typography>GIFT CARD</Typography>
         </Link>
-        <Link
+        {/* <Link
           to="/aboutus"
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>ABOUT US</Typography>
-        </Link>
+        </Link> */}
         <Toolbar>
           <TextField
             label="Search"
@@ -106,7 +106,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/contactus">
+          {/* <Link to="/contactus">
             <CallOutlinedIcon
               style={{
                 width: "50px",
@@ -115,7 +115,7 @@ const Navbar = () => {
                 paddingTop: "14%",
               }}
             />
-          </Link>
+          </Link> */}
         </Toolbar>
       </AppBar>
     </div>
