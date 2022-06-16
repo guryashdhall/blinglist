@@ -16,6 +16,7 @@ import ForgotPwd from "../src/components/Auth/ForgotPassword/ForgotPwd"
 import ResetPassword from "../src/components/Auth/ForgotPassword/ResetPassword"
 import Profile from "./components/UserProfile/Profile";
 import SignUpForm from "./components/Auth/SignUpForm/SignUpForm"
+import Recommendation from "./components/Home/Recommendation";
 
 const App = () => {
   return (
@@ -38,6 +39,9 @@ const App = () => {
         <Routes></Routes>
         <Routes>
           <Route path="/admin" element={<Jewels />} />
+        </Routes>
+        <Routes>
+          <Route path="/recommendation" element={<Recommendation />} />
         </Routes>
         <Routes>
           <Route path="/checkout" element={<Checkout />} />
