@@ -76,7 +76,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/">
+          <Link to="/favourites">
             <FavoriteBorderIcon
               style={{
                 width: "50px",
