@@ -1,6 +1,6 @@
 import React from 'react';
-import useForm from '../../../helpers/useForm';
-import validate from '../../../helpers/validateInfo';
+import useForm from '../../../Helpers/useForm';
+import validate from '../../../Helpers/validateInfo';
 // import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';

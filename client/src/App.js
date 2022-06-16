@@ -15,6 +15,7 @@ import LogIn from "../src/components/Auth/Login/LogIn"
 import ForgotPwd from "../src/components/Auth/ForgotPassword/ForgotPwd"
 import ResetPassword from "../src/components/Auth/ForgotPassword/ResetPassword"
 import Profile from "./components/UserProfile/Profile";
+import SignUpForm from "./components/Auth/SignUpForm/SignUpForm"
 
 const App = () => {
   return (
@@ -31,6 +32,10 @@ const App = () => {
         <Route path="/resetPwd" element={
           <ResetPassword/>}/>
           </Routes>
+          <Routes>
+          <Route path="/signup" element={<SignUpForm />} />
+        </Routes>
+        <Routes></Routes>
         <Routes>
           <Route path="/admin" element={<Jewels />} />
         </Routes>
