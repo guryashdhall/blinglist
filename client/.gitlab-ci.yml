@@ -15,4 +15,4 @@ frontend-build:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP_ASSIGNMENT1 --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_THEBLINGLIST --api-key=$HEROKU_API_KEY
