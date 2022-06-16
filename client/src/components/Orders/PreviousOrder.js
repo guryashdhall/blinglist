@@ -8,11 +8,13 @@ import Divider from '@mui/material/Divider';
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import item1 from '../../images/j2.jpg';
-import item2 from '../../images/ring1.jpg';
+import item1 from '../../images/ring1.jpg';
+import item2 from '../../images/j2.jpg';
 import OrderDetails from './OrderDetails';
 import MapIcon from '@mui/icons-material/Map';
 import MapDemo from '../Map/MapDemo';
+import ReviewPage from '../Review/ReviewPage';
+import Cart from "../Cart/Cart";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
@@ -27,11 +29,19 @@ function PreviousOrder() {
         navigate('/orderDetails');
     }
 
-    const openMap = e => {
+    const toReviews = e => {
         e.preventDefault();
-        <MapDemo/>
-        navigate('/map');
+        <ReviewPage />
+        navigate('/reviews');
     }
+
+    const toCart = e => {
+        e.preventDefault();
+        <Cart />
+        navigate('/cart');
+    }
+
+    
     return (
         <ThemeProvider theme={theme}>
             <Box
@@ -153,7 +163,7 @@ function PreviousOrder() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }} >Write a product review</Button>
+                                }} onClick={toReviews}>Write a product review</Button>
                             </Grid>
                             <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
@@ -163,7 +173,7 @@ function PreviousOrder() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }} >Repurchase</Button>
+                                }} onClick={toCart}>Repurchase</Button>
                             </Grid>
                             <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
@@ -258,7 +268,7 @@ function PreviousOrder() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }} >Write a product review</Button>
+                                }} onClick={toReviews}>Write a product review</Button>
                             </Grid>
                             <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
@@ -268,7 +278,7 @@ function PreviousOrder() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }}>RePurchase</Button>
+                                }} onClick={toCart}>RePurchase</Button>
                             </Grid>
                             <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>

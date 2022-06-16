@@ -10,9 +10,23 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import item1 from '../../images/ring1.jpg';
 import item2 from '../../images/j2.jpg';
+import Cart from "../Cart/Cart";
+import ReviewPage from '../Review/ReviewPage';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 function OrderDetails() {
+    const navigate = useNavigate();
+    const toReviews = e => {
+        e.preventDefault();
+        <ReviewPage />
+        navigate('/reviews');
+    }
+    const toCart = e => {
+        e.preventDefault();
+        <Cart />
+        navigate('/cart');
+    }
     return (
         <ThemeProvider theme={theme}>
             <Box
@@ -116,7 +130,7 @@ function OrderDetails() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }} >Write a review</Button>
+                                }} onClick={toReviews}>Write a review</Button>
                             </Grid>
                             <Grid item xs style={{ textAlign: 'right', maxInlineSize: 'max-content', padding: 3 }}>
                                 <br></br>
@@ -126,7 +140,7 @@ function OrderDetails() {
                                         backgroundColor: '#e8b8ff96',
                                         opacity: [0.9, 0.8, 0.7],
                                     },
-                                }} >Repuchase</Button>
+                                }} onClick={toCart}>Repuchase</Button>
                             </Grid>
 
                         </Grid>
