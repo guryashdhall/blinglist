@@ -10,12 +10,32 @@ import PreviousOrder from "./components/Orders/PreviousOrder"
 import OrderDetails from "./components/Orders/OrderDetails"
 import MapDemo from "./components/Map/MapDemo"
 import Jewels from "./components/Admin/Jewels/Jewels"
+import ViewBlog from "./components/Blog/ViewBlog";
+import LogIn from "../src/components/Auth/Login/LogIn"
+import ForgotPwd from "../src/components/Auth/ForgotPassword/ForgotPwd"
+import ResetPassword from "../src/components/Auth/ForgotPassword/ResetPassword"
+import Profile from "./components/UserProfile/Profile";
+import SignUpForm from "./components/Auth/SignUpForm/SignUpForm"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Container maxWidth="100%">
         <Navbar />
+        <Routes>
+          <Route path="/" element={<LogIn />} />
+        </Routes>
+        <Routes>
+          <Route path = "/forgotPwd" element={<ForgotPwd/>}/>
+        </Routes>
+        <Routes>
+        <Route path="/resetPwd" element={
+          <ResetPassword/>}/>
+          </Routes>
+          <Routes>
+          <Route path="/signup" element={<SignUpForm />} />
+        </Routes>
+        <Routes></Routes>
         <Routes>
           <Route path="/admin" element={<Jewels />} />
         </Routes>
@@ -39,6 +59,12 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path = "/reviews" element={<ReviewPage/>}/>
+        </Routes>
+        <Routes>
+          <Route path = "/blogs" element={<ViewBlog/>}/>
+        </Routes>
+        <Routes>
+          <Route path = "/profile" element={<Profile/>}/>
         </Routes>
       </Container>
     </BrowserRouter>
