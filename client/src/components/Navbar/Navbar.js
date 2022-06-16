@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Typography, TextField, Toolbar } from "@material-ui/core";
 import useStyles from "./Styles.js";
 import { Link } from "react-router-dom";
-import blingLogo from "../../images/logo.svg";
+// import blingLogo from "../../images/logo.svg";
 import bling from "../../images/bling.png";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, LayerGroup } from 'react-leaflet';
 import "bootstrap/dist/css/bootstrap.min.css";
-import bling from '../../images/blinglogoblack.png'
 import Container from '@mui/material/Container';
-import L, { marker } from 'leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -14,7 +13,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
-import LeafletSearch from './LeafletSearch';
 import "./MapDemo.css";
 
 const theme = createTheme();

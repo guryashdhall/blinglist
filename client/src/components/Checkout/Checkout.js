@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -17,6 +18,8 @@ import { ALPHABET_REGEX, CARD_CVV_REGEX } from "../../Constants/constants.js";
 import "./Checkout.css";
 
 const Checkout = () => {
+  const navigate = useNavigate();
+
   const itemDetails = [
     {
       image:
@@ -24,7 +27,7 @@ const Checkout = () => {
       item_title: "Tropical Starfish & Shell Clip Charm",
       item_product_number: "Product number: 791678C01",
       item_material: "Metal: Sterling Silver",
-      item_stones: "Stone: Crystals",
+      item_stones: "Type: Pendant",
       item_color: "Color: Blue",
       item_amount: "C$ 55.00",
     },
@@ -34,7 +37,7 @@ const Checkout = () => {
       item_title: "Tropical Starfish & Shell Clip Charm",
       item_product_number: "Product number: 791678C01",
       item_material: "Metal: Sterling Silver",
-      item_stones: "Stone: Crystals",
+      item_stones: "Stone: Pendant",
       item_color: "Color: Blue",
       item_amount: "C$ 55.00",
     },
@@ -196,7 +199,14 @@ const Checkout = () => {
               <Grid container>
                 {itemDetails.map((item) => {
                   return (
-                    <Grid xs={12} container mb={3}>
+                    <Grid
+                      onClick={() => {
+                        navigate("/viewdetails");
+                      }}
+                      xs={12}
+                      container
+                      mb={3}
+                    >
                       <Grid xs={4}>
                         <img
                           alt=""
