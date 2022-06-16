@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import useForm from "../../../Helpers/useForm";
 import validate from "../../../Helpers/validateInfo";
 // import Box from '@mui/material/Box';
@@ -12,6 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const FormSignUp = () => {
+  const navigate = useNavigate();
+
   const { handleChange, values, handleSubmit, errors } = useForm(validate);
   const [SecurityQuestion, setSecurityQuestion] = React.useState("");
 
@@ -224,6 +227,7 @@ const FormSignUp = () => {
           variant="contained"
           type="submit"
           style={{ background: "#000000" }}
+          onClick={() => navigate("/recommendation")}
         >
           Register
         </Button>

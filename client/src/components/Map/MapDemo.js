@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, LayerGroup } from 'react-leaflet';
-import "bootstrap/dist/css/bootstrap.min.css";
 import Container from '@mui/material/Container';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';

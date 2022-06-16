@@ -24,6 +24,7 @@ import Profile from "./components/UserProfile/Profile";
 import SignUpForm from "./components/Auth/SignUpForm/SignUpForm";
 import Recommendation from "./components/Home/Recommendation";
 import ViewProduct from "./components/Products/ViewProduct";
+import Favourites from "./components/Favourites/Favourites";
 
 const App = () => {
   return (
@@ -42,7 +43,6 @@ const App = () => {
         <Routes>
           <Route path="/signup" element={<SignUpForm />} />
         </Routes>
-        <Routes></Routes>
         <Routes>
           <Route path="/admin" element={<Jewels />} />
         </Routes>
@@ -80,10 +80,7 @@ const App = () => {
           <Route path="/viewdetails" element={<ViewProduct />} />
         </Routes>
         <Routes>
-          <Route path = "/favourites" element={<Favourites />}/>
-        </Routes>
-        <Routes>
-          <Route path="/search" element={<Search />} />
+          <Route path="/favorites" element={<Favourites />} />
         </Routes>
       </Container>
     </BrowserRouter>

@@ -1,9 +1,10 @@
 import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
 import React from "react";
 import { Button } from "@mui/material";
 import blingsvg from "../../images/User Profile.svg";
-import NavBar from "../NavBar";
 import "./Profile.css";
+import NavBarProfile from "../NavbarProfile";
 
 const Profile = () => {
   const title = "User Profile";
@@ -18,10 +19,26 @@ const Profile = () => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
+
+  const saveProfile = () => {
+    toast.success("Profile Updated Susccessfully!", {
+      position: "bottom-right",
+      theme: "dark",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   return (
     <Grid container>
       <Grid xs={12} align="center" mb={3}>
-        <NavBar title={title} color={color}></NavBar>
+        <div>
+          <NavBarProfile title={title} color={color} />
+        </div>
         <Paper
           elevation={24}
           sx={{
@@ -118,6 +135,7 @@ const Profile = () => {
                     justifyContent: "center",
                     alignContent: "center",
                   }}
+                  onClick={saveProfile}
                 >
                   Save Profile
                 </Button>
@@ -126,6 +144,7 @@ const Profile = () => {
           </Grid>
         </Paper>
       </Grid>
+      <ToastContainer />
     </Grid>
   );
 };

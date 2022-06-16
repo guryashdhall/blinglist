@@ -12,7 +12,7 @@ import { autoPlay } from 'react-swipeable-views-utils';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const Slider = ({images}) => {
+const Slider = ({images, onClick}) => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
@@ -30,7 +30,7 @@ const Slider = ({images}) => {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    <Box onClick={onClick} sx={{ maxWidth: 400, flexGrow: 1 }}>
       <Paper
         square
         elevation={0}
