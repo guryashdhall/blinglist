@@ -18,6 +18,7 @@ import Profile from "./components/UserProfile/Profile";
 import SignUpForm from "./components/Auth/SignUpForm/SignUpForm";
 import Recommendation from "./components/Home/Recommendation";
 import ViewProduct from "./components/Products/ViewProduct";
+import Favourites from "./components/Favourites/Favourites";
 
 const App = () => {
   return (
@@ -71,6 +72,9 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path="/viewdetails" element={<ViewProduct />} />
+        </Routes>
+        <Routes>
+          <Route path="/favorites" element={<Favourites />} />
         </Routes>
       </Container>
     </BrowserRouter>
