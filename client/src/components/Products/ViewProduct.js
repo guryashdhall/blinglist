@@ -56,7 +56,12 @@ const ViewProduct = () => {
                         <b>Color: </b> Blue
                       </Typography>
                       <Stack mt={3} spacing={2} direction="row">
-                        <button className="product-btn">
+                        <button
+                          onClick={() => {
+                            navigate("/favorites");
+                          }}
+                          className="product-btn"
+                        >
                           ADD TO FAVORITES
                         </button>
                         <button
