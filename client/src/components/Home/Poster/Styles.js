@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
     banner: {
-      margin: "20px 10px 0px 10px",
-      minWidth: 960,
+      margin: "20px auto",
+      //minWidth: 960,
       textAlign: 'center',
     },
     banner_img: {

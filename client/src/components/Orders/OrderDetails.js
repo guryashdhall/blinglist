@@ -7,12 +7,10 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import item1 from "../../images/ring1.jpg";
 import item2 from "../../images/j2.jpg";
 import Cart from "../Cart/Cart";
 import ReviewPage from "../Review/ReviewPage";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 function OrderDetails() {

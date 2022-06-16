@@ -16,7 +16,9 @@ const FormSignUp = () => {
   const navigate = useNavigate();
 
   const { handleChange, values, handleSubmit, errors } = useForm(validate);
-  const [SecurityQuestion, setSecurityQuestion] = React.useState("");
+  //const [SecurityQuestion, setSecurityQuestion] = React.useState("");
+  //console.log(setSecurityQuestion(""))
+  const SecurityQuestion = "";
 
   const title = "Join us Today!";
   const color = "#000000";

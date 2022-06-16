@@ -11,7 +11,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+//import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 
 const Navbar = () => {
   const classes = useStyles();
@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <div>
       <AppBar className={classes.appBar} color="inherit">
-        <Link to="/recommendation" className={classes.brandContainer}>
+        <Link to="/" className={classes.brandContainer}>
           <img src={bling} alt="TheBlingList" height="42px" />
           {/* <img
             className={classes.image}
@@ -29,17 +29,18 @@ const Navbar = () => {
           /> */}
         </Link>
         <Link
-          to="/recommendation"
-          style={{ color: "inherit", textDecoration: "inherit" }}
-        >
-          <Typography>PRODUCTS</Typography>
-        </Link>
-        <Link
           to="/blogs"
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>BLOGS</Typography>
         </Link>
+        <Link
+          to="/recommendation"
+          style={{ color: "inherit", textDecoration: "inherit" }}
+        >
+          <Typography>PRODUCTS</Typography>
+        </Link>
+        
         <Link
           to="/giftcard"
           style={{ color: "inherit", textDecoration: "inherit" }}
