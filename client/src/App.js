@@ -12,6 +12,18 @@ import MapDemo from "./components/Map/MapDemo"
 import Jewels from "./components/Admin/Jewels/Jewels"
 import Favourites from "./components/Favourites/Favourites"
 import Search from "./components/Search/Search"
+import PreviousOrder from "./components/Orders/PreviousOrder";
+import OrderDetails from "./components/Orders/OrderDetails";
+import MapDemo from "./components/Map/MapDemo";
+import Jewels from "./components/Admin/Jewels/Jewels";
+import ViewBlog from "./components/Blog/ViewBlog";
+import LogIn from "../src/components/Auth/Login/LogIn";
+import ForgotPwd from "../src/components/Auth/ForgotPassword/ForgotPwd";
+import ResetPassword from "../src/components/Auth/ForgotPassword/ResetPassword";
+import Profile from "./components/UserProfile/Profile";
+import SignUpForm from "./components/Auth/SignUpForm/SignUpForm";
+import Recommendation from "./components/Home/Recommendation";
+import ViewProduct from "./components/Products/ViewProduct";
 
 const App = () => {
   return (
@@ -19,10 +31,23 @@ const App = () => {
       <Container maxWidth="100%">
         <Navbar />
         <Routes>
-          <Route path="/search" element={<Search />} />
+          <Route path="/" element={<LogIn />} />
         </Routes>
         <Routes>
+          <Route path="/forgotPwd" element={<ForgotPwd />} />
+        </Routes>
+        <Routes>
+          <Route path="/resetPwd" element={<ResetPassword />} />
+        </Routes>
+        <Routes>
+          <Route path="/signup" element={<SignUpForm />} />
+        </Routes>
+        <Routes></Routes>
+        <Routes>
           <Route path="/admin" element={<Jewels />} />
+        </Routes>
+        <Routes>
+          <Route path="/recommendation" element={<Recommendation />} />
         </Routes>
         <Routes>
           <Route path="/checkout" element={<Checkout />} />
@@ -40,13 +65,25 @@ const App = () => {
           <Route path="/map" element={<MapDemo />} />
         </Routes>
         <Routes>
-          <Route path = "/cart" element={<Cart/>}/>
+          <Route path="/cart" element={<Cart />} />
         </Routes>
         <Routes>
-          <Route path = "/reviews" element={<ReviewPage/>}/>
+          <Route path="/reviews" element={<ReviewPage />} />
+        </Routes>
+        <Routes>
+          <Route path="/blogs" element={<ViewBlog />} />
+        </Routes>
+        <Routes>
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+        <Routes>
+          <Route path="/viewdetails" element={<ViewProduct />} />
         </Routes>
         <Routes>
           <Route path = "/favourites" element={<Favourites />}/>
+        </Routes>
+        <Routes>
+          <Route path="/search" element={<Search />} />
         </Routes>
       </Container>
     </BrowserRouter>
