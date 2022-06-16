@@ -1,57 +1,71 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import * as React from 'react';
-import blingsvg from '../../../images/LOGO BLING SVG.svg'
-import useForm from '../../../Helpers/useForm';
-import validate from '../../../Helpers/validateInfo';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import blingsvg from "../../../images/LOGO BLING SVG.svg";
+import useForm from "../../../Helpers/useForm";
+import validate from "../../../Helpers/validateInfo";
 // import LoggedInAlert from './components/SuccessAlert';
-
 
 const theme = createTheme();
 
 export default function SignIn() {
   const { values, errors, handleSubmit, handleChange } = useForm(validate);
-  const [loggedInStatus, setLoggedInStatus] = React.useState(false);
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{
-        display: 'flex',
-        flexFlow: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        height: '100vh',
-
-      }}>
-        <Box sx={{
-          display: 'flex',
-          flexFlow: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 'auto',
-          height: '50%',
-          margin: 'auto'
-        }}>
-          <img src={blingsvg} alt="bling" width="100%" height="100%" min-width="300" alignitems='center' className="center bling-image" />
+      <Box
+        sx={{
+          display: "flex",
+          flexFlow: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+          height: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexFlow: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "auto",
+            height: "50%",
+            margin: "auto",
+          }}
+        >
+          <img
+            src={blingsvg}
+            alt="bling"
+            width="100%"
+            height="100%"
+            min-width="300"
+            alignitems="center"
+            className="center bling-image"
+          />
         </Box>
-        <Container component="main" maxWidth="xs" margin='auto' alignitems='center'>
+        <Container
+          component="main"
+          maxWidth="xs"
+          margin="auto"
+          alignitems="center"
+        >
           <CssBaseline />
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignitems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignitems: "center",
             }}
           >
             {/* <br />
@@ -61,10 +75,10 @@ export default function SignIn() {
             <br />
             <br />
             <br /> */}
-            <Box component="form" onSubmit={handleSubmit} noValidate >
-            <Typography component="h1" variant="h5">
-              Already a member?
-            </Typography>
+            <Box component="form" onSubmit={handleSubmit} noValidate>
+              <Typography component="h1" variant="h5">
+                Already a member?
+              </Typography>
 
               <TextField
                 margin="normal"
@@ -78,9 +92,10 @@ export default function SignIn() {
                 autoFocus
                 value={values.email}
                 onChange={handleChange}
-                
               />
-              {errors.email && <p style={{color:'#FF0000'}}>{errors.email}</p>}
+              {errors.email && (
+                <p style={{ color: "#FF0000" }}>{errors.email}</p>
+              )}
               <TextField
                 margin="normal"
                 required
@@ -93,8 +108,10 @@ export default function SignIn() {
                 value={values.password}
                 onChange={handleChange}
               />
-              
-              {errors.password && <p style={{color:'#FF0000'}}>{errors.password}</p>}
+
+              {errors.password && (
+                <p style={{ color: "#FF0000" }}>{errors.password}</p>
+              )}
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -124,7 +141,6 @@ export default function SignIn() {
               {/* {loggedInStatus?<LoggedInAlert alertMsg={"Logged In Successfully !"}/>:<></>} */}
             </Box>
           </Box>
-
         </Container>
       </Box>
     </ThemeProvider>
