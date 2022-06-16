@@ -11,12 +11,16 @@ import OrderDetails from "./components/Orders/OrderDetails"
 import MapDemo from "./components/Map/MapDemo"
 import Jewels from "./components/Admin/Jewels/Jewels"
 import ViewBlog from "./components/Blog/ViewBlog";
+import LogIn from "../src/components/Auth/Login/LogIn"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Container maxWidth="100%">
         <Navbar />
+        <Routes>
+          <Route path="/" element={<LogIn />} />
+        </Routes>
         <Routes>
           <Route path="/admin" element={<Jewels />} />
         </Routes>
