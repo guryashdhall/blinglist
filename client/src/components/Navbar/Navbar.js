@@ -86,7 +86,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/previousorders">
+          <Link to="/profile">
             <PersonOutlineOutlinedIcon
               style={{
                 width: "50px",
