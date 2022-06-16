@@ -9,12 +9,16 @@ import ReviewPage from "./components/Review/ReviewPage";
 import PreviousOrder from "./components/Orders/PreviousOrder"
 import OrderDetails from "./components/Orders/OrderDetails"
 import MapDemo from "./components/Map/MapDemo"
+import Jewels from "./components/Admin/Jewels/Jewels"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Container maxWidth="100%">
         <Navbar />
+        <Routes>
+          <Route path="/admin" element={<Jewels />} />
+        </Routes>
         <Routes>
           <Route path="/checkout" element={<Checkout />} />
         </Routes>
