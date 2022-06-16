@@ -14,6 +14,7 @@ import ViewBlog from "./components/Blog/ViewBlog";
 import LogIn from "../src/components/Auth/Login/LogIn"
 import ForgotPwd from "../src/components/Auth/ForgotPassword/ForgotPwd"
 import ResetPassword from "../src/components/Auth/ForgotPassword/ResetPassword"
+import Profile from "./components/UserProfile/Profile";
 
 const App = () => {
   return (
@@ -56,6 +57,9 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path = "/blogs" element={<ViewBlog/>}/>
+        </Routes>
+        <Routes>
+          <Route path = "/profile" element={<Profile/>}/>
         </Routes>
       </Container>
     </BrowserRouter>
