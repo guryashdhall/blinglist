@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const useForm = (validate) => {
 
@@ -9,17 +12,17 @@ const useForm = (validate) => {
     });
   
     const [errors, setErrors] = useState({});
-    // const [clicked, setClicked] = useState(false);
+    const [clicked, setClicked] = useState(false);
+    const navigate=useNavigate();
+    useEffect(() => {
+        setIsSubmitting(true);
+        console.log("TEST HERE ");
+        if (JSON.stringify(errors) === '{}' && clicked) {
+          navigate("/recommendation" );
+        }
+      }, [clicked]);
     
-    // useEffect(() => {
-    //     setIsSubmitting(true);
-    //     // console.log("TEST HERE ");
-    // //     if (JSON.stringify(errors) === '{}' && clicked) {
-    // //       navigate("/profile", { state: { values: values } });
-    // //     }
-    //   }, [clicked]);
-    
-    //   const [isSubmitting, setIsSubmitting] = useState(false);
+      const [isSubmitting, setIsSubmitting] = useState(false);
 
       const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,7 +36,7 @@ const useForm = (validate) => {
         console.log(errors);
         e.preventDefault();
         setErrors(validate(values));
-        // setClicked(true);
+        setClicked(!clicked);
       };
     return { values, errors,handleSubmit,handleChange };
 }
