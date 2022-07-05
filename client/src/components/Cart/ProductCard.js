@@ -1,16 +1,16 @@
-import { Box, Grid, TextField, Typography,IconButton, Button } from "@mui/material";
+import { Box, Grid, TextField, Typography, IconButton } from "@mui/material";
 import React from "react";
 import { Image } from "mui-image";
-import { Theme } from "@mui/material";
 import Plus from "@mui/icons-material/Add";
 import Subtract from "@mui/icons-material/Remove";
 
-const Pricestyles = (Theme) =>({
-    minWidth: "90%", m: 4,
-    [Theme.breakpoints.down("md")]: {
-        width: "15vh",
-        height: "50%",
-      },
+const Pricestyles = (Theme) => ({
+  minWidth: "90%",
+  m: 4,
+  [Theme.breakpoints.down("md")]: {
+    width: "15vh",
+    height: "50%",
+  },
 });
 const Imagestyles = (Theme) => ({
   width: "100%",
@@ -29,7 +29,7 @@ const boxStyles = (Theme) => ({
   },
 });
 function ProductCard() {
-     const defaultValue = 1;
+  const defaultValue = 1;
   return (
     <>
       <Box sx={boxStyles}>
@@ -47,24 +47,24 @@ function ProductCard() {
             <Typography variant="body2" color="text.secondary">
               This is a short product description
             </Typography>
-            <Box sx={{mt:2}}>
-            <IconButton sx={{mt:1,color:"blue"}}>
+            <Box sx={{ mt: 2 }}>
+              <IconButton sx={{ mt: 1, color: "blue" }}>
                 <Subtract />
               </IconButton>
               <TextField
                 variant="filled"
                 inputProps={{
                   style: {
-                    height:"1vh",
+                    height: "1vh",
                   },
                 }}
                 value={defaultValue}
-                sx={{ maxWidth:"20%",mt:1,maxHeight:"1" }}
+                sx={{ maxWidth: "20%", mt: 1, maxHeight: "1" }}
               />
-              <IconButton sx={{mt:1,color:"blue"}}>
+              <IconButton sx={{ mt: 1, color: "blue" }}>
                 <Plus />
               </IconButton>
-              </Box>
+            </Box>
           </Grid>
           <Grid item md={2}>
             <TextField

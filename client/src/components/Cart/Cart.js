@@ -2,7 +2,6 @@ import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import ProductCard from "./ProductCard";
 import Summary from "./Summary";
-import { Theme } from "@mui/material";
 
 function Cart() {
   const boxStyles =(Theme) => ({

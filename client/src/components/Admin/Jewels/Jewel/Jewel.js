@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import useStyles from "./Styles.js";
 import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-import ring1 from '../../../../images/ring1.jpg';
 import EditIcon from '@mui/icons-material/Edit';
 import { Dialog } from '@mui/material';
 import { DialogActions } from '@mui/material';
@@ -54,7 +53,7 @@ const Jewel = ({jewel, setCurrentProductId}) => {
     return (
         <div>
         <Card className={classes.card} raised elevation={10}>
-                <CardMedia className={classes.media} image={ring1} title={"Aayushi"} />
+                <CardMedia className={classes.media} image={jewel.product_image} title={"Aayushi"} />
             
                 <Typography variant="h6" color="textPrimary" align='center' component="p">{jewel.product_name}</Typography>
         

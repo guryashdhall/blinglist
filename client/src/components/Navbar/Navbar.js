@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Typography, TextField, Toolbar } from "@material-ui/core";
 import useStyles from "./Styles.js";
 import { Link } from "react-router-dom";
-import blingLogo from "../../images/logo.svg";
+// import blingLogo from "../../images/logo.svg";
 import bling from "../../images/bling.png";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -11,7 +11,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+//import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 
 const Navbar = () => {
   const classes = useStyles();
@@ -29,29 +29,30 @@ const Navbar = () => {
           /> */}
         </Link>
         <Link
-          to="/products"
-          style={{ color: "inherit", textDecoration: "inherit" }}
-        >
-          <Typography>PRODUCTS</Typography>
-        </Link>
-        <Link
           to="/blogs"
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>BLOGS</Typography>
         </Link>
         <Link
+          to="/recommendation"
+          style={{ color: "inherit", textDecoration: "inherit" }}
+        >
+          <Typography>PRODUCTS</Typography>
+        </Link>
+        
+        <Link
           to="/giftcard"
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>GIFT CARD</Typography>
         </Link>
-        <Link
+        {/* <Link
           to="/aboutus"
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>ABOUT US</Typography>
-        </Link>
+        </Link> */}
         <Toolbar>
           <TextField
             label="Search"
@@ -76,7 +77,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/">
+          <Link to="/favorites">
             <FavoriteBorderIcon
               style={{
                 width: "50px",
@@ -86,7 +87,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/previousorders">
+          <Link to="/profile">
             <PersonOutlineOutlinedIcon
               style={{
                 width: "50px",
@@ -106,7 +107,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/contactus">
+          {/* <Link to="/contactus">
             <CallOutlinedIcon
               style={{
                 width: "50px",
@@ -115,7 +116,7 @@ const Navbar = () => {
                 paddingTop: "14%",
               }}
             />
-          </Link>
+          </Link> */}
         </Toolbar>
       </AppBar>
     </div>

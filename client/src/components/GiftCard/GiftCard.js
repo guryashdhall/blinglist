@@ -19,8 +19,10 @@ import {
   validateCardNumber,
   validateExpireDate,
 } from "../../Helpers/helper.js";
+import { useNavigate } from "react-router-dom";
 
 const GiftCard = () => {
+  const navigate = useNavigate();
   const imageList = [
     "https://cdn.pixabay.com/photo/2015/08/11/08/21/coupon-883642__340.png",
     "https://cdn.pixabay.com/photo/2015/08/11/08/21/coupon-883638__340.png",
@@ -366,6 +368,7 @@ const GiftCard = () => {
         draggable: true,
         progress: undefined,
       });
+      navigate("/recommendation");
     }
   };
 

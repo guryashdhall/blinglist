@@ -12,7 +12,7 @@ const Jewels = () => {
         {
             product_id: "a",
             product_name: "Knotted Heart Ring",
-            product_image: "",
+            product_image: "images/ring1.jpg",
             product_description: "",
             product_price: 95.00
 
@@ -20,7 +20,7 @@ const Jewels = () => {
         {
             product_id: "b",
             product_name: "Clear Tilted Heart Solitaire Ring",
-            product_image: "",
+            product_image: "images/ring2.jpg",
             product_description: "",
             product_price: 55.00
 
@@ -28,7 +28,7 @@ const Jewels = () => {
         {
             product_id: "c",
             product_name: "Band of Hearts Ring",
-            product_image: "",
+            product_image: "images/ring3.jpg",
             product_description: "",
             product_price: 45.00
             
@@ -36,14 +36,14 @@ const Jewels = () => {
         {
             product_id: "d",
             product_name: "Clear Heart Solitaire Ring",
-            product_image: "",
+            product_image: "images/ring4.jpg",
             product_description: "",
             product_price: 60.00
         },
         {
             product_id: "e",
             product_name: "Wheat Grains Wishbone Ring",
-            product_image: "",
+            product_image: "images/ring5.jpg",
             product_description: "",
             product_price: 55.00
         }
