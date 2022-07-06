@@ -6,16 +6,13 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
+import StripeCheckout from "react-stripe-checkout";
+
+import { checkoutPayment } from "../../store/actions/payment";
 
 import "react-toastify/dist/ReactToastify.css";
-
-import PaymentCard from "./Payment/PaymentCard";
-import {
-  validateCardNumber,
-  validateExpireDate,
-} from "../../Helpers/helper.js";
-import { ALPHABET_REGEX, CARD_CVV_REGEX } from "../../Constants/constants.js";
 import "./Checkout.css";
+import { stripePaymentPublishKey } from "../../config/config";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -43,137 +40,45 @@ const Checkout = () => {
     },
   ];
 
-  const [cardInfo, setCardInfo] = useState({
-    cardNumber: "",
-    cardCvvNumber: "",
-    cardExpirationDate: "",
-    errors: {
-      cardNumber: "",
-      cardCvvNumber: "",
-      cardExpirationDate: "",
-    },
-  });
+  const makePayment = (token) => {
+    console.log("Token: ", token);
+    const body = {
+      token: token,
+      totalPayableAmount: 1000,
+      orders: ["1", "2", "3", "4"],
+      user: {
+        id: 1,
+        name: "Dhairya",
+        email: "doctordhairya@gmail.com",
+      },
+    };
 
-  const handleCardDetails = (fieldName, value) => {
-    setCardInfo({
-      ...cardInfo,
-      [fieldName]: value,
-    });
-  };
-
-  const handleCardNumberBlurEvent = () => {
-    if (
-      cardInfo.cardNumber === "" ||
-      cardInfo.cardNumber.match(ALPHABET_REGEX)
-    ) {
-      setCardInfo({
-        ...cardInfo,
-        errors: {
-          ...cardInfo.errors,
-          cardNumber: "Enter a valid card number!",
-        },
-      });
-    } else {
-      if (
-        !validateCardNumber(parseInt(cardInfo.cardNumber)) ||
-        cardInfo.cardNumber.length !== 16
-      ) {
-        setCardInfo({
-          ...cardInfo,
-          errors: {
-            ...cardInfo.errors,
-            cardNumber: "Enter a valid card number!",
-          },
+    checkoutPayment(body).then((result) => {
+      if (result.success === true) {
+        toast.success("Payment successfull!", {
+          position: "bottom-right",
+          theme: "dark",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
+        navigate("/reviews");
       } else {
-        setCardInfo({
-          ...cardInfo,
-          errors: {
-            ...cardInfo.errors,
-            cardNumber: "",
-          },
+        toast.error("Please fill all the fields!", {
+          position: "bottom-right",
+          theme: "dark",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
       }
-    }
-  };
-
-  const handleCardCvvBlurEvent = () => {
-    if (
-      cardInfo.cardCvvNumber === "" ||
-      cardInfo.cardCvvNumber.match(CARD_CVV_REGEX)
-    ) {
-      setCardInfo({
-        ...cardInfo,
-        errors: {
-          ...cardInfo.errors,
-          cardCvvNumber: "Enter a valid 3 digit CVV number",
-        },
-      });
-    } else {
-      setCardInfo({
-        ...cardInfo,
-        errors: {
-          ...cardInfo.errors,
-          cardCvvNumber: "",
-        },
-      });
-    }
-  };
-
-  const handleExpireDateBlurDate = () => {
-    if (validateExpireDate(cardInfo.cardExpirationDate)) {
-      setCardInfo({
-        ...cardInfo,
-        errors: {
-          ...cardInfo.errors,
-          cardExpirationDate: "",
-        },
-      });
-    } else {
-      setCardInfo({
-        ...cardInfo,
-        errors: {
-          ...cardInfo.errors,
-          cardExpirationDate: "Enter valid expiration date!",
-        },
-      });
-    }
-  };
-
-  const makePayment = (event) => {
-    event.preventDefault();
-
-    if (
-      cardInfo.cardCvvNumber === "" ||
-      cardInfo.errors.cardCvvNumber !== "" ||
-      cardInfo.cardNumber === "" ||
-      cardInfo.errors.cardNumber !== "" ||
-      cardInfo.cardExpirationDate === "" ||
-      cardInfo.errors.cardExpirationDate !== ""
-    ) {
-      toast.error("Please fill all the fields!", {
-        position: "bottom-right",
-        theme: "dark",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      toast.success("Payment successfull!", {
-        position: "bottom-right",
-        theme: "dark",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      navigate("/reviews");
-    }
+    });
   };
 
   return (
@@ -256,7 +161,7 @@ const Checkout = () => {
                 <div>
                   <span className="pricing-type">Subtotal</span>
                 </div>
-                <di>C$ 55.00</di>
+                <div>C$ 55.00</div>
               </div>
               <div className="pricing-information">
                 <div>
@@ -291,16 +196,16 @@ const Checkout = () => {
                   APPLY
                 </Button>
               </div>
-              <PaymentCard
-                cardInfo={cardInfo}
-                handleCardDetails={handleCardDetails}
-                handleCardNumberBlurEvent={handleCardNumberBlurEvent}
-                handleCardCvvBlurEvent={handleCardCvvBlurEvent}
-                handleExpireDateBlurDate={handleExpireDateBlurDate}
-              />
-              <Button onClick={makePayment} className="checkout-btn">
-                CHECKOUT
-              </Button>
+              <StripeCheckout
+                stripeKey={stripePaymentPublishKey}
+                token={(token) => makePayment(token)}
+                amount={100000}
+                name="Buy Item"
+              >
+                <Button onClick={makePayment} className="checkout-btn">
+                  CHECKOUT
+                </Button>
+              </StripeCheckout>
             </Paper>
           </Grid>
         </Grid>
