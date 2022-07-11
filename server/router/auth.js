@@ -1,33 +1,109 @@
 const express = require("express");
+const { User } = require("../models/User");
 
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 
-router.post('/signup',(req,res)=>{
-    const{firstName,lastName,email,password,confirmPassword,securityQuestion, securityAnswer }=req.body;
-    
+router.post('/signup', (req, res) => {
+    const { firstName, lastName, email, password, confirmPassword, securityQuestion, securityAnswer } = req.body;
 
-    if( !firstName | !lastName | !email | !password | !confirmPassword | !securityQuestion | !securityAnswer){
-        res.status(422).send('Please fill out all fields');
+
+    if (!firstName | !lastName | !email | !password | !confirmPassword | !securityQuestion | !securityAnswer) {
+        return res.status(422).json({
+            success: false,
+            message: 'Please fill out all fields'
+        });
     }
-        else if(password !== confirmPassword){
-            res.status(422).send('Passwords do not match');
-        }   
-        else{
-            res.status(200).send('User created');
-        }
-    }
-);
-
-
-
-router.post('/login',(req,res)=>{
-    const{email,password}=req.body;
-    if(!email | !password){
-        res.status(422).send('Please fill out all fields');
+    else if (password !== confirmPassword) {
+        return res.status(422).json({
+            success: false,
+            message: 'Passwords do not match'
+        });
     }
     else{
+    User.findOne({ email: email })
+        .then((savedUser) => {
+            if (savedUser) {
+                console.log(savedUser);
+                return res.status(422).json({
+                    success: false,
+                    message: 'User already exists with the same email id'
+                });
+            }
+            else {
+                bcrypt.hash(password, 12)
+                .then((hashedPassword) => {
+                    const user = new User({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        password: hashedPassword,
+                        confirmPassword: confirmPassword,
+                        securityQuestion: securityQuestion,
+                        securityAnswer: securityAnswer
+                    });
+                    user.save()
+                        .then((user) => {
+                            console.log(user);
+                            return res.status(200).json({
+                                success: true,
+                                message: 'User created successfully',
+                                user: user
+                            }
+                            )
+                        })
+                        .catch((err) => {
+                            return res.status(500).json({
+                                success: false,
+                                message: 'Error creating user',
+                                error: err
+                            })
+                        });
+                })
+                
+                
+
+        }
+    })
+        .catch((err) => {
+            return res.status(500).json({
+                success: false,
+                message: 'Error creating user',
+                error: err
+            })
+        })
+    }
+
+});
+
+router.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    if (!email | !password) {
+        res.status(422).send('Please fill out all fields');
+    }
+    else { 
         res.status(200).send('User signed in');
+    }
+});
+
+router.post('/forgot-password', (req, res) => {
+    const { email, securityQuestion, securityAnswer } = req.body;
+    if (!email | !securityQuestion | !securityAnswer) {
+        res.status(422).send('Please fill out all fields');
+    }
+    else {
+        res.status(200).send('Password reset email sent');
+    }
+}
+);
+router.post('/reset-password', (req, res) => {
+    const { password, confirmPassword } = req.body;
+    if (!password | !confirmPassword) {
+        res.status(422).send('Please fill out all fields');
+    }
+    else {
+        res.status(200).send('Password reset');
     }
 });
 
