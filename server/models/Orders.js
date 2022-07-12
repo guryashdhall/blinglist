@@ -7,10 +7,11 @@ const ordersSchema = new mongoose.Schema(
     totalPrice: Number,
     quantity: Number,
     itemsList: [String],
+    status: String,
   },
   {
     timestamps: true,
   }
 );
 
-exports.Orders = mongoose.model("Orders", ordersSchema);
+exports.Orders = mongoose.model("orders", ordersSchema);

@@ -2,6 +2,6 @@ const router = require("express").Router();
 
 const { getLocations } = require("../controllers/locationController");
 
-router.post("/location", getLocations);
+router.get("/location", getLocations);
 
 module.exports = router;
