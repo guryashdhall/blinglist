@@ -1,10 +1,28 @@
 import { BACKEND_URL } from "../config/config";
 
 const AdminService = {
-  getProducts: () => {
+
+  getProduct: (id) => {
     const token = "jwt-token";
 
-    return fetch(BACKEND_URL + "administration/admin", {
+    return fetch(BACKEND_URL + `administration/admin/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      });
+  },
+
+
+  getProducts: (id) => {
+    const token = "jwt-token";
+
+    return fetch(BACKEND_URL + `administration/admin`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -53,6 +71,23 @@ const AdminService = {
       });
   },
 
+  editProduct: (id, params) => {
+    //const token = localStorage.getItem("token");
+    const token = "jwt-token";
+
+    return fetch(BACKEND_URL + `administration/admin/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+      body: JSON.stringify(params),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      });
+  },
 };
 
 export { AdminService };

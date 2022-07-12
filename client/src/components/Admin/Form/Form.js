@@ -1,15 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useStyles from "./Styles.js";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from 'react-file-base64';
 import { ALPHABET_REGEX } from '../../../Constants/constants.js';
 import { NUMBER_REGEX } from '../../../Constants/constants';
 import { ToastContainer, toast } from "react-toastify";
-import { createProduct } from "../../../store/actions/admin";
+import { createProduct, getProduct, editProduct } from "../../../store/actions/admin";
 
 
 const Form = ({ currentProductId }) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log(currentProductId)
+
+    if (currentProductId) {
+      getProduct(currentProductId).then((result) => {
+        if (result.success === true) {
+
+          productInfo['name'] = result["product"]["productName"]
+          setProductInfo({
+            name: result["product"]["productName"],
+            desc: result["product"]["productDescription"],
+            price: result["product"]["productPrice"],
+            quantity: result["product"]["inventoryQuantity"],
+            color: result["product"]["productColor"],
+            metal: result["product"]["metalType"],
+            type: result["product"]["productType"],
+            image: result["product"]["productImage"],
+            errors: {
+              name: '',
+              desc: '',
+              price: '',
+              quantity: '',
+              color: '',
+              metal: '',
+              type: '',
+              image: '',
+            },
+          })
+        }
+      })
+    }
+  }, [currentProductId])  // eslint-disable-line react-hooks/exhaustive-deps
 
   var [productInfo, setProductInfo] = useState({
     name: '',
@@ -105,6 +138,7 @@ const Form = ({ currentProductId }) => {
       errors: {
         name: '',
         desc: '',
+        quantity: '',
         price: '',
         color: '',
         metal: '',
@@ -149,33 +183,63 @@ const Form = ({ currentProductId }) => {
       productImage: productInfo.image,
     };
 
-    createProduct(body).then((result) => {
-      if (result.success === true) {
-        toast.success("Added product successfully!", {
-          position: "bottom-right",
-          theme: "dark",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
-      else {
-        toast.error("Please fill all the fields!", {
-          position: "bottom-right",
-          theme: "dark",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
-    })
+    if (currentProductId) {
+      editProduct(currentProductId, body).then((result) => {
+        if (result.success === true) {
+          toast.success("Product edited successfully", {
+            position: "bottom-right",
+            theme: "dark",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+        else {
+          toast.success("Product could not be edited. Please try again!", {
+            position: "bottom-right",
+            theme: "dark",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
 
+    }
+    else {
+      createProduct(body).then((result) => {
+        if (result.success === true) {
+          toast.success("Added product successfully!", {
+            position: "bottom-right",
+            theme: "dark",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+        else {
+          toast.error("Please fill all the fields!", {
+            position: "bottom-right",
+            theme: "dark",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      })
+    }
   };
 
   return (
@@ -271,7 +335,7 @@ const Form = ({ currentProductId }) => {
           <FileBase
             type="file"
             multiple={false}
-            onDone={({base64}) => handleProductInformation("image", base64) } />
+            onDone={({ base64 }) => handleProductInformation("image", base64)} />
         </div>
 
         <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" disabled={false}>Submit</Button>

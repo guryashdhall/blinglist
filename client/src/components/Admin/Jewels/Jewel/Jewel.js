@@ -26,7 +26,7 @@ const Jewel = ({ jewel, setCurrentProductId }) => {
     const handleDelete = () => {
 
         deleteProduct(jewel._id).then((result) => {
-            if(result.success === true) {
+            if (result.success === true) {
                 setOpen(false);
 
                 toast.success("Product deleted successfully!", {
