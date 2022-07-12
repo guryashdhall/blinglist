@@ -4,6 +4,6 @@ const { getProducts, createProduct, deleteProduct } = require("../controllers/ad
 
 router.get("/admin", getProducts);
 router.post("/admin", createProduct);
-router.delete('/:id', deleteProduct)
+router.delete('/admin/:id', deleteProduct)
 
 module.exports = router;

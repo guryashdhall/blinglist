@@ -11,3 +11,10 @@ export const createProduct = (params) => {
     return result;
   });
 };
+
+export const deleteProduct = (id) => {
+  return AdminService.deleteProduct(id).then((result) => {
+    console.log(result)
+    return result;
+  });
+};
