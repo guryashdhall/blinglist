@@ -37,7 +37,7 @@ const Jewel = ({jewel, setCurrentProductId}) => {
       }
 
       const handleEdit = () => {
-        setCurrentProductId(jewel.product_id)
+        setCurrentProductId(jewel._id)
         toast.success("Please edit the product from the form above.", {
             position: "bottom-right",
             theme: "dark",
@@ -53,12 +53,13 @@ const Jewel = ({jewel, setCurrentProductId}) => {
     return (
         <div>
         <Card className={classes.card} raised elevation={10}>
-                <CardMedia className={classes.media} image={jewel.product_image} title={"Aayushi"} />
+                {/* <CardMedia className={classes.media} image={jewel.productImage} title={"Aayushi"} /> */}
+                <CardMedia className={classes.media} image={jewel.productImage || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={"Aayushi"} />
             
-                <Typography variant="h6" color="textPrimary" align='center' component="p">{jewel.product_name}</Typography>
+                <Typography variant="h6" color="textPrimary" align='center' component="p">{jewel.productName}</Typography>
         
                 <CardContent>
-                    <Typography variant="body1" align='center' color="textSecondary" component="p">C$ {jewel.product_price}</Typography>
+                    <Typography variant="body1" align='center' color="textSecondary" component="p">C$ {jewel.productPrice}</Typography>
                 </CardContent>
         
 
