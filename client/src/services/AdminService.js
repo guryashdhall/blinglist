@@ -35,6 +35,24 @@ const AdminService = {
         return data;
       });
   },
+
+  deleteProduct: (id) => {
+    //const token = localStorage.getItem("token");
+    const token = "jwt-token";
+
+    return fetch(BACKEND_URL + `administration/admin/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "bearer " + token,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      });
+  },
+
 };
 
 export { AdminService };

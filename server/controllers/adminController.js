@@ -32,10 +32,13 @@ exports.createProduct = async (req, res) => {
 }
 
 exports.deleteProduct = async (req, res) => {
-    const {id} = req.params;
+    try {
+        const {id} = req.params;
 
-    //if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No post with this id");
-
-    //await PostMessage.findByIdAndRemove(id)
-    res.json({message: 'Post deleted successfully'});
+        await Products.findByIdAndRemove(id)
+        res.json({ message: "Deleted successfully", success: true });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+      }
 }
