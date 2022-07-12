@@ -59,11 +59,17 @@ exports.updateOrder = async (req, res) => {
         const query = req.params.id; 
         
         const orderData = await Orders.updateOne({_id:ObjectId(query)},{$set: {status: "Cancelled"}});
-        console.log(orderData)
-        return res.status(200).json({
-            success: true,
-            message: "updated!",
-        });
+        if (orderData.matchedCount < 1){
+            return res.status(501).json({
+                success: false,
+                error: `Somethingg went wrong!`
+            });
+        } else {
+            return res.status(200).json({
+                success: true,
+                message: "updated!",
+            });
+        }
     } catch (error) {
         return res
             .status(501)
