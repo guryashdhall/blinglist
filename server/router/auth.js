@@ -13,7 +13,7 @@ const { requireLogin } = require("../middleware/requireLogin");
 //protected
 
 router.get("/protected", requireLogin, (req, res) => {
-    return res.send("GURYASH SINGH DHALL");
+    return res.send("You can access the resources only after logging in");
 });
 
 
@@ -55,7 +55,7 @@ router.post('/signup', (req, res) => {
         User.findOne({ email: email })
             .then((savedUser) => {
                 if (savedUser) {
-                    console.log(savedUser);
+                    // console.log(savedUser);
                     return res.status(422).json({
                         success: false,
                         message: 'User already exists with the same email id'
@@ -75,7 +75,7 @@ router.post('/signup', (req, res) => {
                             });
                             user.save()
                                 .then((user) => {
-                                    console.log(user);
+                                    // console.log(user);
                                     return res.status(200).json({
                                         success: true,
                                         message: 'User created successfully',
@@ -126,20 +126,15 @@ router.post('/login', (req, res) => {
                 else {
                     bcrypt.compare(password, savedUser.password)
                         .then(isMatch => {
-                            console.log("111111");
-                            if (!isMatch) {
-                                console.log("222222");  
+                                if (!isMatch) {
                                 return res.status(422).json({
                                     success: false,
                                     message: 'Incorrect password'
                                 });
                             }
                             
-                            else {
-                                console.log("3333333");  
-                                console.log(process.env.JWT_SECRET);
+                            else { 
                                 const token =jwt.sign({_id:savedUser._id}, JWT_SECRET);
-                                console.log(token);
                                 return res.status(200).json({ 
                                     // need to send the token here
                                     success: true,
@@ -149,7 +144,6 @@ router.post('/login', (req, res) => {
                                 })
                             }
                         }).catch(err => {
-                            console.log('I AM HERE');
                             return res.status(500).json({
                                 success: false,
                                 message: 'Error logging in',
