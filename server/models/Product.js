@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   productColor: String,
   metalType: String,
   inventoryQuantity: Number,
+  productImage: String,
 });
 
-exports.Product = mongoose.model("Products", productSchema);
+exports.Products = mongoose.model("Products", productSchema);
