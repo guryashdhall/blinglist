@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from "@mui/material/Container";
@@ -15,12 +15,25 @@ import OrderDetails from "./OrderDetails";
 import ReviewPage from "../Review/ReviewPage";
 import Cart from "../Cart/Cart";
 import { useNavigate } from "react-router-dom";
+import { getOrders } from "../../store/actions/order.js";
 
 
 const theme = createTheme();
 
 function PreviousOrder() {
   const navigate = useNavigate();
+  const [orders, setorders] = useState({})
+
+  useEffect(() => {
+    getOrders().then((result) => {
+        result.data.forEach(function (order) {
+        order.createdAt = new Date(order.createdAt).toDateString();
+    });
+      setorders(result)
+    })
+  }, []);
+
+  console.log(orders);
   const onSubmit = (e) => {
     e.preventDefault();
     <OrderDetails />;
@@ -118,8 +131,9 @@ function PreviousOrder() {
               </Button>
             </Grid>
           </Grid>
-          <Box
+          {orders["data"]?.map(order => {return <Box
             //style={{ textAlign: 'left' }}
+            key={order._id}
             sx={{
               border: 1,
               borderRadius: "10px",
@@ -143,6 +157,7 @@ function PreviousOrder() {
               }}
             >
               <Grid
+              key={order._id}
                 container
                 component="form"
                 sx={{
@@ -166,7 +181,7 @@ function PreviousOrder() {
                     gutterBottom
                     component="div"
                   >
-                    January 27, 2022
+                    {order.createdAt}
                   </Typography>
                 </Grid>
                 <Grid item xs>
@@ -184,7 +199,7 @@ function PreviousOrder() {
                     gutterBottom
                     component="div"
                   >
-                    CDN$ 29.00
+                    CDN ${order.totalPrice}
                   </Typography>
                 </Grid>
                 <Grid item xs>
@@ -212,7 +227,7 @@ function PreviousOrder() {
                     gutterBottom
                     component="div"
                   >
-                    ORDER # 465-456-789
+                    ORDER # {order._id}
                   </Typography>
                 </Grid>
               </Grid>
@@ -326,217 +341,8 @@ function PreviousOrder() {
                 </Button>
               </Grid>
             </Grid>
-          </Box>
+          </Box>})}
           <Divider />
-          <Box
-            //style={{ textAlign: 'left' }}
-            sx={{
-              border: 1,
-              borderRadius: "10px",
-              m: 1,
-              borderColor: "#757575",
-              p: 1,
-              color: "#ffffff",
-
-              //textTransform: 'none',
-            }}
-          >
-            <Box
-              //style={{ textAlign: 'left' }}
-              sx={{
-                border: 1,
-                borderRadius: "10px",
-                backgroundColor: "#800080db",
-                color: "#ffffff",
-
-                //textTransform: 'none',
-              }}
-            >
-              <Grid
-                container
-                component="form"
-                sx={{
-                  p: 1,
-                  alignItems: "left",
-                  justifyContent: "left",
-                }}
-              >
-                <Grid item xs>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    ORDER PLACED
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    January 31, 2022
-                  </Typography>
-                </Grid>
-                <Grid item xs>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    TOTAL
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    CDN$ 19.49
-                  </Typography>
-                </Grid>
-                <Grid item xs>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    SHIPPED TO
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    User Name
-                  </Typography>
-                </Grid>
-                <Grid item xs style={{ textAlign: "right" }}>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    ORDER # 465-456-123
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Box>
-            <Grid
-              container
-              component="form"
-              sx={{
-                p: 1,
-                alignItems: "left",
-                justifyContent: "left",
-              }}
-            >
-              <Grid item xs={6} md={3} style={{ maxInlineSize: "max-content" }}>
-                <Typography
-                  sx={{ color: "black" }}
-                  variant="body2"
-                  gutterBottom
-                  component="div"
-                >
-                  DELIVERED Feb. 4, 2022
-                </Typography>
-                <img
-                  src={item1}
-                  alt="earring1"
-                  width="100"
-                  height="70"
-                  alignitems="left"
-                />
-                <br></br>
-              </Grid>
-              <Grid item xs={6} md={5} style={{ padding: 5 }}>
-                <br></br>
-                <Link href="#" sx={{ color: "purple" }} underline="hover">
-                  Sparkling Triangle Drop Earrings
-                </Link>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={2}
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={toReviews}
-                >
-                  Write a review
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={1}
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={toCart}
-                >
-                  RePurchase
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={2}
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={onSubmit}
-                >
-                  Order Details
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
         </Container>
       </Box>
     </ThemeProvider>
