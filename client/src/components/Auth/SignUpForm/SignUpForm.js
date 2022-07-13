@@ -27,7 +27,6 @@ const FormSignUp = () => {
       <NavBar title={title} color={color}></NavBar>
       <form
         className="form"
-        onSubmit={handleSubmit}
         style={{
           display: "flex",
           flexFlow: "column",
@@ -229,7 +228,7 @@ const FormSignUp = () => {
           variant="contained"
           type="submit"
           style={{ background: "#000000" }}
-          onClick={() => navigate("/recommendation")}
+          onClick={handleSubmit}
         >
           Register
         </Button>
