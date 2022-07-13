@@ -6,12 +6,6 @@ import Checkout from "./components/Checkout/Checkout";
 import GiftCard from "./components/GiftCard/GiftCard";
 import Cart from "./components/Cart/Cart";
 import ReviewPage from "./components/Review/ReviewPage";
-import PreviousOrder from "./components/Orders/PreviousOrder"
-import OrderDetails from "./components/Orders/OrderDetails"
-import MapDemo from "./components/Map/MapDemo"
-import Jewels from "./components/Admin/Jewels/Jewels"
-import Favourites from "./components/Favourites/Favourites"
-import Search from "./components/Search/Search"
 import PreviousOrder from "./components/Orders/PreviousOrder";
 import OrderDetails from "./components/Orders/OrderDetails";
 import MapDemo from "./components/Map/MapDemo";
