@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    firstName: {
+      type: String,
+      required: true,
+      maxlength: 50,
+    },
+    lastName: {
       type: String,
       required: true,
       maxlength: 50,
@@ -17,8 +22,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       minlength: 5,
     },
-  },
-  { timestamps: true }
-);
+    confirmPassword: {
+      type: String,
+      minlength: 5,
+    },
+    securityQuestion: {
+      type: String,
+      required: true,
+    },
+    securityAnswer: {
+      type: String,
+      required: true,
+    },
+
+  }, { timestamps: true });
 
 exports.User = mongoose.model("User", userSchema);
