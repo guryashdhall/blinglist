@@ -4,9 +4,36 @@ const { User } = require("../models/User");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const { JWT_SECRET } = require("../config/app");
+
+const { requireLogin } = require("../middleware/requireLogin");
 
 
+//protected
 
+router.get("/protected", requireLogin, (req, res) => {
+    return res.send("GURYASH SINGH DHALL");
+});
+
+
+//get all users
+
+router.get("/users", (req, res) => {
+    User.find()
+        .then(users => res.json(users))
+        .catch(err => res.status(400).json("Error: " + err));
+}
+);
+
+
+// get individual user api
+router.get("/users/:id", (req, res) => {
+    User.findById(req.params.id)
+        .then(user => res.json(user))
+        .catch(err => res.status(400).json("Error: " + err));   
+}
+);
 //SIGNUP API
 router.post('/signup', (req, res) => {
     const { firstName, lastName, email, password, confirmPassword, securityQuestion, securityAnswer } = req.body;
@@ -64,9 +91,6 @@ router.post('/signup', (req, res) => {
                                     })
                                 });
                         })
-
-
-
                 }
             })
             .catch((err) => {
@@ -102,20 +126,30 @@ router.post('/login', (req, res) => {
                 else {
                     bcrypt.compare(password, savedUser.password)
                         .then(isMatch => {
+                            console.log("111111");
                             if (!isMatch) {
+                                console.log("222222");  
                                 return res.status(422).json({
                                     success: false,
                                     message: 'Incorrect password'
                                 });
                             }
+                            
                             else {
-                                return res.status(200).json({
+                                console.log("3333333");  
+                                console.log(process.env.JWT_SECRET);
+                                const token =jwt.sign({_id:savedUser._id}, JWT_SECRET);
+                                console.log(token);
+                                return res.status(200).json({ 
+                                    // need to send the token here
                                     success: true,
                                     message: 'User logged in successfully',
-                                    user: savedUser
+                                    user: savedUser,
+                                    session_token: token
                                 })
                             }
                         }).catch(err => {
+                            console.log('I AM HERE');
                             return res.status(500).json({
                                 success: false,
                                 message: 'Error logging in',
