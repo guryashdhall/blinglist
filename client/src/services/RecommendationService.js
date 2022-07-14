@@ -29,7 +29,22 @@ const RecommendationService = {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("in service data " , data)
+        return data;
+      });
+  },
+
+  getMostPopularProducts: () => {
+    const token = "jwt-token";
+
+    return fetch(BACKEND_URL + `recommendation/mostpopular`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
         return data;
       });
   },
