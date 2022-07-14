@@ -26,6 +26,12 @@ app.use(router);
 
 app.use(express.json());
 app.use(require('./router/auth'));
+app.use(require('./router/favourites'));
+app.use(require('./router/search'));
+
+app.get('/', (req, res) => {
+  return res.send("Hii")
+})
 
 app.listen(PORT, (err) => {
   if (err) {
