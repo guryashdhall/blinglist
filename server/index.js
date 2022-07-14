@@ -32,6 +32,8 @@ app.use(require('./router/search'));
 app.get('/', (req, res) => {
   return res.send("Hii")
 })
+app.use(require('./router/reveiws'));
+
 
 app.listen(PORT, (err) => {
   if (err) {

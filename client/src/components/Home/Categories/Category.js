@@ -1,9 +1,12 @@
 import React from "react";
-import { Container, Box, Grid, Typography} from "@mui/material";
+import { Container, Box, Grid, Typography } from "@mui/material";
 import useStyles from "./Styles.js";
+import { useNavigate } from "react-router-dom";
 
 const Category = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+
   return (
     <>
       <Container >
@@ -12,7 +15,9 @@ const Category = () => {
             <Grid item lg={4} md={2} xs={4}>
               <div className={classes.gridItem}>
                 <div className={classes.img_root}>
-                  <img
+                  <img onClick={() => {
+                    navigate("/admin?search=ring");
+                  }}
                     className={classes.img_responsive}
                     src={`./images/ring.svg`}
                     alt="ah"
@@ -24,9 +29,11 @@ const Category = () => {
               </div>
             </Grid>
             <Grid item lg={4} md={2} xs={4}>
-            <div className={classes.gridItem}>
+              <div className={classes.gridItem}>
                 <div className={classes.img_root}>
-                  <img
+                  <img onClick={() => {
+                    navigate("/admin?search=necklace");
+                  }}
                     className={classes.img_responsive}
                     src={`./images/necklace.svg`}
                     alt="ah"
@@ -38,9 +45,11 @@ const Category = () => {
               </div>
             </Grid>
             <Grid item lg={4} md={2} xs={4}>
-            <div className={classes.gridItem}>
+              <div className={classes.gridItem}>
                 <div className={classes.img_root}>
-                  <img
+                  <img onClick={() => {
+                    navigate("/admin?search=earring");
+                  }}
                     className={classes.img_responsive}
                     src={`./images/earring.svg`}
                     alt="ah"

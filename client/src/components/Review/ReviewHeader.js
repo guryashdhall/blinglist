@@ -4,12 +4,15 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { setStars } from "../../store/actions/Jewels";
+import { connect } from "react-redux";
 
-function ReviewHeader() {
-  const [age, setAge] = React.useState("");
+function ReviewHeader(props) {
+  const [stars, setStars] = React.useState("");
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    props.setStars(event.target.value);
+    setStars(event.target.value);
   };
   return (
     <>
@@ -26,11 +29,11 @@ function ReviewHeader() {
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-            value={age}
+            value={stars}
             label="Stars"
             onChange={handleChange}
           >
-            <MenuItem value="">
+            <MenuItem value={-1}>
               <em>All</em>
             </MenuItem>
             <MenuItem value={5}>five star</MenuItem>
@@ -44,5 +47,11 @@ function ReviewHeader() {
     </>
   );
 }
-
-export default ReviewHeader;
+const mapDispatchtoProps = (dispatch) => {
+  return {
+    setStars: (stars) => {
+      dispatch(setStars(stars));
+    },
+  };
+};
+export default connect(null, mapDispatchtoProps)(ReviewHeader);

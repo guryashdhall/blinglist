@@ -28,7 +28,7 @@ exports.createProduct = async (req, res) => {
 
         //const existingProduct = await Products.find({ productName: product.productName })
 
-        const newProduct = new Products({...product});
+        const newProduct = new Products({...product, createdAt: new Date().toISOString()});
         await newProduct.save();
 
         res.status(201).json({

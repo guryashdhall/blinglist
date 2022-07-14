@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from "@mui/material/Container";
@@ -7,19 +8,38 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Avatar from "@mui/material/Avatar";
+
+import { CardActionArea, CardActions } from '@mui/material';
 import item2 from "../../images/j2.jpg";
 import Cart from "../Cart/Cart";
 import ReviewPage from "../Review/ReviewPage";
 import { useNavigate } from "react-router-dom";
 
+import { getOrder } from "../../store/actions/order.js";
+
 const theme = createTheme();
 function OrderDetails() {
   const navigate = useNavigate();
+  const params = useParams();
+  const [order, setOrder] = useState({ data: [] });
   const toReviews = (e) => {
     e.preventDefault();
     <ReviewPage />;
-    navigate("/reviews");
+    navigate("/viewdetails");
   };
+
+  useEffect(() => {
+    getOrder(`${params.id}`).then((result) => {
+      result.data[0].createdAt = new Date(result.data[0].createdAt).toDateString();
+      result.data[0].delivery = new Date(result.data[0].delivery).toDateString();
+      result.data[0].userName = "Group 17"
+      setOrder(result.data[0])
+    })
+  }, []);
+  console.log(order)
   const toCart = (e) => {
     e.preventDefault();
     <Cart />;
@@ -89,7 +109,7 @@ function OrderDetails() {
                   gutterBottom
                   component="div"
                 >
-                  January 27, 2022
+                  {order.createdAt}
                 </Typography>
               </Grid>
               <Divider orientation="vertical" variant="middle" flexItem />
@@ -109,7 +129,7 @@ function OrderDetails() {
                   gutterBottom
                   component="div"
                 >
-                  456-456-132
+                  {order._id}
                 </Typography>
               </Grid>
             </Grid>
@@ -128,6 +148,7 @@ function OrderDetails() {
             }}
           >
             <Grid
+
               container
               component="form"
               sx={{
@@ -136,38 +157,7 @@ function OrderDetails() {
                 justifyContent: "left",
               }}
             >
-              <Grid item xs style={{ maxInlineSize: "max-content" }}>
-                <img
-                  src={item2}
-                  alt="earring1"
-                  width="100"
-                  height="70"
-                  alignitems="left"
-                />
-                <br></br>
-              </Grid>
-              <Grid item xs style={{ padding: 5 }}>
-                <Link href="#" sx={{ color: "purple" }} underline="hover">
-                  Classic Multi Chain Necklace
-                </Link>
-                <Typography
-                  sx={{ color: "#808080" }}
-                  variant="caption"
-                  gutterBottom
-                  component="div"
-                >
-                  Silver
-                </Typography>
-                <Typography
-                  sx={{ color: "black" }}
-                  variant="body2"
-                  gutterBottom
-                  component="div"
-                >
-                  CA$ 14.29
-                </Typography>
-              </Grid>
-              <Grid item xs style={{ padding: 5 }}>
+              <Grid item xs style={{ textAlign: "right", paddingRight: 10 }}>
                 <Typography
                   sx={{ color: "black" }}
                   variant="caption"
@@ -182,10 +172,10 @@ function OrderDetails() {
                   gutterBottom
                   component="div"
                 >
-                  1
+                  {order.quantity}
                 </Typography>
               </Grid>
-              <Grid item xs style={{ padding: 5 }}>
+              <Grid item xs style={{ paddingLeft: 10 }}>
                 <Typography
                   sx={{ color: "black" }}
                   variant="caption"
@@ -200,58 +190,105 @@ function OrderDetails() {
                   gutterBottom
                   component="div"
                 >
-                  Shipped
+                  {order.status}
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={toReviews}
-                >
-                  Write a review
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={toCart}
-                >
-                  Repuchase
-                </Button>
-              </Grid>
             </Grid>
+
+
+            {order.itemsList?.map(item => {
+              return <Grid
+                key={item._id}
+                container
+                component="form"
+                sx={{
+                  p: 1,
+                  alignItems: "left",
+                  justifyContent: "left",
+                }}
+              >
+                <Grid item xs style={{ maxInlineSize: "max-content" }}>
+                  <img
+                    src={item.productImage}
+                    alt="earring1"
+                    width="150"
+                    height="120"
+                    alignitems="left"
+                  />
+                  <br></br>
+                </Grid>
+                <Grid item xs style={{ padding: 5 }}>
+                  <Link href="#" sx={{ color: "purple" }} underline="hover">
+                    {item.productName}
+                  </Link>
+                  <Typography
+                    sx={{ color: "#808080" }}
+                    variant="caption"
+                    gutterBottom
+                    component="div"
+                  >
+                    {item.productColor} {item.productType}
+                  </Typography>
+                  <Typography
+                    sx={{ color: "#808080" }}
+                    variant="body2"
+                    gutterBottom
+                    component="div"
+                  >
+                    Metal Type: {item.metalType}
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  xs
+                  style={{
+                    textAlign: "right",
+                    maxInlineSize: "max-content",
+                    padding: 3,
+                  }}
+                >
+                  <br></br>
+                  <Button
+                    sx={{
+                      color: "#800080",
+                      border: "1px solid #80008059",
+                      "&:hover": {
+                        backgroundColor: "#e8b8ff96",
+                        opacity: [0.9, 0.8, 0.7],
+                      },
+                    }}
+                    onClick={toReviews}
+                  >
+                    Write a review
+                  </Button>
+                </Grid>
+                <Grid
+                  item
+                  xs
+                  style={{
+                    textAlign: "right",
+                    maxInlineSize: "max-content",
+                    padding: 3,
+                  }}
+                >
+                  <br></br>
+                  <Button
+                    sx={{
+                      color: "#800080",
+                      border: "1px solid #80008059",
+                      "&:hover": {
+                        backgroundColor: "#e8b8ff96",
+                        opacity: [0.9, 0.8, 0.7],
+                      },
+                    }}
+                    onClick={toCart}
+                  >
+                    Repurchase
+                  </Button>
+                </Grid>
+              </Grid>
+            })}
           </Box>
           <Grid
             container
@@ -312,7 +349,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                CA$12
+                CA$ {order.retail}
               </Typography>
               <Typography
                 sx={{ color: "black" }}
@@ -320,7 +357,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                CA$2.29
+                CA$ {order.tax}
               </Typography>
               <Typography
                 sx={{ color: "black", fontWeight: "bold" }}
@@ -328,7 +365,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                CA$14.29
+                CA$ {order.totalPrice}
               </Typography>
               <Divider />
             </Grid>
@@ -359,7 +396,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                UserName - Phone Number
+                Group 7
               </Typography>
               <Typography
                 sx={{ color: "#808080" }}
@@ -367,7 +404,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                User Address{" "}
+                {order.address}
               </Typography>
             </Grid>
 
@@ -387,7 +424,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                User Name
+                Group 7
               </Typography>
               <Typography
                 sx={{ color: "#808080" }}
@@ -395,7 +432,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                Shipping Addres
+                {order.address}
               </Typography>
             </Grid>
           </Grid>
@@ -445,7 +482,7 @@ function OrderDetails() {
                 gutterBottom
                 component="div"
               >
-                Credit Card/Gift Card
+                Credit Card
               </Typography>
             </Grid>
           </Grid>

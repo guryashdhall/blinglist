@@ -1,19 +1,54 @@
-const initstate ={
-    reviews: [
-    {'title':'Great Product','description':'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica','rating':2},
-    {'title':'Great Product','description':'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica','rating':3},
-    {'title':'Great Product','description':'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica','rating':4},
-]
-}
+const initstate = {
+  stars: -1,
+  reviews: [],
+  filtered_reviews: [],
+};
 const jewelsReducer = (state = initstate, action) => {
-    switch (action.type) {
-        case 'INSERT_REVIEW':
-            state = {reviews:[...state.reviews,{title:action.title,description:action.description,ratings:action.rating}]}
-            return state;
-        default:
-            console.log(state.reviews)
-            return state;
-    }
-}
+  switch (action.type) {
+    case "SET_STARS":
+      if (action.stars === -1) {
+        state.filtered_reviews = state.reviews;
+      } else {
+        state.filtered_reviews = state.reviews.filter((review) => {
+          return review.rating === action.stars;
+        });
+      }
+      state = {
+        stars: action.stars,
+        reviews: [...state.reviews],
+        filtered_reviews: [...state.filtered_reviews],
+      };
+      return state;
+
+    case "INITAL_REVIEW_STATE":
+      state = { reviews: action.data, filtered_reviews: action.data };
+      return state;
+
+    case "INSERT_REVIEW":
+      state = {
+        stars: -1,
+        reviews: [
+          ...state.reviews,
+          {
+            title: action.title,
+            description: action.description,
+            rating: action.rating,
+          },
+        ],
+        filtered_reviews: [
+          ...state.reviews,
+          {
+            title: action.title,
+            description: action.description,
+            rating: action.rating,
+          },
+        ],
+      };
+      return state;
+
+    default:
+      return state;
+  }
+};
 
 export default jewelsReducer;
