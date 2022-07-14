@@ -1,74 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Poster from "./Poster/Poster";
 import Slider from "./Slider/Slider";
-import { Grid, Divider } from "@material-ui/core";
+import { Grid, Divider, CircularProgress } from "@material-ui/core";
 import Category from "./Categories/Category";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import { getNewArrivalsProducts } from "../../store/actions/recommendation";
 
 const Recommendation = () => {
   const navigate = useNavigate();
-  const rings = [
-    {
-      label: "Knotted Heart Ring",
-      imgPath: "images/ring1.jpg",
-    },
-    {
-      label: "Clear Heart Solitaire Ring",
-      imgPath: "images/ring2.jpg",
-    },
-    {
-      label: "Bands of Hearts Ring",
-      imgPath: "images/ring3.jpg",
-    },
-    {
-      label: "Wheat Grains Wishbone Ring",
-      imgPath: "images/ring5.jpg",
-    },
-  ];
+  const [earringImages, setEarringImages] = useState([])
+  const [necklaceImages, setNecklaceImages] = useState([])
+  const [ringImages, setRingImages] = useState([])
 
-  const necklaces = [
-    {
-      label: "Three Piece Set Necklace",
-      imgPath: "images/j1.jpg",
-    },
-    {
-      label: "Stone Necklace",
-      imgPath: "images/j2.jpg",
-    },
-    {
-      label: "Infinity Necklace",
-      imgPath: "images/j3.jpg",
-    },
-    {
-      label: "Heart Necklace",
-      imgPath: "images/j4.jpg",
-    },
-  ];
+  useEffect(() => {
+    var jewels1 = []
+    var jewels2 = []
+    var jewels3 = []
 
-  const earrings = [
-    {
-      label: "Heart Earrings",
-      imgPath: "images/earring1.jpg",
-    },
-    {
-      label: "Spiral Earrings",
-      imgPath: "images/earring2.jpg",
-    },
-    {
-      label: "Twisted earrings",
-      imgPath: "images/earring3.jpg",
-    },
-    {
-      label: "Designer Earrings",
-      imgPath: "images/earring4.jpg",
-    },
-  ];
+    getNewArrivalsProducts().then((result) => {
+
+      for (var i = 0; i < result["earring"].length; i++) {
+        var arr1 = {
+          label: result["earring"][i]["productName"],
+          imgPath: result["earring"][i]["productImage"]
+        }
+        jewels1.push(arr1)
+      }
+      setEarringImages(jewels1)
+
+      for (var i = 0; i < result["necklace"].length; i++) {
+        var arr2 = {
+          label: result["necklace"][i]["productName"],
+          imgPath: result["necklace"][i]["productImage"]
+        }
+        jewels2.push(arr2)
+      }
+      setNecklaceImages(jewels2)
+
+      for (var i = 0; i < result["ring"].length; i++) {
+        var arr3 = {
+          label: result["ring"][i]["productName"],
+          imgPath: result["ring"][i]["productImage"]
+        }
+        jewels3.push(arr3)
+      }
+      setRingImages(jewels3)
+    })
+  }, [])
 
   return (
     <div>
       <Poster />
-        
+
       <Category />
 
       <div style={{ margin: "70px" }}>
@@ -78,33 +62,39 @@ const Recommendation = () => {
         <Typography variant="h4" align="center">
           New Arrivals
         </Typography>
+        {
+          earringImages.length > 0 ? (
+            <Grid
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={earringImages}
+              />
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={necklaceImages}
+              />
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={ringImages}
+              />
+            </Grid>
 
-        <Grid
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={rings}
-          />
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={necklaces}
-          />
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={earrings}
-          />
-        </Grid>
+          ) : <CircularProgress />
+        }
+
+
       </div>
 
       <div style={{ margin: "70px" }}>
@@ -115,32 +105,39 @@ const Recommendation = () => {
           You May Also Like
         </Typography>
 
-        <Grid
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={rings}
-          />
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={necklaces}
-          />
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={earrings}
-          />
-        </Grid>
+        {
+          earringImages.length > 0 ? (
+            <Grid
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={earringImages}
+              />
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={earringImages}
+              />
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={earringImages}
+              />
+            </Grid>
+
+          ) : <CircularProgress />
+        }
+
+
       </div>
 
       <div style={{ margin: "70px" }}>
@@ -151,32 +148,37 @@ const Recommendation = () => {
           Most Popular
         </Typography>
 
-        <Grid
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={rings}
-          />
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={necklaces}
-          />
-          <Slider
-            onClick={() => {
-              navigate("/viewdetails");
-            }}
-            images={earrings}
-          />
-        </Grid>
+        {
+          earringImages.length > 0 ? (
+            <Grid
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={earringImages}
+              />
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={earringImages}
+              />
+              <Slider
+                onClick={() => {
+                  navigate("/viewdetails");
+                }}
+                images={earringImages}
+              />
+            </Grid>
+
+          ) : <CircularProgress />
+        }
       </div>
     </div>
   );

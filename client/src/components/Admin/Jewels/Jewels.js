@@ -28,7 +28,14 @@ const Jewels = () => {
                 setJewels(result)
             })
         }
-      }, [setSearchQuery], [setJewels]); // eslint-disable-line react-hooks/exhaustive-deps
+      }, [setJewels] , [setSearchQuery] ); // eslint-disable-line react-hooks/exhaustive-deps
+
+    //   useEffect(() => {
+    //         getProducts().then((result) => {
+    //             setJewels(result)
+    //         })
+        
+    //   }, [] ); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>
