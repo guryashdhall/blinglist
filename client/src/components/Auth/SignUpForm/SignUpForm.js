@@ -15,6 +15,8 @@ import { useState } from "react";
 import validateInfo from "../../../Helpers/validateInfo";
 import M from 'materialize-css';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const FormSignUp = () => {
@@ -175,7 +177,8 @@ const FormSignUp = () => {
   const onhandleSubmit = (e) => {
     e.preventDefault();
     console.log(signUpInfo);
-    if (signUpInfo.errors.firstName === '' && signUpInfo.errors.lastName === '' && signUpInfo.errors.email === '' && signUpInfo.errors.password === '' && signUpInfo.errors.confirmPassword === '' && signUpInfo.errors.securityAnswer === '') {
+    if (signUpInfo.errors.firstName === '' && signUpInfo.errors.lastName === '' && signUpInfo.errors.email === '' && signUpInfo.errors.password === '' && signUpInfo.errors.confirmPassword === '' && signUpInfo.errors.securityAnswer === '') 
+    {
       console.log(signUpInfo);
       axios.post("http://localhost:8080/signup", {
         firstName: signUpInfo.firstName,
@@ -189,10 +192,32 @@ const FormSignUp = () => {
         if (res.data.success) {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.user.role);
-          M.toast({ html: res.data.message, classes: "green", onClose: navigate("/login") });
+          toast.success(res.data.message, {
+            position: "top-right",
+            theme: "dark",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            onClose: () => {
+              navigate("/");
+            }
+          })
+          // M.toast({ html: res.data.message, classes: "green", onClose: navigate("/login") });
 
         } else {
-          M.toast({ html: res.data.message, classes: "red" });
+          toast.error(res.data.message, {
+            position: "top-right",
+            theme: "dark",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
         }
       }
       ).catch(err => {
@@ -364,6 +389,7 @@ const FormSignUp = () => {
           Register
         </Button>
       </form>
+      <ToastContainer />
     </div>
   );
  };

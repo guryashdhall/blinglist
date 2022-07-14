@@ -41,13 +41,13 @@ router.post('/signup', (req, res) => {
 
 
     if (!firstName | !lastName | !email | !password | !confirmPassword | !securityQuestion | !securityAnswer) {
-        return res.status(422).json({
+        return res.status(200).json({
             success: false,
             message: 'Please fill out all fields'
         });
     }
     else if (password !== confirmPassword) {
-        return res.status(422).json({
+        return res.status(200).json({
             success: false,
             message: 'Passwords do not match'
         });
@@ -57,7 +57,7 @@ router.post('/signup', (req, res) => {
             .then((savedUser) => {
                 if (savedUser) {
                     // console.log(savedUser);
-                    return res.status(422).json({
+                    return res.status(200).json({
                         success: false,
                         message: 'User already exists with the same email id'
                     });
@@ -145,7 +145,7 @@ router.post('/login', (req, res) => {
                                 })
                             }
                         }).catch(err => {
-                            return res.status(500).json({
+                            return res.status(200).json({
                                 success: false,
                                 message: 'Error logging in',
                                 error: err
