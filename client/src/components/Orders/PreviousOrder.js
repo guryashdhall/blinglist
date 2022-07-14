@@ -15,29 +15,32 @@ import OrderDetails from "./OrderDetails";
 import ReviewPage from "../Review/ReviewPage";
 import Cart from "../Cart/Cart";
 import { useNavigate } from "react-router-dom";
-import { getOrders } from "../../store/actions/order.js";
-
+import { getOrderByUserId, getOrders } from "../../store/actions/order.js";
+import { createProduct, getProduct, editProduct } from "../../store/actions/admin";
 
 const theme = createTheme();
 
 function PreviousOrder() {
   const navigate = useNavigate();
-  const [orders, setorders] = useState({})
+  const [orders, setorders] = useState({});
+  const [prods, setProds] = useState({});
+  const prod = [];
+  const pids = orders["data"]?.map(order => order.itemsList);
 
   useEffect(() => {
-    getOrders().then((result) => {
-        result.data.forEach(function (order) {
+    const userId = "62cde17d75a76c05a83d4b47"
+    getOrderByUserId(userId).then((result) => {
+      result.data.forEach(function (order) {
         order.createdAt = new Date(order.createdAt).toDateString();
-    });
-      setorders(result)
+        order.delivery = new Date(order.delivery).toDateString();
+        order.userName = "Group 17"
+      });
+      setorders(result.data)
     })
   }, []);
-
-  console.log(orders);
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (orderid) => {
     <OrderDetails />;
-    navigate("/orderDetails");
+    navigate(`/orderDetails/${orderid}`);
   };
 
   const toReviews = (e) => {
@@ -82,266 +85,240 @@ function PreviousOrder() {
                 Your Orders
               </Typography>
             </Grid>
-            <Grid
-              item
-              xs
-              style={{
-                textAlign: "right",
-                maxInlineSize: "max-content",
-                padding: 3,
-              }}
-            ></Grid>
-            <Grid
-              item
-              xs
-              style={{
-                textAlign: "right",
-                maxInlineSize: "max-content",
-                padding: 3,
-              }}
-            >
-              <TextField
-                color="secondary"
-                label="Search product"
-                id="outlined-size-small"
-                size="small"
-              />
-            </Grid>
-            <Grid
-              item
-              xs
-              style={{
-                textAlign: "right",
-                maxInlineSize: "max-content",
-                padding: 3,
-              }}
-            >
-              <Button
-                sx={{
-                  color: "#800080",
-                  border: "1px solid #80008059",
-                  "&:hover": {
-                    backgroundColor: "#e8b8ff96",
-                    opacity: [0.9, 0.8, 0.7],
-                  },
-                }}
-                onClick={() => alert("search performed")}
-              >
-                Search
-              </Button>
-            </Grid>
+            
           </Grid>
-          {orders["data"]?.map(order => {return <Box
-            //style={{ textAlign: 'left' }}
-            key={order._id}
-            sx={{
-              border: 1,
-              borderRadius: "10px",
-              m: 1,
-              borderColor: "#757575",
-              p: 1,
-              color: "#ffffff",
-
-              //textTransform: 'none',
-            }}
-          >
-            <Box
+          {orders.length>0 && orders?.map(order => {
+            return <Box
               //style={{ textAlign: 'left' }}
+              key={order._id}
               sx={{
                 border: 1,
                 borderRadius: "10px",
-                backgroundColor: "#800080db",
+                m: 1,
+                borderColor: "#757575",
+                p: 1,
                 color: "#ffffff",
 
                 //textTransform: 'none',
               }}
             >
-              <Grid
-              key={order._id}
-                container
-                component="form"
+              <Box
+                //style={{ textAlign: 'left' }}
                 sx={{
+                  border: 1,
+                  borderRadius: "10px",
+                  backgroundColor: "#800080db",
+                  color: "#ffffff",
+
+                  //textTransform: 'none',
+                }}
+              >
+                <Grid
+                  key={order._id}
+                  container
+                  component="form"
+                  sx={{
+                    p: 1,
+                    alignItems: "left",
+                    justifyContent: "left",
+                  }}
+                >
+                  <Grid item xs>
+                    <Typography
+                      sx={{ color: "#ffffff" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      ORDER PLACED
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#ffffff" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      {order.createdAt}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography
+                      sx={{ color: "#ffffff" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      TOTAL
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#ffffff" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      CDN ${order.totalPrice}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography
+                      sx={{ color: "#ffffff" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      Delivery date
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#ffffff" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      {order.delivery}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs style={{ textAlign: "right" }}>
+                    <Typography
+                      sx={{ color: "#ffffff" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      ORDER # {order._id}
+                    </Typography>
+                    <Button
+                      sx={{
+                        color: "#FFFFFF",
+                        border: "1px solid #FFFFFF",
+                        "&:hover": {
+                          backgroundColor: "#e8b8ff96",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                      }}
+                      onClick={() => onSubmit(order._id)}
+                    >
+                      Order Details
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+              {order.itemsList?.map(item => { return <Box
+                //style={{ textAlign: 'left' }}
+                key = {item._id}
+                sx={{
+                  m: 1,
                   p: 1,
-                  alignItems: "left",
-                  justifyContent: "left",
+                  color: "#ffffff",
+  
+                  //textTransform: 'none',
                 }}
               >
-                <Grid item xs>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
+                <Grid
+                  key = {item._id}
+                  container
+                  component="form"
+                  sx={{
+                    p: 1,
+                    alignItems: "left",
+                    justifyContent: "left",
+                  }}
+                >
+                  <Grid item s={6} md={3} style={{ maxInlineSize: "max-content" }}>
+                    
+                    <img
+                      src={item.productImage}
+                      alt="earring1"
+                      width="150"
+                      height="120"
+                      alignitems="left"
+                    />
+                  </Grid>
+                  <Grid item s={6} md={7} style={{ padding: 5 }}>
+                    
+                    <Link href="#" sx={{ color: "purple" }} underline="hover">
+                      {item.productName}
+                    </Link>
+                    <Typography
+                      sx={{ color: "#808080" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      {item.productColor} {item.productType} 
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#808080" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      Metal Type: {item.metalType} 
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#808080" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      {item.productDescription} 
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    s={12}
+                    md={2}
+                    style={{
+                      textAlign: "right",
+                      maxInlineSize: "max-content",
+                      padding: 3,
+                    }}
                   >
-                    ORDER PLACED
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
+                    <br></br>
+                    <Button
+                      sx={{
+                        color: "#800080",
+                        border: "1px solid #80008059",
+                        "&:hover": {
+                          backgroundColor: "#e8b8ff96",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                      }}
+                      onClick={toReviews}
+                    >
+                      Write a review
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    s={12}
+                    md={1}
+                    style={{
+                      textAlign: "right",
+                      maxInlineSize: "max-content",
+                      padding: 3,
+                    }}
                   >
-                    {order.createdAt}
-                  </Typography>
+                    <br></br>
+                    <Button
+                      sx={{
+                        color: "#800080",
+                        border: "1px solid #80008059",
+                        "&:hover": {
+                          backgroundColor: "#e8b8ff96",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                      }}
+                      onClick={toCart}
+                    >
+                      Repurchase
+                    </Button>
+                  </Grid>
+                  
                 </Grid>
-                <Grid item xs>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    TOTAL
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    CDN ${order.totalPrice}
-                  </Typography>
-                </Grid>
-                <Grid item xs>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    SHIPPED TO
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    User Name
-                  </Typography>
-                </Grid>
-                <Grid item xs style={{ textAlign: "right" }}>
-                  <Typography
-                    sx={{ color: "#ffffff" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    ORDER # {order._id}
-                  </Typography>
-                </Grid>
-              </Grid>
+                </Box>})}
+                
             </Box>
-            <Grid
-              container
-              component="form"
-              sx={{
-                p: 1,
-                alignItems: "left",
-                justifyContent: "left",
-              }}
-            >
-              <Grid item xs={6} md={3} style={{ maxInlineSize: "max-content" }}>
-                <Typography
-                  sx={{ color: "black" }}
-                  variant="body2"
-                  gutterBottom
-                  component="div"
-                >
-                  DELIVERED Feb. 8, 2022
-                </Typography>
-                <img
-                  src={item2}
-                  alt="earring1"
-                  width="100"
-                  height="70"
-                  alignitems="left"
-                />
-                <br></br>
-              </Grid>
-              <Grid item xs={6} md={5} style={{ padding: 5 }}>
-                <br></br>
-                <Link href="#" sx={{ color: "purple" }} underline="hover">
-                  Classic Multi Chain Necklace
-                </Link>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={2}
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={toReviews}
-                >
-                  Write a review
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={1}
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={toCart}
-                >
-                  Repurchase
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={2}
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
-                  }}
-                  onClick={onSubmit}
-                >
-                  Order Details
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>})}
+          })}
           <Divider />
         </Container>
       </Box>

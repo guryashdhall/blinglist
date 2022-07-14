@@ -31,8 +31,34 @@ exports.getOrders = async (req, res) => {
 
 exports.getOrderById = async (req, res) => {
     try {
-        const query = req.body.id;
-        const orderData = await Orders.findOne(query);
+        const query = req.params.id;
+        const orderData = await Orders.find({_id:ObjectId(query)}).populate("itemsList");
+        if (orderData == null) {
+            return res.status(501).json({
+                success: false,
+                error: `Somethingg went wrong!`
+            });
+        } else {
+            return res.status(200).json({
+                success: true,
+                data: orderData
+            });
+        }
+    } catch (error) {
+        return res
+            .status(501)
+            .json({
+                success: false,
+                error: `Somethingg went wrong! ${error}`
+            });
+    }
+}
+
+exports.getOrderByUserId = async (req, res) => {
+    try {
+        const query = req.params.id;
+        const orderData = await Orders.find({userID: ObjectId(query)}).populate("itemsList");
+        
         if (orderData == null) {
             return res.status(501).json({
                 success: false,
