@@ -4,14 +4,27 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Avatar, Rating, Stack } from "@mui/material";
 import { shallowEqual, useSelector } from "react-redux";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { connect } from "react-redux";
+import { setIntialReviewState } from "../../store/actions/Jewels.js"
 function ReviewCard(props) {
-  //const [reviews,setReviews] = useState([])
-  const reviews = useSelector((state) => state.jewelsReducer.reviews, shallowEqual);
+  useEffect(()=> {
+    axios.get("http://localhost:8080/reviews/getreviews").then(response => {
+      console.log(response.data)
+      props.setIntialReviewState(response.data);
+    })
+    
+  },[])
+  var reviews = useSelector((state) => state.jewelsReducer.reviews, shallowEqual);
+  var stars = useSelector((state) => state.jewelsReducer.stars, shallowEqual);
+  var filtered_reviews = useSelector((state) => state.jewelsReducer. filtered_reviews, shallowEqual);
+ 
   //setReviews([get_reviews])
   return (
     <>
-      {reviews.map((review, index) => {
+      {filtered_reviews.map((review, index) => {
+     
         return (
           <Card sx={{ width: "90%", m: 2 }} key={index}>
             <Stack direction="row">
@@ -23,7 +36,7 @@ function ReviewCard(props) {
               <Typography gutterBottom variant="h5" component="div">
                 {review.title}
               </Typography>
-              <Rating readOnly name="size-medium" defaultValue={2} />
+              <Rating readOnly name="size-medium" value={review.rating} />
               <Typography variant="body2" color="text.secondary">
                 {review.description}
               </Typography>
@@ -36,4 +49,14 @@ function ReviewCard(props) {
   );
 }
 
-export default ReviewCard;
+
+const mapDispatchtoProps = (dispatch) => {
+  return {
+    setIntialReviewState: (data) => {
+      
+      dispatch(setIntialReviewState(data))
+      console.log("action dispatched")
+    }
+  };
+};
+export default connect(null, mapDispatchtoProps)(ReviewCard);
