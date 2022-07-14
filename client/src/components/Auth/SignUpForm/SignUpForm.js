@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import useForm from "../../../Helpers/useForm";
-import validate from "../../../Helpers/validateInfo";
+import validate, { validateEmail } from "../../../Helpers/validateInfo";
 // import Box from '@mui/material/Box';
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
@@ -11,14 +11,171 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useState } from "react";
+import validateInfo from "../../../Helpers/validateInfo";
+import M from 'materialize-css';
+
 
 const FormSignUp = () => {
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  const { handleChange, values, handleSubmit, errors } = useForm(validate);
+  // const { handleChange, values, handleSubmit, errors } = useForm(validate);
   //const [SecurityQuestion, setSecurityQuestion] = React.useState("");
   //console.log(setSecurityQuestion(""))
   const SecurityQuestion = "";
+
+
+  const [signUpInfo, setSignUpInfo] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    securityAnswer: '',
+    errors: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      securityAnswer: ''
+    }
+  });
+
+
+  const handleEmailErrors = () => {
+    setSignUpInfo({
+      ...signUpInfo,
+      errors: {
+        ...signUpInfo.errors,
+        email: validateEmail(signUpInfo.email)
+      }
+    })
+    
+  }
+
+  const handleFirstNameErrors = () => {
+    if (!signUpInfo.firstName) {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, firstName: "First Name is required"
+        }
+      })
+    }
+    else {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, firstName: ""
+        }
+      })
+    }
+  }
+
+
+
+  const handleLastNameErrors = () => {
+    if (!signUpInfo.lastName) {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, lastName: "Last Name is required"
+        }
+      })
+    } else {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, lastName: ""
+        }
+      })
+    }
+  }
+    const handlePwdErrors = () => {
+      if (!signUpInfo.password) {
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, password: "Password is required"
+          }
+        })
+      } else if (signUpInfo.password.length < 8) {
+
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, password: "Password needs to be 8 characters or more"
+          }
+        })
+      }
+      else {
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, password: ""
+          }
+        })
+      }
+    }
+
+
+    const handleConfirmPwdErrors = () => {
+      if (!signUpInfo.confirmPassword) {
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, confirmPassword: "Password is required"
+          }
+        })
+      } else if (signUpInfo.confirmPassword.length < 8) {
+
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, confirmPassword: "Password needs to be 8 characters or more"
+          }
+        })
+      } else if (signUpInfo.confirmPassword !== signUpInfo.password) {
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, confirmPassword: "Passwords do not match"
+          }
+        })
+      }
+      else {
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, confirmPassword: ""
+          }
+        })
+      }
+    }
+
+
+    const handleSecuritAnswerErrors = () => {
+      if (!signUpInfo.securityAnswer) {
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, securityAnswer: "Security Answer is required"
+          }
+        })
+      }
+      else {
+        setSignUpInfo({
+          ...signUpInfo, errors: {
+            ...signUpInfo.errors, securityAnswer: ""
+          }
+        })
+      }
+    }
+    const onhandleChange = (name, value) => {
+      setSignUpInfo({
+
+        ...signUpInfo,
+        [name]: value
+      })
+    }
+const onhandleSubmit = (e) => {
+  if(signUpInfo.firstName.errors === '' && signUpInfo.lastName.errors === '' && signUpInfo.email.errors === '' && signUpInfo.password.errors === '' && signUpInfo.confirmPassword.errors === '' && signUpInfo.securityAnswer.errors === ''){
+    navigate("/login");
+    M.toast({html: 'Sign Up Successful'});
+  }
+  else{
+    M.toast({html: 'Please fill out all fields'})
+  }
+}
 
   const title = "Join us Today!";
   const color = "#000000";
@@ -34,7 +191,6 @@ const FormSignUp = () => {
           alignItems: "center",
         }}
       >
-        {/* <h1> Join us today! Please enter the details below</h1> */}
         <br />
         <br />
         <div className="form-inputs">
@@ -46,22 +202,13 @@ const FormSignUp = () => {
             name="firstName"
             className="form-inputs"
             placeholder="Enter your First Name"
-            value={values.firstName}
-            onChange={handleChange}
+            value={signUpInfo.firstName}
+            error={signUpInfo.errors.firstName !== ""}
+            helperText={signUpInfo.errors.firstName}
+            onChange={(e) => onhandleChange("firstName", e.target.value)}
+            onBlur={handleFirstNameErrors}
             variant="outlined"
           />
-          {errors.firstName && (
-            <p
-              style={{
-                color: "#FF0000",
-                alignItems: "center",
-                textAlign: "center",
-                margin: "5px",
-              }}
-            >
-              {errors.firstName}
-            </p>
-          )}
         </div>
         <br />
         <div className="form-inputs">
@@ -73,23 +220,14 @@ const FormSignUp = () => {
             name="lastName"
             className="form-input"
             placeholder="Enter your Last Name"
-            value={values.lastName}
-            onChange={handleChange}
+            value={signUpInfo.lastName}
             color="secondary"
+            error={signUpInfo.errors.lastName !== ""}
+            helperText={signUpInfo.errors.lastName}
+            onChange={(e) => onhandleChange("lastName", e.target.value)}
+            onBlur={handleLastNameErrors}
           />
         </div>
-        {errors.lastName && (
-          <p
-            style={{
-              color: "#FF0000",
-              alignItems: "center",
-              textAlign: "center",
-              margin: "5px",
-            }}
-          >
-            {errors.lastName}
-          </p>
-        )}
         <br />
         <div className="form-inputs">
           <label htmlFor="email" className="form-label"></label>
@@ -100,25 +238,16 @@ const FormSignUp = () => {
             name="email"
             className="form-input"
             placeholder="Enter your Email"
-            value={values.email}
-            onChange={handleChange}
+            value={signUpInfo.email}
+            error={signUpInfo.errors.email !== ""}
+            helperText={signUpInfo.errors.email}
+            onChange={(e) => onhandleChange("email", e.target.value)}
+            onBlur={handleEmailErrors}
           />
         </div>
-        {errors.email && (
-          <p
-            style={{
-              color: "#FF0000",
-              alignItems: "center",
-              textAlign: "center",
-              margin: "5px",
-            }}
-          >
-            {errors.email}
-          </p>
-        )}
         <br />
         <div className="form-inputs">
-          <label htmlFor="password]" className="form-label"></label>
+          <label htmlFor="password" className="form-label"></label>
           <TextField
             label="Password"
             id="password"
@@ -126,23 +255,13 @@ const FormSignUp = () => {
             name="password"
             className="form-inputs"
             placeholder="Enter your Password"
-            value={values.password}
-            onChange={handleChange}
+            value={signUpInfo.password}
+            error={signUpInfo.errors.password !== ""}
+            helperText={signUpInfo.errors.password}
+            onChange={(e) => onhandleChange("password", e.target.value)}
+            onBlur={handlePwdErrors}
           />
         </div>
-
-        {errors.password && (
-          <p
-            style={{
-              color: "#FF0000",
-              alignItems: "center",
-              textAlign: "center",
-              margin: "5px",
-            }}
-          >
-            {errors.password}
-          </p>
-        )}
         <br />
         <div className="form-inputs">
           <label htmlFor="confirmPassword" className="form-label"></label>
@@ -153,22 +272,13 @@ const FormSignUp = () => {
             name="confirmPassword"
             className="form-inputs"
             placeholder="Enter your Password"
-            value={values.confirmPassword}
-            onChange={handleChange}
+            value={signUpInfo.confirmPassword}
+            error={signUpInfo.errors.confirmPassword !== ""}
+            helperText={signUpInfo.errors.confirmPassword}
+            onChange={(e) => onhandleChange("confirmPassword", e.target.value)}
+            onBlur={handleConfirmPwdErrors}
           />
         </div>
-        {errors.confirmPassword && (
-          <p
-            style={{
-              color: "#FF0000",
-              alignItems: "center",
-              textAlign: "center",
-              margin: "5px",
-            }}
-          >
-            {errors.confirmPassword}
-          </p>
-        )}
         <br />
         <Box sx={{ minWidth: 225 }}>
           <FormControl fullWidth>
@@ -179,7 +289,7 @@ const FormSignUp = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Security Question"
-              onChange={handleChange}
+              onChange={onhandleChange}
             >
               <MenuItem value={"What's your pet name?"}>
                 What's your pet name?
@@ -204,22 +314,12 @@ const FormSignUp = () => {
             name="securityAnswer"
             className="form-inputs"
             placeholder="Enter Security Answer"
-            value={values.securityAnswer}
-            onChange={handleChange}
-            variant="outlined"
+            value={signUpInfo.securityAnswer}
+            error={signUpInfo.errors.securityAnswer !== ""}
+            helperText={signUpInfo.errors.securityAnswer}
+            onChange={(e) => onhandleChange("securityAnswer", e.target.value)}
+            onBlur={handleSecuritAnswerErrors}
           />
-          {errors.securityAnswer && (
-            <p
-              style={{
-                color: "#FF0000",
-                alignItems: "center",
-                textAlign: "center",
-                margin: "5px",
-              }}
-            >
-              {errors.securityAnswer}
-            </p>
-          )}
         </div>
         <br />
 
@@ -228,7 +328,8 @@ const FormSignUp = () => {
           variant="contained"
           type="submit"
           style={{ background: "#000000" }}
-          onClick={handleSubmit}
+          // onClick={onhandleSubmit}
+          onSubmit={onhandleSubmit}
         >
           Register
         </Button>

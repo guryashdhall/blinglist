@@ -9,25 +9,78 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { validateEmail } from "../../../Helpers/validateInfo";
+import {useState} from "react";
+import { useNavigate } from "react-router-dom";
+import M from "materialize-css";
 
 const ForgotPwd = () => {
-  const { handleChange, values, handleSubmit, errors } = useForm(validate);
+  // const { handleChange, values, handleSubmit, errors } = useForm(validate);
   const [SecurityQuestion, setSecurityQuestion] = React.useState("");
 
   const title = "Forgot Password?";
   const color = "#000000";
+  const navigate = useNavigate();
+
+  const [forgotPwdInfo, setforgotPwdInfo] = useState({
+    email: '',
+    securityAnswer: '',
+    errors: {
+      email: '',
+      securityAnswer: ''
+    }
+  });
+
+  const handleEmailErrors = () => {
+    setforgotPwdInfo({
+      ...forgotPwdInfo,
+      errors: {
+        ...forgotPwdInfo.errors,
+        email: validateEmail(forgotPwdInfo.email)
+      }
+    })
+    
+  }
+  const handleSecurityAnswerErrors = () => {
+    if (!forgotPwdInfo.securityAnswer) {
+      setforgotPwdInfo({
+        ...forgotPwdInfo, errors: {
+          ...forgotPwdInfo.errors, securityAnswer: "Security Answer is required"
+        }
+      })
+    }
+    else {
+      setforgotPwdInfo({
+        ...forgotPwdInfo, errors: {
+          ...forgotPwdInfo.errors, securityAnswer: ""
+        }
+      })
+    }
+  }
+
+  const onhandleChange = (name, value) => {
+    setforgotPwdInfo({
+      ...forgotPwdInfo,
+      [name]: value
+    })
+  }
+  
+  const onhandleSubmit = (e) => { 
+    if(forgotPwdInfo.errors.email == '' && forgotPwdInfo.errors.securityAnswer == '')
+    {
+      navigate("/resetPwd");
+    }
+    else{
+      handleEmailErrors();
+      handleSecurityAnswerErrors();
+    }
+  }
   return (
     <div>
-      {/* <Box>
-        <Typography variant="h3" sx={{ p:2 }}>
-        Forgot Password ?
-          </Typography>
-    </Box> */}
-      {/* <h2 textAlign='center' alignItems='center'width="100%" >Forgot Password ?</h2> */}
       <NavBar title={title} color={color}></NavBar>
       <form
         className="form"
-        onSubmit={handleSubmit}
+        onSubmit={onhandleSubmit}
         style={{
           display: "flex",
           flexFlow: "column",
@@ -40,30 +93,20 @@ const ForgotPwd = () => {
         <div className="form-inputs">
           <label htmlFor="email" className="form-label"></label>
           <TextField
-            color="secondary"
-            label="Email"
-            id="email"
-            type="email"
-            name="email"
-            className="form-input"
-            placeholder="Enter your Email"
-            value={values.email}
-            onChange={handleChange}
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          value={forgotPwdInfo.email}
+          error={forgotPwdInfo.errors.email !== ""}
+          helperText={forgotPwdInfo.errors.email}
+          onChange={(e) => onhandleChange("email", e.target.value)}
+          onBlur={handleEmailErrors}
           />
         </div>
         <br />
-        {errors.email && (
-          <p
-            style={{
-              color: "#FF0000",
-              alignItems: "center",
-              textAlign: "center",
-              margin: "5px",
-            }}
-          >
-            {errors.email}
-          </p>
-        )}
         <Box sx={{ minWidth: 225 }}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">
@@ -92,38 +135,29 @@ const ForgotPwd = () => {
         <div className="form-inputs">
           <label htmlFor="Security Answer" className="form-label"></label>
           <TextField
-            color="secondary"
-            label="Security Answer"
-            id="securityAnswer"
-            type="text"
-            name="securityAnswer"
-            className="form-inputs"
-            placeholder="Enter Security Answer"
-            value={values.firstName}
-            onChange={handleChange}
-            variant="outlined"
+           label="Security Answer"
+           id="securityAnswer"
+           type="text"
+           name="securityAnswer"
+           className="form-inputs"
+           placeholder="Enter Security Answer"
+           value={forgotPwdInfo.securityAnswer}
+           error={forgotPwdInfo.errors.securityAnswer !== ""}
+           helperText={forgotPwdInfo.errors.securityAnswer}
+           onChange={(e) => onhandleChange("securityAnswer", e.target.value)}
+           onBlur={handleSecurityAnswerErrors}
           />
-          {errors.securityAnswer && (
-            <p
-              style={{
-                color: "#FF0000",
-                alignItems: "center",
-                textAlign: "center",
-                margin: "5px",
-              }}
-            >
-              {errors.securityAnswer}
-            </p>
-          )}
         </div>
         <br />
         <Button
-          href="/resetPwd"
+          // href="/resetPwd"
           color="secondary"
           className="form-input-btn"
           variant="contained"
           type="submit"
           style={{ background: "#000000" }}
+          // onClick={handleUserSubmit}
+          onSubmit={onhandleSubmit}
         >
           Submit
         </Button>
