@@ -5,7 +5,7 @@ const AdminService = {
   getProduct: (id) => {
     const token = "jwt-token";
 
-    return fetch(BACKEND_URL + `administration/admin/${id}`, {
+    return fetch(BACKEND_URL + `administration/admin/product/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
