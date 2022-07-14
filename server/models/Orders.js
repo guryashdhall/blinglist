@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
+const productSchema = require("../models/Product");
 
 const ordersSchema = new mongoose.Schema(
   {
-    userID: String,
+    userID: ObjectId,
     totalPrice: Number,
     quantity: Number,
-    itemsList: [String],
+    tax:Number,
+    retail:Number,
+    address:String,
+    itemsList: [{type: mongoose.Schema.Types.ObjectId,
+      ref: "Products"}],
     status: String,
   },
   {
