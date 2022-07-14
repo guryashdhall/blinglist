@@ -26,6 +26,8 @@ app.use(router);
 
 app.use(express.json());
 app.use(require('./router/auth'));
+app.use(require('./router/reveiws'));
+
 
 app.listen(PORT, (err) => {
   if (err) {

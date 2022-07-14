@@ -2,6 +2,7 @@ import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import  ReviewPage  from "../Review/ReviewPage"
 
 import "./Product.css";
 
@@ -80,36 +81,7 @@ const ViewProduct = () => {
                   </Grid>
                 </Grid>
                 <Grid xs={12} align="left" mt={4}>
-                  <Typography className="comments">Comments</Typography>
-                  <div style={{ marginTop: "10px" }}>
-                    <div style={{ display: "flex", marginTop: "10px" }}>
-                      <Avatar>D</Avatar>
-                      <h6 style={{ marginTop: "10px", marginLeft: "10px" }}>
-                        Dhairya Doctor
-                      </h6>
-                    </div>
-                    <p style={{ marginTop: "10px", marginLeft: "6px" }}>
-                      Wow what a wonderful product!!
-                    </p>
-                    <div style={{ display: "flex", marginTop: "10px" }}>
-                      <Avatar>A</Avatar>
-                      <h6 style={{ marginTop: "10px", marginLeft: "10px" }}>
-                        Aayan Shah
-                      </h6>
-                    </div>
-                    <p style={{ marginTop: "10px", marginLeft: "6px" }}>
-                      Nice quality!
-                    </p>
-                    <div style={{ display: "flex", marginTop: "10px" }}>
-                      <Avatar>R</Avatar>
-                      <h6 style={{ marginTop: "10px", marginLeft: "10px" }}>
-                        Robert Brooks
-                      </h6>
-                    </div>
-                    <p style={{ marginTop: "10px", marginLeft: "6px" }}>
-                      Wow what a wonderful product!!
-                    </p>
-                  </div>
+                  <ReviewPage/>
                 </Grid>
               </Paper>
             </Grid>
