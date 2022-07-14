@@ -28,7 +28,7 @@ function OrderDetails() {
   const toReviews = (e) => {
     e.preventDefault();
     <ReviewPage />;
-    navigate("/reviews");
+    navigate("/viewdetails");
   };
 
   useEffect(() => {
