@@ -18,7 +18,6 @@ const Form = ({ currentProductId }) => {
       getProduct(currentProductId).then((result) => {
         if (result.success === true) {
 
-          productInfo['name'] = result["product"]["productName"]
           setProductInfo({
             name: result["product"]["productName"],
             desc: result["product"]["productDescription"],

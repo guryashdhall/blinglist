@@ -5,3 +5,9 @@ export const getSearchProducts = (searchQuery) => {
     return searchProducts;
   });
 };
+
+export const getNewArrivalsProducts = () => {
+  return RecommendationService.getNewArrivalsProducts().then((searchProducts) => {
+    return searchProducts;
+  });
+};
