@@ -11,7 +11,7 @@ function ReviewHeader(props) {
   const [stars, setStars] = React.useState("");
 
   const handleChange = (event) => {
-    props.setStars(event.target.value)
+    props.setStars(event.target.value);
     setStars(event.target.value);
   };
   return (

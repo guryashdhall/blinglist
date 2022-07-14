@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -6,14 +6,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Alert, Snackbar, TextField } from "@mui/material";
 import { Rating } from "@mui/material";
-import { insertReview } from "../../store/actions/Jewels.js"
-import { setIntialReviewState } from "../../store/actions/Jewels.js"
-
+import { insertReview } from "../../store/actions/Jewels.js";
 import { connect } from "react-redux";
 import axios from "axios";
 
 function InputCard(props) {
-
   const [check_title, setCheckTitle] = useState(false);
   const [check_description, setCheckDescription] = useState(false);
   const [checkRating, setCheckRating] = useState(false);
@@ -24,12 +21,10 @@ function InputCard(props) {
   const [titleValue, setTitle] = useState("");
   const [descriptionValue, setDescription] = useState("");
   const [ratingValue, setRating] = useState(0);
-  const [message,setMessage]= useState("");
+  const [message, setMessage] = useState("");
   const rating = (e) => {
-    console.log(e.target.value);
     if (e.target.value > 0) {
-      console.log("inside if");
-      setRating(e.target.value)
+      setRating(e.target.value);
       setCheckRating(true);
       setRating(e.target.value);
     } else {
@@ -38,12 +33,11 @@ function InputCard(props) {
   };
   const title = (e) => {
     if (e.target.value.length !== 0) {
-      
       setCheckTitle(true);
       setTitle(e.target.value);
       settitleHelperText("");
     } else {
-      setTitle("")
+      setTitle("");
       setCheckTitle(false);
       settitleHelperText("Field Required");
     }
@@ -54,7 +48,7 @@ function InputCard(props) {
       setDescription(e.target.value);
       setdescHelperText("");
     } else {
-      setDescription("")
+      setDescription("");
       setCheckDescription(false);
       setdescHelperText("Field Required");
     }
@@ -65,31 +59,30 @@ function InputCard(props) {
       check_description === false ||
       checkRating === false
     ) {
-      setMessage("Please Fill all the details")
       setSnackbar("error");
+      setMessage("Please Fill all the details");
       setOpenbar(true);
-
     } else {
-      console.log({title:titleValue,
-        description:descriptionValue,
-        rating:ratingValue})
-      props.insertReview(titleValue, descriptionValue, ratingValue)
-      console.log("dispatced event");
-      axios.post("http://localhost:8080/reviews/addReviews",{
-        title:titleValue,
-        description:descriptionValue,
-        rating:ratingValue
-      }).then(response => {
-      setTitle("");
-      setCheckTitle(false);
-      setDescription("");
-      setCheckDescription(false);
-      setRating(0);
-      setCheckRating(false);
-      setMessage("Review added Successfully")
-      setSnackbar("success");
-      setOpenbar(true);
-      })  
+      props.insertReview(titleValue, descriptionValue, ratingValue);
+
+      axios
+        .post("http://localhost:8080/reviews/addReviews", {
+          title: titleValue,
+          description: descriptionValue,
+          rating: ratingValue,
+        })
+        .then((response) => {
+          setTitle("");
+          setCheckTitle(false);
+          setDescription("");
+          setCheckDescription(false);
+          setRating(0);
+          setCheckRating(false);
+
+          setSnackbar("success");
+          setMessage("Review added Successfully");
+          setOpenbar(true);
+        });
     }
   };
   const handleClose = (e, reason) => {
@@ -109,7 +102,12 @@ function InputCard(props) {
         <Typography sx={{ p: 1, ml: 1 }} gutterBottom variant="h5">
           Please Add Review
         </Typography>
-        <Rating sx={{ p: 1, ml: 1 }} name="size-medium" onClick={rating} value={ratingValue} />
+        <Rating
+          sx={{ p: 1, ml: 1 }}
+          name="size-medium"
+          onClick={rating}
+          value={ratingValue}
+        />
         <CardContent>
           <TextField
             outlined
@@ -135,7 +133,6 @@ function InputCard(props) {
             helperText={deschelpertext}
             error={deschelpertext !== ""}
             value={descriptionValue}
-    
           />
         </CardContent>
         <CardActions>
@@ -151,12 +148,9 @@ function InputCard(props) {
 const mapDispatchtoProps = (dispatch) => {
   return {
     insertReview: (title, description, rating) => {
-      console.log({itle:title,
-        description:description,
-        rating:rating})
-      dispatch(insertReview(title,description,rating));
+      dispatch(insertReview(title, description, rating));
     },
   };
 };
 
-export default  (InputCard);
+export default connect(null, mapDispatchtoProps)(InputCard);

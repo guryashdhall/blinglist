@@ -10,18 +10,15 @@ export const insertReview = (title, description, rating) => {
 };
 
 export const setIntialReviewState = (data) => {
-  console.log("inside action")
   return {
-    type: 'INITAL_REVIEW_STATE',
-    data: data
+    type: "INITAL_REVIEW_STATE",
+    data: data,
   };
 };
 
 export const setStars = (stars) => {
-  console.log("inside action")
   return {
-    type: 'SET_STARS',
-    stars:stars
+    type: "SET_STARS",
+    stars: stars,
   };
 };
-
