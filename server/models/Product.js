@@ -9,6 +9,10 @@ const productSchema = new mongoose.Schema({
   metalType: String,
   inventoryQuantity: Number,
   productImage: String,
+  createdAt: {
+    type: Date,
+    default: new Date()
+  },
 });
 
 exports.Products = mongoose.model("Products", productSchema);

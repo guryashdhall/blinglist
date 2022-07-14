@@ -81,6 +81,8 @@ const Jewel = ({ jewel, setCurrentProductId }) => {
 
                 <CardContent>
                     <Typography variant="body1" align='center' color="textSecondary" component="p">C$ {jewel.productPrice}</Typography>
+                    <br />
+                    {/* <Typography variant="body1" align='center' color="textSecondary" component="p">C$ {jewel.productDescription}</Typography> */}
                 </CardContent>
 
 
