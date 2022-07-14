@@ -6,9 +6,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Alert, Snackbar, TextField } from "@mui/material";
 import { Rating } from "@mui/material";
-import { insertReview } from "../../store/actions/Jewels.js"
-
+import { insertReview } from "../../store/actions/Jewels.js";
 import { connect } from "react-redux";
+import axios from "axios";
 
 function InputCard(props) {
   const [check_title, setCheckTitle] = useState(false);
@@ -21,10 +21,10 @@ function InputCard(props) {
   const [titleValue, setTitle] = useState("");
   const [descriptionValue, setDescription] = useState("");
   const [ratingValue, setRating] = useState(0);
+  const [message, setMessage] = useState("");
   const rating = (e) => {
-    console.log(e.target.value);
     if (e.target.value > 0) {
-      console.log("inside if");
+      setRating(e.target.value);
       setCheckRating(true);
       setRating(e.target.value);
     } else {
@@ -37,6 +37,7 @@ function InputCard(props) {
       setTitle(e.target.value);
       settitleHelperText("");
     } else {
+      setTitle("");
       setCheckTitle(false);
       settitleHelperText("Field Required");
     }
@@ -47,6 +48,7 @@ function InputCard(props) {
       setDescription(e.target.value);
       setdescHelperText("");
     } else {
+      setDescription("");
       setCheckDescription(false);
       setdescHelperText("Field Required");
     }
@@ -58,16 +60,29 @@ function InputCard(props) {
       checkRating === false
     ) {
       setSnackbar("error");
+      setMessage("Please Fill all the details");
       setOpenbar(true);
     } else {
       props.insertReview(titleValue, descriptionValue, ratingValue);
-      console.log("dispatced event");
-      setTitle("")
-      setDescription("")
-      setRating(0)
-      setSnackbar("success");
-      setOpenbar(true);
-      
+
+      axios
+        .post("http://localhost:8080/reviews/addReviews", {
+          title: titleValue,
+          description: descriptionValue,
+          rating: ratingValue,
+        })
+        .then((response) => {
+          setTitle("");
+          setCheckTitle(false);
+          setDescription("");
+          setCheckDescription(false);
+          setRating(0);
+          setCheckRating(false);
+
+          setSnackbar("success");
+          setMessage("Review added Successfully");
+          setOpenbar(true);
+        });
     }
   };
   const handleClose = (e, reason) => {
@@ -80,14 +95,19 @@ function InputCard(props) {
     <>
       <Snackbar open={openbar} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity={snackbar} onClose={handleClose} sx={{ width: "100%" }}>
-          {snackbar}
+          {message}
         </Alert>
       </Snackbar>
       <Card sx={{ m: 2, width: "90%" }} direction="column">
         <Typography sx={{ p: 1, ml: 1 }} gutterBottom variant="h5">
           Please Add Review
         </Typography>
-        <Rating sx={{ p: 1, ml: 1 }} name="size-medium" onClick={rating} />
+        <Rating
+          sx={{ p: 1, ml: 1 }}
+          name="size-medium"
+          onClick={rating}
+          value={ratingValue}
+        />
         <CardContent>
           <TextField
             outlined
@@ -97,7 +117,8 @@ function InputCard(props) {
             helperText={titlehelpertext}
             error={titlehelpertext !== ""}
             fullWidth
-          />
+            value={titleValue}
+          ></TextField>
         </CardContent>
         <CardContent>
           <TextField
@@ -111,6 +132,7 @@ function InputCard(props) {
             onChange={description}
             helperText={deschelpertext}
             error={deschelpertext !== ""}
+            value={descriptionValue}
           />
         </CardContent>
         <CardActions>
@@ -126,7 +148,7 @@ function InputCard(props) {
 const mapDispatchtoProps = (dispatch) => {
   return {
     insertReview: (title, description, rating) => {
-      dispatch(insertReview(title,description,rating));
+      dispatch(insertReview(title, description, rating));
     },
   };
 };

@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, Typography, IconButton } from "@mui/material";
+import { Box, Grid, TextField, Typography, IconButton, Button } from "@mui/material";
 import React from "react";
 import { Image } from "mui-image";
 import Plus from "@mui/icons-material/Add";
@@ -65,6 +65,7 @@ function ProductCard() {
                 <Plus />
               </IconButton>
             </Box>
+            <Button variant ="outlined" sx={{mt:5 ,ml:2,color:"red"}}>Remove</Button>
           </Grid>
           <Grid item md={2}>
             <TextField
