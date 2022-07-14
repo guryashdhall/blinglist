@@ -23,6 +23,10 @@ app.use(express.urlencoded({ limit: "50mb" }));
 app.use(cors());
 app.use(router);
 
+
+app.use(express.json());
+app.use(require('./router/auth'));
+
 app.listen(PORT, (err) => {
   if (err) {
     console.log(`Error Occurred ${err}`);
