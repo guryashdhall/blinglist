@@ -7,24 +7,27 @@ import { shallowEqual, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
-import { setIntialReviewState } from "../../store/actions/Jewels.js"
+import { setIntialReviewState } from "../../store/actions/Jewels.js";
 function ReviewCard(props) {
-  useEffect(()=> {
-    axios.get("http://localhost:8080/reviews/getreviews").then(response => {
-      console.log(response.data)
+  useEffect(() => {
+    axios.get("http://localhost:8080/reviews/getreviews").then((response) => {
       props.setIntialReviewState(response.data);
-    })
-    
-  },[])
-  var reviews = useSelector((state) => state.jewelsReducer.reviews, shallowEqual);
+    });
+  }, []);
+  var reviews = useSelector(
+    (state) => state.jewelsReducer.reviews,
+    shallowEqual
+  );
   var stars = useSelector((state) => state.jewelsReducer.stars, shallowEqual);
-  var filtered_reviews = useSelector((state) => state.jewelsReducer. filtered_reviews, shallowEqual);
- 
+  var filtered_reviews = useSelector(
+    (state) => state.jewelsReducer.filtered_reviews,
+    shallowEqual
+  );
+
   //setReviews([get_reviews])
   return (
     <>
       {filtered_reviews.map((review, index) => {
-     
         return (
           <Card sx={{ width: "90%", m: 2 }} key={index}>
             <Stack direction="row">
@@ -49,14 +52,11 @@ function ReviewCard(props) {
   );
 }
 
-
 const mapDispatchtoProps = (dispatch) => {
   return {
     setIntialReviewState: (data) => {
-      
-      dispatch(setIntialReviewState(data))
-      console.log("action dispatched")
-    }
+      dispatch(setIntialReviewState(data));
+    },
   };
 };
 export default connect(null, mapDispatchtoProps)(ReviewCard);
