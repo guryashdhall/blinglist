@@ -82,9 +82,9 @@ exports.getOrderByUserId = async (req, res) => {
 
 exports.updateOrder = async (req, res) => {
     try {
-        const query = req.params.id; 
+        const {id: _id} = req.params; 
         
-        const orderData = await Orders.updateOne({_id:ObjectId(query)},{$set: {status: "Cancelled"}});
+        const orderData = await Orders.findByIdAndUpdate(_id,{$set: {status: "Cancelled"}});
         if (orderData.matchedCount < 1){
             return res.status(501).json({
                 success: false,

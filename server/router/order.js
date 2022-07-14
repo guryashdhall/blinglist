@@ -4,6 +4,6 @@ const { getOrders,getOrderById,updateOrder,getOrderByUserId } = require("../cont
 
 router.get("/previousorders/:id", getOrderByUserId);
 router.get("/orderdetails/:id",getOrderById);
-router.post("/previousorders/:id",updateOrder);
+router.post("/previousorder/:id",updateOrder);
 router.get("/orders",getOrders)
 module.exports = router;

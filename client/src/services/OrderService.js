@@ -54,8 +54,8 @@ const OrderService = {
         //const token = localStorage.getItem("token");
         const token = "jwt-token";
 
-        return fetch(BACKEND_URL + `previousorders/${id}`, {
-            method: "PATCH",
+        return fetch(BACKEND_URL + `previousorder/${id}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "bearer " + token,

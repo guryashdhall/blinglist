@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import { ToastContainer, toast } from "react-toastify";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -15,7 +16,7 @@ import OrderDetails from "./OrderDetails";
 import ReviewPage from "../Review/ReviewPage";
 import Cart from "../Cart/Cart";
 import { useNavigate } from "react-router-dom";
-import { getOrderByUserId, getOrders } from "../../store/actions/order.js";
+import { getOrderByUserId, getOrders, editOrder } from "../../store/actions/order.js";
 import { createProduct, getProduct, editProduct } from "../../store/actions/admin";
 
 const theme = createTheme();
@@ -43,6 +44,23 @@ function PreviousOrder() {
     navigate(`/orderDetails/${orderid}`);
   };
 
+  const CancelOrder = (orderid) => {
+    editOrder(orderid).then((result) => {
+      if (result.success === true) {
+        toast.success("Order Cancelled successfully", {
+          position: "bottom-right",
+          theme: "dark",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });
+  }
+
   const toReviews = (e) => {
     e.preventDefault();
     <ReviewPage />;
@@ -57,6 +75,7 @@ function PreviousOrder() {
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer />
       <Box
         sx={{
           display: "flex",
@@ -85,9 +104,9 @@ function PreviousOrder() {
                 Your Orders
               </Typography>
             </Grid>
-            
+
           </Grid>
-          {orders.length>0 && orders?.map(order => {
+          {orders.length > 0 && orders?.map(order => {
             return <Box
               //style={{ textAlign: 'left' }}
               key={order._id}
@@ -202,121 +221,135 @@ function PreviousOrder() {
                   </Grid>
                 </Grid>
               </Box>
-              {order.itemsList?.map(item => { return <Box
-                //style={{ textAlign: 'left' }}
-                key = {item._id}
-                sx={{
-                  m: 1,
-                  p: 1,
-                  color: "#ffffff",
-  
-                  //textTransform: 'none',
-                }}
-              >
-                <Grid
-                  key = {item._id}
-                  container
-                  component="form"
+              {order.itemsList?.map(item => {
+                return <Box
+                  //style={{ textAlign: 'left' }}
+                  key={item._id}
                   sx={{
+                    m: 1,
                     p: 1,
-                    alignItems: "left",
-                    justifyContent: "left",
+                    color: "#ffffff",
+
+                    //textTransform: 'none',
                   }}
                 >
-                  <Grid item s={6} md={3} style={{ maxInlineSize: "max-content" }}>
-                    
-                    <img
-                      src={item.productImage}
-                      alt="earring1"
-                      width="150"
-                      height="120"
-                      alignitems="left"
-                    />
-                  </Grid>
-                  <Grid item s={6} md={7} style={{ padding: 5 }}>
-                    
-                    <Link href="#" sx={{ color: "purple" }} underline="hover">
-                      {item.productName}
-                    </Link>
-                    <Typography
-                      sx={{ color: "#808080" }}
-                      variant="body2"
-                      gutterBottom
-                      component="div"
-                    >
-                      {item.productColor} {item.productType} 
-                    </Typography>
-                    <Typography
-                      sx={{ color: "#808080" }}
-                      variant="body2"
-                      gutterBottom
-                      component="div"
-                    >
-                      Metal Type: {item.metalType} 
-                    </Typography>
-                    <Typography
-                      sx={{ color: "#808080" }}
-                      variant="body2"
-                      gutterBottom
-                      component="div"
-                    >
-                      {item.productDescription} 
-                    </Typography>
-                  </Grid>
                   <Grid
-                    item
-                    s={12}
-                    md={2}
-                    style={{
-                      textAlign: "right",
-                      maxInlineSize: "max-content",
-                      padding: 3,
+                    key={item._id}
+                    container
+                    component="form"
+                    sx={{
+                      p: 1,
+                      alignItems: "left",
+                      justifyContent: "left",
                     }}
                   >
-                    <br></br>
-                    <Button
-                      sx={{
-                        color: "#800080",
-                        border: "1px solid #80008059",
-                        "&:hover": {
-                          backgroundColor: "#e8b8ff96",
-                          opacity: [0.9, 0.8, 0.7],
-                        },
+                    <Grid item s={6} md={3} style={{ maxInlineSize: "max-content" }}>
+
+                      <img
+                        src={item.productImage}
+                        alt="earring1"
+                        width="150"
+                        height="120"
+                        alignitems="left"
+                      />
+                    </Grid>
+                    <Grid item s={6} md={7} style={{ padding: 5 }}>
+
+                      <Link href="#" sx={{ color: "purple" }} underline="hover">
+                        {item.productName}
+                      </Link>
+                      <Typography
+                        sx={{ color: "#808080" }}
+                        variant="body2"
+                        gutterBottom
+                        component="div"
+                      >
+                        {item.productColor} {item.productType}
+                      </Typography>
+                      <Typography
+                        sx={{ color: "#808080" }}
+                        variant="body2"
+                        gutterBottom
+                        component="div"
+                      >
+                        Metal Type: {item.metalType}
+                      </Typography>
+                      <Typography
+                        sx={{ color: "#808080" }}
+                        variant="body2"
+                        gutterBottom
+                        component="div"
+                      >
+                        {item.productDescription}
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      s={12}
+                      md={2}
+                      style={{
+                        textAlign: "right",
+                        maxInlineSize: "max-content",
+                        padding: 3,
                       }}
-                      onClick={toReviews}
                     >
-                      Write a review
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    s={12}
-                    md={1}
-                    style={{
-                      textAlign: "right",
-                      maxInlineSize: "max-content",
-                      padding: 3,
-                    }}
-                  >
-                    <br></br>
-                    <Button
-                      sx={{
-                        color: "#800080",
-                        border: "1px solid #80008059",
-                        "&:hover": {
-                          backgroundColor: "#e8b8ff96",
-                          opacity: [0.9, 0.8, 0.7],
-                        },
+                      <br></br>
+                      <Button
+                        sx={{
+                          color: "#800080",
+                          border: "1px solid #80008059",
+                          "&:hover": {
+                            backgroundColor: "#e8b8ff96",
+                            opacity: [0.9, 0.8, 0.7],
+                          },
+                        }}
+                        onClick={toReviews}
+                      >
+                        Write a review
+                      </Button>
+                    </Grid>
+                    <Grid
+                      item
+                      s={12}
+                      md={1}
+                      style={{
+                        textAlign: "right",
+                        maxInlineSize: "max-content",
+                        padding: 3,
                       }}
-                      onClick={toCart}
                     >
-                      Repurchase
-                    </Button>
+                      <br></br>
+                      <Button
+                        sx={{
+                          color: "#800080",
+                          border: "1px solid #80008059",
+                          "&:hover": {
+                            backgroundColor: "#e8b8ff96",
+                            opacity: [0.9, 0.8, 0.7],
+                          },
+                        }}
+                        onClick={toCart}
+                      >
+                        Repurchase
+                      </Button>
+                    </Grid>
+
                   </Grid>
-                  
-                </Grid>
-                </Box>})}
-                
+                </Box>
+              })}
+              {order.status !== "Cancelled" && order.status !== "Delivered" && <Button
+                sx={{
+                  color: "#800080",
+                  border: "1px solid #80008059",
+                  "&:hover": {
+                    backgroundColor: "#e8b8ff96",
+                    opacity: [0.9, 0.8, 0.7],
+                  },
+                }}
+                onClick={() => CancelOrder(order._id)}
+              >
+                Cancel
+              </Button>}
             </Box>
           })}
           <Divider />

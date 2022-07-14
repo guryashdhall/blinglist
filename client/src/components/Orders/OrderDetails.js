@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -23,7 +23,7 @@ import { getOrder } from "../../store/actions/order.js";
 const theme = createTheme();
 function OrderDetails() {
   const navigate = useNavigate();
-  const params=useParams();
+  const params = useParams();
   const [order, setOrder] = useState({ data: [] });
   const toReviews = (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ function OrderDetails() {
       result.data[0].createdAt = new Date(result.data[0].createdAt).toDateString();
       result.data[0].delivery = new Date(result.data[0].delivery).toDateString();
       result.data[0].userName = "Group 17"
-        setOrder(result.data[0])
+      setOrder(result.data[0])
     })
   }, []);
   console.log(order)
@@ -148,7 +148,7 @@ function OrderDetails() {
             }}
           >
             <Grid
-              
+
               container
               component="form"
               sx={{
@@ -194,99 +194,101 @@ function OrderDetails() {
                 </Typography>
               </Grid>
             </Grid>
-            
 
-            {order.itemsList?.map(item => { return <Grid
-              key = {item._id}
-              container
-              component="form"
-              sx={{
-                p: 1,
-                alignItems: "left",
-                justifyContent: "left",
-              }}
-            >
-              <Grid item xs style={{ maxInlineSize: "max-content" }}>
-                <img
-                  src={item.productImage}
-                  alt="earring1"
-                  width="150"
-                  height="120"
-                  alignitems="left"
-                />
-                <br></br>
-              </Grid>
-              <Grid item xs style={{ padding: 5 }}>
-                <Link href="#" sx={{ color: "purple" }} underline="hover">
-                  {item.productName}
-                </Link>
-                <Typography
-                  sx={{ color: "#808080" }}
-                  variant="caption"
-                  gutterBottom
-                  component="div"
-                >
-                  {item.productColor} {item.productType}
-                </Typography>
-                <Typography
-                  sx={{ color: "#808080" }}
-                  variant="body2"
-                  gutterBottom
-                  component="div"
-                >
-                  Metal Type: {item.metalType} 
-                </Typography>
-              </Grid>
-              
-              <Grid
-                item
-                xs
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
+
+            {order.itemsList?.map(item => {
+              return <Grid
+                key={item._id}
+                container
+                component="form"
+                sx={{
+                  p: 1,
+                  alignItems: "left",
+                  justifyContent: "left",
                 }}
               >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
+                <Grid item xs style={{ maxInlineSize: "max-content" }}>
+                  <img
+                    src={item.productImage}
+                    alt="earring1"
+                    width="150"
+                    height="120"
+                    alignitems="left"
+                  />
+                  <br></br>
+                </Grid>
+                <Grid item xs style={{ padding: 5 }}>
+                  <Link href="#" sx={{ color: "purple" }} underline="hover">
+                    {item.productName}
+                  </Link>
+                  <Typography
+                    sx={{ color: "#808080" }}
+                    variant="caption"
+                    gutterBottom
+                    component="div"
+                  >
+                    {item.productColor} {item.productType}
+                  </Typography>
+                  <Typography
+                    sx={{ color: "#808080" }}
+                    variant="body2"
+                    gutterBottom
+                    component="div"
+                  >
+                    Metal Type: {item.metalType}
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  xs
+                  style={{
+                    textAlign: "right",
+                    maxInlineSize: "max-content",
+                    padding: 3,
                   }}
-                  onClick={toReviews}
                 >
-                  Write a review
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs
-                style={{
-                  textAlign: "right",
-                  maxInlineSize: "max-content",
-                  padding: 3,
-                }}
-              >
-                <br></br>
-                <Button
-                  sx={{
-                    color: "#800080",
-                    border: "1px solid #80008059",
-                    "&:hover": {
-                      backgroundColor: "#e8b8ff96",
-                      opacity: [0.9, 0.8, 0.7],
-                    },
+                  <br></br>
+                  <Button
+                    sx={{
+                      color: "#800080",
+                      border: "1px solid #80008059",
+                      "&:hover": {
+                        backgroundColor: "#e8b8ff96",
+                        opacity: [0.9, 0.8, 0.7],
+                      },
+                    }}
+                    onClick={toReviews}
+                  >
+                    Write a review
+                  </Button>
+                </Grid>
+                <Grid
+                  item
+                  xs
+                  style={{
+                    textAlign: "right",
+                    maxInlineSize: "max-content",
+                    padding: 3,
                   }}
-                  onClick={toCart}
                 >
-                  Repurchase
-                </Button>
+                  <br></br>
+                  <Button
+                    sx={{
+                      color: "#800080",
+                      border: "1px solid #80008059",
+                      "&:hover": {
+                        backgroundColor: "#e8b8ff96",
+                        opacity: [0.9, 0.8, 0.7],
+                      },
+                    }}
+                    onClick={toCart}
+                  >
+                    Repurchase
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>})}
+            })}
           </Box>
           <Grid
             container
