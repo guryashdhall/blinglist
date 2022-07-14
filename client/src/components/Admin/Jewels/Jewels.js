@@ -1,25 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, {  useState, useEffect } from "react";
 import useStyles from "./Styles.js";
 import Jewel from "./Jewel/Jewel.js";
 import Form from "../Form/Form.js";
 import { Grid, CircularProgress } from '@material-ui/core';
 import { getProducts } from "../../../store/actions/admin.js";
+import { useLocation } from "react-router-dom";
+import { getSearchProducts } from "../../../store/actions/recommendation.js";
 
 const Jewels = () => {
     const classes = useStyles();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
     const [currentProductId, setCurrentProductId] = useState(null)
     const [jewels, setJewels] = useState({})
+    const [user, setUser] = useState('admin')
+    const [searchQuery, setSearchQuery] = useState("")
 
-    useEffect(() => {
-        getProducts().then((result) => {
-            setJewels(result)
-        })
-    }, [jewels]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {        
+        if(searchParams.get("search")){
+            setSearchQuery(searchParams.get("search"))
+            getSearchProducts(searchParams.get("search")).then((result) => {
+                setJewels(result)
+              })
+        }
+        else {
+            getProducts().then((result) => {
+                setJewels(result)
+            })
+        }
+      }, [setSearchQuery], [setJewels]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>
-            <Form currentProductId={currentProductId} />
-
+            {
+                user === "admin" ? (
+                    <Form currentProductId={currentProductId} />
+                ) : null
+            }
+            
             {
                 jewels["products"] ? (
                     <Grid className={classes.container} container alignItems="stretch" spacing={3}>
