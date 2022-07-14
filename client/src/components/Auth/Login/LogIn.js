@@ -19,6 +19,8 @@ import Switch from '@mui/material/Switch';
 import axios from "axios";
 import SuccessAlert from "../../SuccessAlert";
 import M from "materialize-css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme();
 
@@ -49,7 +51,7 @@ export default function SignIn() {
     if (!userInfo.password) {
       setUserInfo({
         ...userInfo, errors: {
-          ...userInfo.errors, 
+          ...userInfo.errors,
           password: "Password is required"
         }
       })
@@ -61,7 +63,7 @@ export default function SignIn() {
         }
       })
     }
-    else{
+    else {
       setUserInfo({
         ...userInfo, errors: {
           ...userInfo.errors, password: ""
@@ -80,41 +82,75 @@ export default function SignIn() {
 
   // const [checked, setChecked] = useState(true)
 
-const onhandleSubmit = (e) => {
-  e.preventDefault();
-  if(userInfo.errors.email == '' && userInfo.errors.password == '')
-  {
-    axios.post("http://localhost:8080/login", {
-      email: userInfo.email,
-      password: userInfo.password
-    }).then(res => {
-      if (res.data.success) {
-        if(res.data.user.role == "customer") {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("role", res.data.user.role);
-        // if(!checked == true)      
-        navigate("/recommendation");
-        M.toast({ html: res.data.message, classes: "green" });
+  const onhandleSubmit = (e) => {
+    e.preventDefault();
+    if (userInfo.errors.email == '' && userInfo.errors.password == '') {
+      axios.post("http://localhost:8080/login", {
+        email: userInfo.email,
+        password: userInfo.password
+      }).then(res => {
+        console.log(res.data);
+        if (res.data.success === true) {
+          if (res.data.user.role == "customer") {
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("role", res.data.user.role);
+
+            console.log("I AM HERE" + res.data.message);
+            toast.success(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClose: () => {
+                navigate("/recommendation");
+              }
+            });
+          }
+          else {
+            toast.success(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClose: () => {
+                navigate("/admin");
+              }
+            });
+
+          }
         }
         else {
-          navigate("/admin");
+          toast.error(res.data.message, {
+            position: "top-right",
+            theme: "dark",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
         }
-      } else {  
-        M.toast({html: res.data.message, classes: "red"});
-        // alert(res.data.message);
-      } 
-    } 
-    ).catch(err => {
-      console.log(err);
+      }
+      ).catch(err => {
+        console.log(err);
+      }
+      );
     }
-    );
+    else {
+      handleEmailErrors();
+      handlePwdErrors();
+    }
   }
-  else{
-    handleEmailErrors();
-    handlePwdErrors();
-  }
-}
-return (
+  return (
     <ThemeProvider theme={theme}>
       {console.log(userInfo.errors)}
       <Box
@@ -168,7 +204,7 @@ return (
                 Already a member?
               </Typography>
 
-              <form onSubmit= {(e) => { onhandleSubmit(e); }}>
+              <form onSubmit={(e) => { onhandleSubmit(e); }}>
 
                 <TextField
                   margin="normal"
@@ -208,7 +244,7 @@ return (
                   variant="outlined"
                   sx={{ mt: 3, mb: 2, backgroundColor: "black", color: "white" }}
                   onSubmit={<SuccessAlert />}
-                  // onClick={(e) => { onhandleSubmit(e); }}
+                // onClick={(e) => { onhandleSubmit(e); }}
                 >
                   Log In
                 </Button>
@@ -228,6 +264,7 @@ return (
             </Box>
           </Box>
         </Container>
+        <ToastContainer />
       </Box>
     </ThemeProvider>
   );

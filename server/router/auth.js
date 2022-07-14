@@ -36,6 +36,7 @@ router.get("/users/:id", (req, res) => {
 );
 //SIGNUP API
 router.post('/signup', (req, res) => {
+    console.log(req.body);
     const { firstName, lastName, email, password, confirmPassword, securityQuestion, securityAnswer } = req.body;
 
 
@@ -109,7 +110,7 @@ router.post('/signup', (req, res) => {
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
     if (!email | !password) {
-        return res.status(422).json({
+        return res.status(200).json({
             success: false,
             message: 'Please enter both fields: email and password'
         });
@@ -118,7 +119,7 @@ router.post('/login', (req, res) => {
         User.findOne({ email: email })
             .then(savedUser => {
                 if (!savedUser) {
-                    return res.status(422).json({
+                    return res.status(200).json({
                         success: false,
                         message: 'User does not exist'
                     });
@@ -127,7 +128,7 @@ router.post('/login', (req, res) => {
                     bcrypt.compare(password, savedUser.password)
                         .then(isMatch => {
                                 if (!isMatch) {
-                                return res.status(422).json({
+                                return res.status(200).json({
                                     success: false,
                                     message: 'Incorrect password'
                                 });

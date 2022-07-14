@@ -14,10 +14,11 @@ import Select from "@mui/material/Select";
 import { useState } from "react";
 import validateInfo from "../../../Helpers/validateInfo";
 import M from 'materialize-css';
+import axios from "axios";
 
 
 const FormSignUp = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // const { handleChange, values, handleSubmit, errors } = useForm(validate);
   //const [SecurityQuestion, setSecurityQuestion] = React.useState("");
@@ -32,13 +33,15 @@ const navigate = useNavigate();
     password: '',
     confirmPassword: '',
     securityAnswer: '',
+    securityQuestion: '',
     errors: {
       firstName: '',
       lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
-      securityAnswer: ''
+      securityAnswer: '',
+      securityQuestion: ''
     }
   });
 
@@ -51,7 +54,7 @@ const navigate = useNavigate();
         email: validateEmail(signUpInfo.email)
       }
     })
-    
+
   }
 
   const handleFirstNameErrors = () => {
@@ -88,95 +91,122 @@ const navigate = useNavigate();
       })
     }
   }
-    const handlePwdErrors = () => {
-      if (!signUpInfo.password) {
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, password: "Password is required"
-          }
-        })
-      } else if (signUpInfo.password.length < 8) {
-
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, password: "Password needs to be 8 characters or more"
-          }
-        })
-      }
-      else {
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, password: ""
-          }
-        })
-      }
-    }
-
-
-    const handleConfirmPwdErrors = () => {
-      if (!signUpInfo.confirmPassword) {
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, confirmPassword: "Password is required"
-          }
-        })
-      } else if (signUpInfo.confirmPassword.length < 8) {
-
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, confirmPassword: "Password needs to be 8 characters or more"
-          }
-        })
-      } else if (signUpInfo.confirmPassword !== signUpInfo.password) {
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, confirmPassword: "Passwords do not match"
-          }
-        })
-      }
-      else {
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, confirmPassword: ""
-          }
-        })
-      }
-    }
-
-
-    const handleSecuritAnswerErrors = () => {
-      if (!signUpInfo.securityAnswer) {
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, securityAnswer: "Security Answer is required"
-          }
-        })
-      }
-      else {
-        setSignUpInfo({
-          ...signUpInfo, errors: {
-            ...signUpInfo.errors, securityAnswer: ""
-          }
-        })
-      }
-    }
-    const onhandleChange = (name, value) => {
+  const handlePwdErrors = () => {
+    if (!signUpInfo.password) {
       setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, password: "Password is required"
+        }
+      })
+    } else if (signUpInfo.password.length < 8) {
 
-        ...signUpInfo,
-        [name]: value
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, password: "Password needs to be 8 characters or more"
+        }
       })
     }
-const onhandleSubmit = (e) => {
-  if(signUpInfo.firstName.errors === '' && signUpInfo.lastName.errors === '' && signUpInfo.email.errors === '' && signUpInfo.password.errors === '' && signUpInfo.confirmPassword.errors === '' && signUpInfo.securityAnswer.errors === ''){
-    navigate("/login");
-    M.toast({html: 'Sign Up Successful'});
+    else {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, password: ""
+        }
+      })
+    }
   }
-  else{
-    M.toast({html: 'Please fill out all fields'})
-  }
-}
 
+
+  const handleConfirmPwdErrors = () => {
+    if (!signUpInfo.confirmPassword) {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, confirmPassword: "Password is required"
+        }
+      })
+    } else if (signUpInfo.confirmPassword.length < 8) {
+
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, confirmPassword: "Password needs to be 8 characters or more"
+        }
+      })
+    } else if (signUpInfo.confirmPassword !== signUpInfo.password) {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, confirmPassword: "Passwords do not match"
+        }
+      })
+    }
+    else {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, confirmPassword: ""
+        }
+      })
+    }
+  }
+
+
+  const handleSecuritAnswerErrors = () => {
+    if (!signUpInfo.securityAnswer) {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, securityAnswer: "Security Answer is required"
+        }
+      })
+    }
+    else {
+      setSignUpInfo({
+        ...signUpInfo, errors: {
+          ...signUpInfo.errors, securityAnswer: ""
+        }
+      })
+    }
+  }
+  const onhandleChange = (name, value) => {
+    console.log(signUpInfo);
+    setSignUpInfo({
+
+      ...signUpInfo,
+      [name]: value
+    })
+  }
+
+  const onhandleSubmit = (e) => {
+    e.preventDefault();
+    console.log(signUpInfo);
+    if (signUpInfo.errors.firstName === '' && signUpInfo.errors.lastName === '' && signUpInfo.errors.email === '' && signUpInfo.errors.password === '' && signUpInfo.errors.confirmPassword === '' && signUpInfo.errors.securityAnswer === '') {
+      console.log(signUpInfo);
+      axios.post("http://localhost:8080/signup", {
+        firstName: signUpInfo.firstName,
+        lastName: signUpInfo.lastName,
+        email: signUpInfo.email,
+        password: signUpInfo.password,
+        confirmPassword: signUpInfo.confirmPassword,
+        securityAnswer: signUpInfo.securityAnswer,
+        securityQuestion: signUpInfo.securityQuestion
+      }).then(res => {
+        if (res.data.success) {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("role", res.data.user.role);
+          M.toast({ html: res.data.message, classes: "green", onClose: navigate("/login") });
+
+        } else {
+          M.toast({ html: res.data.message, classes: "red" });
+        }
+      }
+      ).catch(err => {
+        console.log(err);
+      }
+      );
+    }
+    else {
+      handleFirstNameErrors();
+      handleLastNameErrors();
+      handleEmailErrors();
+      handlePwdErrors();
+    }
+  }
   const title = "Join us Today!";
   const color = "#000000";
   return (
@@ -286,10 +316,11 @@ const onhandleSubmit = (e) => {
               Security Question
             </InputLabel>
             <Select
+              name="securityQuestion"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Security Question"
-              onChange={onhandleChange}
+              onChange={(e) => onhandleChange("securityQuestion", e.target.value)}
             >
               <MenuItem value={"What's your pet name?"}>
                 What's your pet name?
@@ -328,14 +359,13 @@ const onhandleSubmit = (e) => {
           variant="contained"
           type="submit"
           style={{ background: "#000000" }}
-          // onClick={onhandleSubmit}
-          onSubmit={onhandleSubmit}
+          onClick={onhandleSubmit}
         >
           Register
         </Button>
       </form>
     </div>
   );
-};
+ };
 
 export default FormSignUp;
