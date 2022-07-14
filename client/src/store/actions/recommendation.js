@@ -11,3 +11,9 @@ export const getNewArrivalsProducts = () => {
     return searchProducts;
   });
 };
+
+export const getMostPopularProducts = () => {
+  return RecommendationService.getMostPopularProducts().then((searchProducts) => {
+    return searchProducts;
+  });
+};
