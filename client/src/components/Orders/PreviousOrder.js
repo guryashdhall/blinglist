@@ -64,7 +64,7 @@ function PreviousOrder() {
   const toReviews = (e) => {
     e.preventDefault();
     <ReviewPage />;
-    navigate("/reviews");
+    navigate("/viewdetails");
   };
 
   const toCart = (e) => {
