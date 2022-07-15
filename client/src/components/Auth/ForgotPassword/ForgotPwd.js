@@ -9,13 +9,10 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { validateEmail } from "../../../Helpers/validateInfo";
 import { useNavigate } from "react-router-dom";
-import { isUserLoggedIn } from "../../../Helpers/helper";
-
-const ForgotPwd = () => {
-  const [SecurityQuestion, setSecurityQuestion] = React.useState("");
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { isUserLoggedIn } from "../../../Helpers/helper";
 
 const ForgotPwd = () => {
   // const { handleChange, values, handleSubmit, errors } = useForm(validate);
@@ -96,7 +93,7 @@ const ForgotPwd = () => {
         console.log(forgotPwdInfo)
         console.log(res.data.success)
         if (res.data.success === true) {
-          localStorage.setItem("email",res.data.email);
+          localStorage.setItem("email",forgotPwdInfo.email);
           toast.success(res.data.message, {
             position: "top-right",
             theme: "dark",
@@ -220,7 +217,6 @@ const ForgotPwd = () => {
       <ToastContainer/>
     </div>
   );
-}
-}
+};
 
 export default ForgotPwd;
