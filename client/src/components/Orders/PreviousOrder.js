@@ -25,7 +25,7 @@ function PreviousOrder() {
     let role = localStorage.getItem("role");
     if (isUserLoggedIn()) {
       if (role === "customer") {
-        const userId = "62cde17d75a76c05a83d4b47";
+        const userId = JSON.parse(localStorage.getItem("user"))._id;
         getOrderByUserId(userId).then((result) => {
           result.data.forEach(function (order) {
             order.createdAt = new Date(order.createdAt).toDateString();

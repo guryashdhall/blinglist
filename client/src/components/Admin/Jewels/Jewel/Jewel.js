@@ -17,9 +17,11 @@ import { DialogContentText } from "@mui/material";
 import { DialogTitle } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import { deleteProduct } from "../../../../store/actions/admin.js";
+import { useNavigate } from "react-router-dom";
 
-const Jewel = ({ jewel, setCurrentProductId }) => {
+const Jewel = ({ jewel, setCurrentProductId, getPro}) => {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const role = localStorage.getItem("role");
@@ -36,6 +38,7 @@ const Jewel = ({ jewel, setCurrentProductId }) => {
     deleteProduct(jewel._id).then((result) => {
       if (result.success === true) {
         setOpen(false);
+        getPro()
 
         toast.success("Product deleted successfully!", {
           position: "bottom-right",
@@ -84,6 +87,10 @@ const Jewel = ({ jewel, setCurrentProductId }) => {
         {/* <CardMedia className={classes.media} image={jewel.productImage} title={"Aayushi"} /> */}
         <CardMedia
           className={classes.media}
+          onClick={() => {
+            navigate("/viewdetails");
+            //navigate(`/viewdetails/${jewel._id}`);
+          }}
           image={
             jewel.productImage ||
             "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
