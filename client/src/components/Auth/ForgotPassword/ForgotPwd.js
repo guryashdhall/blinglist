@@ -36,6 +36,18 @@ const ForgotPwd = () => {
     }
   });
 
+
+  useEffect(() => {
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/recommendation")
+        : navigate("/admin")
+      : navigate("/forgotPwd");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
   const handleEmailErrors = () => {
     setforgotPwdInfo({
       ...forgotPwdInfo,
@@ -75,7 +87,6 @@ const ForgotPwd = () => {
     if (forgotPwdInfo.errors.email === '' && forgotPwdInfo.errors.securityAnswer ==='') 
     {
       axios.post("http://localhost:8080/forgot-password", {
-       
         email: forgotPwdInfo.email,
         securityAnswer: forgotPwdInfo.securityAnswer,
         securityQuestion: forgotPwdInfo.securityQuestion
@@ -83,7 +94,7 @@ const ForgotPwd = () => {
         console.log(forgotPwdInfo)
         console.log(res.data.success)
         if (res.data.success === true) {
-          console.log("CORRECt");
+          localStorage.setItem("email",res.data.email);
           toast.success(res.data.message, {
             position: "top-right",
             theme: "dark",
@@ -94,7 +105,7 @@ const ForgotPwd = () => {
             draggable: true,
             progress: undefined,
             onClose: () => {
-              navigate("/reset-password");
+              navigate("/resetPwd");
             }
           })
         } else {
@@ -165,9 +176,9 @@ const ForgotPwd = () => {
               label="Security Question"
               onChange={(e) => onhandleChange("securityQuestion", e.target.value)}
             >
-              <MenuItem value={10}>What's your pet name?</MenuItem>
-              <MenuItem value={20}>What's your mother's maiden name?</MenuItem>
-              <MenuItem value={30}>
+              <MenuItem value={"What's your pet name?"}>What's your pet name?</MenuItem>
+              <MenuItem value={"What's your mother's maiden name?"}>What's your mother's maiden name?</MenuItem>
+              <MenuItem value={"What's the brand of your first car?"}>
                 What's the brand of your first car?
               </MenuItem>
             </Select>
