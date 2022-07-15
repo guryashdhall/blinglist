@@ -8,9 +8,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { setIntialReviewState } from "../../store/actions/Jewels.js";
+import { BACKEND_URL } from "../../config/config.js";
+
 function ReviewCard(props) {
   useEffect(() => {
-    axios.get("http://localhost:8080/reviews/getreviews").then((response) => {
+    axios.get(BACKEND_URL + "reviews/getreviews").then((response) => {
       props.setIntialReviewState(response.data);
     });
   }, []);
