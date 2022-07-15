@@ -1,14 +1,14 @@
 const { Favourites } = require("../models/Favourites");
 const { Products } = require("../models/Product");
-const { Search }=require("../models/Search");
 const ObjectId = require("mongodb").ObjectId;
 
 exports.addToFavourites = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
-        const alreadyFavourited = await Favourites.find({ user_id: user_id, product_id: product_id })
-        if (alreadyFavourited.matchedCount == 0) {
-            const data = await Favourites.insertOne({ user_id: user_id, product_id: product_id });
+        const alreadyFavourited = await Favourites.find({ userId: ObjectId(user_id), productId: ObjectId(product_id) })
+        console.log(alreadyFavourited);
+        if (alreadyFavourited.length == 0) {
+            const data = await Favourites({ userId: ObjectId(user_id), productId: ObjectId(product_id) }).save();
             if (data == null || data == '') {
                 return res.status(400).json({
                     success: false,
@@ -27,7 +27,6 @@ exports.addToFavourites = async (req, res) => {
                 error: `Product already added to favourites!`
             });
         }
-
     } catch (error) {
         return res
             .status(400)
@@ -38,90 +37,84 @@ exports.addToFavourites = async (req, res) => {
     }
 }
 
+fetchProductDetails=(data)=>{
+    return Promise.all(data.map(async favourite => {
+        productData = await Products.find({ _id: favourite.productId })
+        return { user_data: favourite, product_details: productData }
+    }))
+}
+
 exports.fetchFavourites = async (req, res) => {
     try {
-        const id = req.params.id;
-        const data = await Favourites.aggregate({
-            $lookup:
-            {
-                from: "products",
-                localField: "productId",
-                foreignField: "_id",
-                as: "productsDetails"
-              }
-         });
-        if (favouritesData == null) {
+        const id = req.query.id;
+        let favourites = []
+        favourites = await Favourites.find({ userId: ObjectId(id) }).then(async data => {
+            const favourites=await fetchProductDetails(data)
+            return favourites;
+        }).catch(err => {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: `Something went wrong! ${err}`,
+                    data: []
+                });
+        })
+        if (favourites == null) {
             return res.status(400).json({
-                            success: false,
-                        message: `Something went wrong!`
+                success: false,
+                message: `Something went wrong!`
             });
-        } else {
+        } else if(favourites.length == 0) {
+            return res.status(400).json({
+                success: true,
+                message: `You have not added any favourites yet!`
+            });
+        }else {
             return res.status(200).json({
-                            data: data,
-                        message: `Favourite Products fetched successfully!`,
-                        success: true
+                data: favourites,
+                message: `Favourite Products fetched successfully!`,
+                success: true
             });
         }
     } catch (error) {
         return res
-                        .status(400)
-                        .json({
-                            success: false,
-                        message: `Something went wrong! ${error}`,
-                        data: []
+            .status(400)
+            .json({
+                success: false,
+                message: `Something went wrong! ${error}`,
+                data: []
             });
     }
 }
 
-exports.removeFavourites= async (req, res) => {
+exports.removeFavourites = async (req, res) => {
     try {
-        const {user_id, product_id} = req.body;
-                        const data=await Favourites.deleteOne({user_id: user_id, product_id: product_id })
-        return res.status(200).json({data: data});
+        const { user_id, product_id } = req.body;
+        const data = await Favourites.deleteOne({ user_id: user_id, product_id: product_id })
+        return res.status(200).json({ data: data });
     } catch (error) {
         return res
-                        .status(400)
-                        .json({
-                            success: false,
-                        message: `Something went wrong! ${error}`,
-                        data: []
+            .status(400)
+            .json({
+                success: false,
+                message: `Something went wrong! ${error}`,
+                data: []
             });
     }
 }
 
 exports.addToCart = async (req, res) => {
     try {
-        const {user_id, product_id} = req.body; 
+        const { user_id, product_id } = req.body;
         return res.status(400).json({})
     } catch (error) {
         return res
-                        .status(400)
-                        .json({
-                            success: false,
-                        message: `Something went wrong! ${error}`,
-                        data: []
-            });
-    }
-}
-
-exports.addToSearch=async (req, res) => {
-    try {
-        const {user_id, keyword} = req.body; 
-        console.log(req.body);
-        const data=await Search.insertOne({userId: ObjectId(user_id), keyword: keyword});
-        if(data==null){
-            return res.status(400).json({message: "Fail", success: false})
-        } else {
-            return res.status(200).json({message: 'Success', success: true })
-        }
-        
-    } catch (error) {
-        return res
-                        .status(400)
-                        .json({
-                            success: false,
-                        message: `Something went wrong! ${error}`,
-                        data: []
+            .status(400)
+            .json({
+                success: false,
+                message: `Something went wrong! ${error}`,
+                data: []
             });
     }
 }

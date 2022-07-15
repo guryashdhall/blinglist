@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 const SearchSchema = new mongoose.Schema(
   {
-    userID: ObjectId,
+    userId: ObjectId,
     keyword: String,
   },
   {

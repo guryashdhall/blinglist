@@ -5,7 +5,7 @@ exports.addToSearch = async (req, res) => {
     try {
         const { user_id, keyword } = req.body;
         console.log(req.body);
-        const data = await Search.insertOne({ userId: ObjectId(user_id), keyword: keyword });
+        const data = await Search({ userId: ObjectId(user_id), keyword: keyword }).save();
         if (data == null) {
             return res.status(400).json({ message: "Fail", success: false })
         } else {

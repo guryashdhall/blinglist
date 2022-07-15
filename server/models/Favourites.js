@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-
+const { ObjectId } = mongoose.Schema.Types;
 const favouritesSchema = new mongoose.Schema(
   {
-    userID: String,
-    productId: String,
+    userId: ObjectId,
+    productId: ObjectId,
   },
   {
     timestamps: true,
