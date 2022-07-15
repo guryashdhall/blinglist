@@ -208,57 +208,31 @@ router.post("/forgot-password", (req, res) => {
 //RESET PASSWORD API
 
 router.post("/reset-password", (req, res) => {
-  const { email, password, confirmPassword } = req.body;
-  if (!email | !password | !confirmPassword) {
-    return res.status(422).json({
+  const { email, newpassword, confirmNewPassword } = req.body;
+  console.log(req.body);
+  if (!email | !newpassword | !confirmNewPassword) {
+    return res.status(200).json({
       success: false,
       message: "Please fill out all fields",
     });
-  } else if (password !== confirmPassword) {
-    return res.status(422).json({
+  } else if (newpassword !== confirmNewPassword) {
+    return res.status(200).json({
       success: false,
       message: "Passwords do not match",
     });
   } else {
-    User.findOne({ email: email })
-      .then((savedUser) => {
-        if (!savedUser) {
-          return res.status(422).json({
-            success: false,
-            message: "User does not exist",
-          });
-        } else {
-          bcrypt.hash(password, 12).then((hashedPassword) => {
-            savedUser.password = hashedPassword;
-            savedUser.confirmPassword = hashedPassword;
-            savedUser
-              .save()
-              .then((user) => {
-                return res.status(200).json({
-                  success: true,
-                  message: "Password reset successfully",
-                  user: user,
-                });
-              })
-              .catch((err) => {
-                return res.status(500).json({
-                  success: false,
-                  message: "Error resetting password",
-                  error: err,
-                });
-              });
-          });
-        }
-      })
-      .catch((err) => {
-        return res.status(500).json({
-          success: false,
-          message: "Error resetting password",
-          error: err,
-        });
-      });
+
+    bcrypt.hash(newpassword, 12).then((hashedPassword) => {
+      User.findOneAndUpdate({email}, {$set: {password: hashedPassword}},{new:true},(error,results)=>{
+        return res.status(200).json({
+        success: true,
+        message: "Password reset successfully"
+      })})
+    });
   }
 });
+      
+ 
 
 // EDIT PROFILE API
 
