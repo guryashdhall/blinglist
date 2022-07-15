@@ -22,16 +22,21 @@ function PreviousOrder() {
   const [orders, setorders] = useState({});
 
   useEffect(() => {
+    let role = localStorage.getItem("role");
     if (isUserLoggedIn()) {
-      const userId = "62cde17d75a76c05a83d4b47";
-      getOrderByUserId(userId).then((result) => {
-        result.data.forEach(function (order) {
-          order.createdAt = new Date(order.createdAt).toDateString();
-          order.delivery = new Date(order.delivery).toDateString();
-          order.userName = "Group 17";
+      if (role === "customer") {
+        const userId = "62cde17d75a76c05a83d4b47";
+        getOrderByUserId(userId).then((result) => {
+          result.data.forEach(function (order) {
+            order.createdAt = new Date(order.createdAt).toDateString();
+            order.delivery = new Date(order.delivery).toDateString();
+            order.userName = "Group 17";
+          });
+          setorders(result.data);
         });
-        setorders(result.data);
-      });
+      } else if (role === "admin") {
+        navigate("/admin");
+      }
     } else {
       navigate("/");
     }

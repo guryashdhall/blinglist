@@ -28,7 +28,12 @@ const ForgotPwd = () => {
   });
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/recommendation") : navigate("/forgotPwd");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/recommendation")
+        : navigate("/admin")
+      : navigate("/forgotPwd");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

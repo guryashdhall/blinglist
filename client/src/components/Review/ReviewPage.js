@@ -10,7 +10,12 @@ function ReviewPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/reviews") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/reviews")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
