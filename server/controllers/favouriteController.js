@@ -91,8 +91,8 @@ exports.fetchFavourites = async (req, res) => {
 exports.removeFavourites = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
-        const data = await Favourites.deleteOne({ user_id: user_id, product_id: product_id })
-        return res.status(200).json({ data: data });
+        const data = await Favourites.findOneAndRemove({ user_id: user_id, product_id: product_id })
+        return res.status(200).json({  data: data, message: 'Success', success: true });
     } catch (error) {
         return res
             .status(400)
