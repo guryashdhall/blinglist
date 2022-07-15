@@ -32,7 +32,7 @@ const navigate=useNavigate();
     let role = localStorage.getItem("role");
     isUserLoggedIn()
       ? role === "customer"
-        ? navigate("/recommendation")
+        ? navigate("/recommendation") 
         : navigate("/admin")
       : navigate("/resetPwd");
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +69,7 @@ const navigate=useNavigate();
           ...resetPwdInfo.errors, confirmNewPassword: "Confirm Password is required"
         }
       })
-    } else if (resetPwdInfo.confirmNewPassword !== resetPwdInfo.password) {
+    } else if (resetPwdInfo.confirmNewPassword !== resetPwdInfo.newpassword) {
       setResetPwdInfo({
         ...resetPwdInfo, errors: {
           ...resetPwdInfo.errors, confirmNewPassword: "Passwords do not match"
@@ -103,6 +103,7 @@ const navigate=useNavigate();
         newpassword: resetPwdInfo.newpassword,
         confirmNewPassword: resetPwdInfo.confirmNewPassword
       }).then(res => {
+        console.log(res);
         if (res.data.success) {
           toast.success(res.data.message, {
             position: "top-right",
