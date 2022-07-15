@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
   return res.send("Hii")
 })
 app.use(require('./router/reveiws'));
+app.use(require('./router/products'));
 
 
 app.listen(PORT, (err) => {

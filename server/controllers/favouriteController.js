@@ -40,13 +40,14 @@ exports.addToFavourites = async (req, res) => {
 fetchProductDetails=(data)=>{
     return Promise.all(data.map(async favourite => {
         productData = await Products.find({ _id: favourite.productId })
-        return { user_data: favourite, product_details: productData }
+        return { user_data: favourite, product_details: productData[0] }
     }))
 }
 
 exports.fetchFavourites = async (req, res) => {
     try {
         const id = req.query.id;
+        console.log(id);
         let favourites = []
         favourites = await Favourites.find({ userId: ObjectId(id) }).then(async data => {
             const favourites=await fetchProductDetails(data)
@@ -66,7 +67,7 @@ exports.fetchFavourites = async (req, res) => {
                 message: `Something went wrong!`
             });
         } else if(favourites.length == 0) {
-            return res.status(400).json({
+            return res.status(200).json({
                 success: true,
                 message: `You have not added any favourites yet!`
             });
@@ -91,7 +92,12 @@ exports.fetchFavourites = async (req, res) => {
 exports.removeFavourites = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
+        console.log(user_id)
+        console.log(product_id);
         const data = await Favourites.findOneAndRemove({ user_id: user_id, product_id: product_id })
+        if(data == null) {
+            return res.status(400).json({ data:[], message: 'Something went wrong', success: false})
+        }
         return res.status(200).json({  data: data, message: 'Success', success: true });
     } catch (error) {
         return res

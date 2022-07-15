@@ -8,9 +8,66 @@ import Button from "@mui/material/Button";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { removeFavourites } from "./Favourites";
 
+// base64ToArrayBuffer = base64 => {
+//   var binaryString = window.atob(base64);
+//   var binaryLen = binaryString.length;
+//   var bytes = new Uint8Array(binaryLen);
+//   for (var i = 0; i < binaryLen; i++) {
+//     var ascii = binaryString.charCodeAt(i);
+//     bytes[i] = ascii;
+//   }
+//   return bytes;
+// };
+
+// getImages = data =>{
+//   var sampleArr = this.base64ToArrayBuffer(data);
+//   var imagePath=""
+//   return imagePath
+// }
 export default function FavouriteCard({ data }) {
   const navigate = useNavigate();
+  
+  const removeFavourites = async (e)=>{
+    e.preventDefault();
+    console.log("Removing favorites");
+    const result = await axios.put("http://localhost:8080/favourites/removefavourites", {
+      body: JSON.stringify({user_id: data.user_data._id, product_id: data.product_details._id })
+    })
+    console.log(result.data)
+    if (result.data.success) {
+      console.log(result.data)
+      toast.success("Product has been removed successfully!", {
+        position: "top-right",
+        theme: "dark",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        onClose: () => {
+          window.location.reload(false);
+        },
+      });
+    } else {
+      console.log(result);
+      toast.error("Something went wrong! Please refresh your page and try again.", {
+        position: "top-right",
+        theme: "dark",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+    
+  }
   return (
     <div>
       <Card
@@ -21,17 +78,19 @@ export default function FavouriteCard({ data }) {
       >
         <CardHeader
           action={
-            <IconButton aria-label="remove">
+            <IconButton aria-label="remove" onClick={event => removeFavourites(event)}>
               <CloseIcon />
             </IconButton>
           }
-          title={data.title}
-          subheader={data.datePosted}
+          title={data.product_details.productName.length<25?data.product_details.productName:data.product_details.productName.substring(0, 25)+ "..."}
+          subheader={new Date(data.product_details.createdAt).toISOString().
+            replace(/T/, ' ').      // replace T with a space
+            replace(/\..+/, '') }
         />
         <CardMedia
           sx={{ boxShadow: 3 }}
-          title={data.title}
-          image={`${data.imageURL}`}
+          title={data.product_details.productName}
+          image={`${data.product_details.productImage}`}
           style={{
             height: 0,
             paddingTop: "56.25%", // 16:9,
@@ -43,10 +102,10 @@ export default function FavouriteCard({ data }) {
           <table width="100%" maxWidth="100%">
             <tr>
               <td style={{ textAlign: "left" }}>
-                <b>Price:</b> CAD {data.cost}
+                <b>Price:</b> CAD {data.product_details.productPrice}
               </td>
               <td style={{ textAlign: "right" }}>
-                {data.available ? (
+                {data.product_details.inventoryQuantity > 0 ? (
                   <Typography
                     backgroundColor="green"
                     textAlign="center"
@@ -73,9 +132,10 @@ export default function FavouriteCard({ data }) {
               <b>Description:</b>
             </tr>
           </table>
-          <Typography textAlign="justify">{data.description}</Typography>
+          <Typography textAlign="justify">{data.product_details.productDescription.length>330?
+          data.product_details.productDescription.substring(0, 330)+"...":data.product_details.productDescription}</Typography>
         </CardContent>
-        <div>
+        <div> 
           <table align="center">
             <tr>
               <td>
@@ -94,6 +154,7 @@ export default function FavouriteCard({ data }) {
           <br />
         </div>
       </Card>
+      <ToastContainer />
     </div>
   );
 }

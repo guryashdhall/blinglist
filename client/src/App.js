@@ -72,6 +72,7 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path="/viewdetails" element={<ViewProduct />} />
+          {/* <Route path="/viewdetails/:id" element={<ViewProduct />} /> */}
         </Routes>
         <Routes>
           <Route path="/favorites" element={<Favourites />} />

@@ -9,11 +9,13 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
+import { useNavigate } from 'react-router-dom';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const Slider = ({images, onClick}) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
 
@@ -64,6 +66,10 @@ const Slider = ({images, onClick}) => {
                 }}
                 src={step.imgPath}
                 alt={step.label}
+                onClick={() => {
+                  navigate("/viewdetails");
+                  //navigate(`/viewdetails/${step.productID}`);
+                }}
               />
             ) : null}
           </div>

@@ -32,6 +32,7 @@ const Recommendation = () => {
           var arr1 = {
             label: result["earring"][i]["productName"],
             imgPath: result["earring"][i]["productImage"],
+            productID: result["earring"][i]["_id"]
           };
           jewels1.push(arr1);
         }
@@ -41,6 +42,7 @@ const Recommendation = () => {
           var arr2 = {
             label: result["necklace"][i]["productName"],
             imgPath: result["necklace"][i]["productImage"],
+            productID: result["necklace"][i]["_id"]
           };
           jewels2.push(arr2);
         }
@@ -50,6 +52,7 @@ const Recommendation = () => {
           var arr3 = {
             label: result["ring"][i]["productName"],
             imgPath: result["ring"][i]["productImage"],
+            productID: result["ring"][i]["_id"]
           };
           jewels3.push(arr3);
         }
@@ -66,6 +69,7 @@ const Recommendation = () => {
             var arr1 = {
               label: result["message"][i]["productsList"]["productName"],
               imgPath: result["message"][i]["productsList"]["productImage"],
+              productID: result["message"][i]["productsList"]["_id"]
             };
             mp_ring.push(arr1);
           }
@@ -79,6 +83,7 @@ const Recommendation = () => {
             var arr2 = {
               label: result["message"][i]["productsList"]["productName"],
               imgPath: result["message"][i]["productsList"]["productImage"],
+              productID: result["message"][i]["productsList"]["_id"]
             };
             mp_necklace.push(arr2);
           }
@@ -92,6 +97,7 @@ const Recommendation = () => {
             var arr3 = {
               label: result["message"][i]["productsList"]["productName"],
               imgPath: result["message"][i]["productsList"]["productImage"],
+              productID: result["message"][i]["productsList"]["_id"]
             };
             mp_earring.push(arr3);
           }
@@ -126,21 +132,12 @@ const Recommendation = () => {
             }}
           >
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
               images={earringImages}
             />
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
               images={necklaceImages}
             />
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
               images={ringImages}
             />
           </Grid>
@@ -166,21 +163,12 @@ const Recommendation = () => {
             }}
           >
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
+              images={earringImages}
+            />
+            <Slider 
               images={earringImages}
             />
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
-              images={earringImages}
-            />
-            <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
               images={earringImages}
             />
           </Grid>
@@ -206,21 +194,12 @@ const Recommendation = () => {
             }}
           >
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
               images={ringMpImages}
             />
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
               images={necklaceMpImages}
             />
             <Slider
-              onClick={() => {
-                navigate("/viewdetails");
-              }}
               images={earringMpImages}
             />
           </Grid>

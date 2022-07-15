@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import useStyles from "./Styles.js";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
 import { ALPHABET_REGEX } from "../../../Constants/constants.js";
 import { NUMBER_REGEX } from "../../../Constants/constants";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer} from "react-toastify";
 import {
-  createProduct,
   getProduct,
-  editProduct,
 } from "../../../store/actions/admin";
 
-const Form = ({ currentProductId }) => {
+const Form = ({ currentProductId, handleClear, addProduct, productInfo, setProductInfo }) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -43,26 +41,7 @@ const Form = ({ currentProductId }) => {
     }
   }, [currentProductId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  var [productInfo, setProductInfo] = useState({
-    name: "",
-    desc: "",
-    price: "",
-    quantity: "",
-    color: "",
-    metal: "",
-    type: "",
-    image: "",
-    errors: {
-      name: "",
-      desc: "",
-      price: "",
-      quantity: "",
-      color: "",
-      metal: "",
-      type: "",
-      image: "",
-    },
-  });
+  
 
   const handleProductNameEvents = () => {
     if (productInfo.name === "" || !productInfo.name.match(ALPHABET_REGEX)) {
@@ -127,28 +106,7 @@ const Form = ({ currentProductId }) => {
     }
   };
 
-  const handleClear = () => {
-    setProductInfo({
-      name: "",
-      desc: "",
-      price: "",
-      quantity: "",
-      color: "",
-      metal: "",
-      type: "",
-      image: "",
-      errors: {
-        name: "",
-        desc: "",
-        quantity: "",
-        price: "",
-        color: "",
-        metal: "",
-        type: "",
-        image: "",
-      },
-    });
-  };
+  
 
   const handleProductInformation = (fieldName, value) => {
     setProductInfo({
@@ -157,94 +115,14 @@ const Form = ({ currentProductId }) => {
     });
   };
 
-  const addProduct = (e) => {
-    e.preventDefault();
 
-    // productInfo.name === "" ||
-    // productInfo.errors.name !== "" ||
-    // productInfo.desc === "" ||
-    // productInfo.errors.desc !== "" ||
-    // productInfo.price === "" ||
-    // productInfo.errors.price !== "" ||
-    // productInfo.color === "" ||
-    // productInfo.errors.color !== "" ||
-    // productInfo.metal === "" ||
-    // productInfo.errors.metal !== "" ||
-    // productInfo.type === "" ||
-    // productInfo.errors.type !== ""
-
-    const body = {
-      productName: productInfo.name,
-      productType: productInfo.type,
-      productPrice: productInfo.price,
-      productDescription: productInfo.desc,
-      productColor: productInfo.color,
-      metalType: productInfo.metal,
-      inventoryQuantity: productInfo.quantity,
-      productImage: productInfo.image,
-    };
-
-    if (currentProductId) {
-      editProduct(currentProductId, body).then((result) => {
-        if (result.success === true) {
-          toast.success("Product edited successfully", {
-            position: "bottom-right",
-            theme: "dark",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          toast.success("Product could not be edited. Please try again!", {
-            position: "bottom-right",
-            theme: "dark",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      });
-    } else {
-      createProduct(body).then((result) => {
-        if (result.success === true) {
-          toast.success("Added product successfully!", {
-            position: "bottom-right",
-            theme: "dark",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else {
-          toast.error("Please fill all the fields!", {
-            position: "bottom-right",
-            theme: "dark",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-      });
-    }
-  };
 
   return (
     <Paper className={classes.paper} elevation={10}>
       <form
         autoComplete="off"
         className={`${classes.root} ${classes.form}`}
-        onSubmit={addProduct}
+        onSubmit={(event) => addProduct(event)}
       >
         <Typography variant="h6">
           {currentProductId ? "Edit Product" : "Add Product"}

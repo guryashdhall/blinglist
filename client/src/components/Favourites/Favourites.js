@@ -3,10 +3,7 @@ import FavouriteCard from "./FavouriteCard";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import ring1 from "../../images/ring1.jpg";
-import ring2 from "../../images/ring2.jpg";
-import ring3 from "../../images/ring3.jpg";
-import ring4 from "../../images/ring4.jpg";
+import axios from "axios";
 
 class Favourites extends Component {
   constructor(props) {
@@ -16,55 +13,26 @@ class Favourites extends Component {
     };
   }
 
-  componentDidMount = () => {
-    this.setState({
-      favourites: [
-        {
-          id: 1,
-          title: "Jewels Of Rome",
-          datePosted: "June 13, 2022",
-          description:
-            "This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far!",
-          cost: "5000",
-          available: true,
-          imageURL: ring1,
-        },
-        {
-          id: 2,
-          title: "Jewels of Halifax",
-          datePosted: "June 7, 2022",
-          description:
-            "This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far!",
-          cost: "2000",
-          available: true,
-          imageURL: ring2,
-        },
-        {
-          id: 3,
-          title: "Jewels of Italy",
-          datePosted: "May 30, 2022",
-          description:
-            "This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far!",
-          cost: "7100",
-          available: true,
-          imageURL: ring3,
-        },
-        {
-          id: 4,
-          title: "Jewels of Spain",
-          datePosted: "May 12, 2022",
-          description:
-            "This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far! This is my favorite jewellery among all the jewelleries seen so far!",
-          cost: "3100",
-          available: true,
-          imageURL: ring4,
-        },
-      ],
-    });
+  componentDidMount = async () => {
+    try {
+      const user=JSON.parse(localStorage.getItem("user"))
+      console.log(user);
+      console.log(user._id)
+      const res = await axios.get("http://localhost:8080/favourites/fetchfavourites?"+`id=${user._id}`)
+      console.log(res.data.data)
+
+      if(res.data.success){
+        this.setState({ favourites: res.data.data})
+      }
+    }
+    catch (error) { console.log(error) }
+    const { favourites } = this.state;
+    console.log(favourites);
   };
 
   render() {
     const { favourites } = this.state;
+    console.log(favourites)
     return (
       <div>
         <Container maxWidth="lg">
@@ -77,7 +45,9 @@ class Favourites extends Component {
               spacing={{ xs: 2, md: 3 }}
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
-              {favourites.map((favourite) => (
+              {favourites==undefined?<h3>You do not have any products added to Wishlist</h3>:favourites.length==0?
+              <h3>You do not have any products added to Wishlist</h3>
+              :favourites.map((favourite) => (
                 <Grid item>
                   <FavouriteCard data={favourite} />
                 </Grid>
