@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -13,9 +13,15 @@ import { checkoutPayment } from "../../store/actions/payment";
 import "react-toastify/dist/ReactToastify.css";
 import "./Checkout.css";
 import { stripePaymentPublishKey } from "../../config/config";
+import { isUserLoggedIn } from "../../Helpers/helper";
 
 const Checkout = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/checkout") : navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const itemDetails = [
     {
@@ -41,7 +47,6 @@ const Checkout = () => {
   ];
 
   const makePayment = (token) => {
-    console.log("Token: ", token);
     const body = {
       token: token,
       totalPayableAmount: 1000,

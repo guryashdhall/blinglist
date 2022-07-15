@@ -1,6 +1,4 @@
-import React from "react";
-import useForm from "../../../Helpers/useForm";
-import validate from "../../../Helpers/validateInfo";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import NavBar from "../../NavBar";
@@ -10,12 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { validateEmail } from "../../../Helpers/validateInfo";
-import {useState} from "react";
 import { useNavigate } from "react-router-dom";
-import M from "materialize-css";
+import { isUserLoggedIn } from "../../../Helpers/helper";
 
 const ForgotPwd = () => {
-  // const { handleChange, values, handleSubmit, errors } = useForm(validate);
   const [SecurityQuestion, setSecurityQuestion] = React.useState("");
 
   const title = "Forgot Password?";
@@ -23,58 +19,66 @@ const ForgotPwd = () => {
   const navigate = useNavigate();
 
   const [forgotPwdInfo, setforgotPwdInfo] = useState({
-    email: '',
-    securityAnswer: '',
+    email: "",
+    securityAnswer: "",
     errors: {
-      email: '',
-      securityAnswer: ''
-    }
+      email: "",
+      securityAnswer: "",
+    },
   });
+
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/recommendation") : navigate("/forgotPwd");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleEmailErrors = () => {
     setforgotPwdInfo({
       ...forgotPwdInfo,
       errors: {
         ...forgotPwdInfo.errors,
-        email: validateEmail(forgotPwdInfo.email)
-      }
-    })
-    
-  }
+        email: validateEmail(forgotPwdInfo.email),
+      },
+    });
+  };
   const handleSecurityAnswerErrors = () => {
     if (!forgotPwdInfo.securityAnswer) {
       setforgotPwdInfo({
-        ...forgotPwdInfo, errors: {
-          ...forgotPwdInfo.errors, securityAnswer: "Security Answer is required"
-        }
-      })
-    }
-    else {
+        ...forgotPwdInfo,
+        errors: {
+          ...forgotPwdInfo.errors,
+          securityAnswer: "Security Answer is required",
+        },
+      });
+    } else {
       setforgotPwdInfo({
-        ...forgotPwdInfo, errors: {
-          ...forgotPwdInfo.errors, securityAnswer: ""
-        }
-      })
+        ...forgotPwdInfo,
+        errors: {
+          ...forgotPwdInfo.errors,
+          securityAnswer: "",
+        },
+      });
     }
-  }
+  };
 
   const onhandleChange = (name, value) => {
     setforgotPwdInfo({
       ...forgotPwdInfo,
-      [name]: value
-    })
-  }
-  
-  const onhandleSubmit = (e) => { 
-    if(forgotPwdInfo.errors.email == '' && forgotPwdInfo.errors.securityAnswer == '')
-    {
+      [name]: value,
+    });
+  };
+
+  const onhandleSubmit = (e) => {
+    if (
+      forgotPwdInfo.errors.email == "" &&
+      forgotPwdInfo.errors.securityAnswer == ""
+    ) {
       navigate("/resetPwd");
-    }
-    else{
+    } else {
       handleEmailErrors();
       handleSecurityAnswerErrors();
     }
-  }
+  };
   return (
     <div>
       <NavBar title={title} color={color}></NavBar>
@@ -93,17 +97,17 @@ const ForgotPwd = () => {
         <div className="form-inputs">
           <label htmlFor="email" className="form-label"></label>
           <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          value={forgotPwdInfo.email}
-          error={forgotPwdInfo.errors.email !== ""}
-          helperText={forgotPwdInfo.errors.email}
-          onChange={(e) => onhandleChange("email", e.target.value)}
-          onBlur={handleEmailErrors}
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            value={forgotPwdInfo.email}
+            error={forgotPwdInfo.errors.email !== ""}
+            helperText={forgotPwdInfo.errors.email}
+            onChange={(e) => onhandleChange("email", e.target.value)}
+            onBlur={handleEmailErrors}
           />
         </div>
         <br />
@@ -119,7 +123,6 @@ const ForgotPwd = () => {
               value={SecurityQuestion}
               label="Security Question"
               onChange={(e) => {
-                console.log("here");
                 setSecurityQuestion(e.target.value);
               }}
             >
@@ -135,17 +138,17 @@ const ForgotPwd = () => {
         <div className="form-inputs">
           <label htmlFor="Security Answer" className="form-label"></label>
           <TextField
-           label="Security Answer"
-           id="securityAnswer"
-           type="text"
-           name="securityAnswer"
-           className="form-inputs"
-           placeholder="Enter Security Answer"
-           value={forgotPwdInfo.securityAnswer}
-           error={forgotPwdInfo.errors.securityAnswer !== ""}
-           helperText={forgotPwdInfo.errors.securityAnswer}
-           onChange={(e) => onhandleChange("securityAnswer", e.target.value)}
-           onBlur={handleSecurityAnswerErrors}
+            label="Security Answer"
+            id="securityAnswer"
+            type="text"
+            name="securityAnswer"
+            className="form-inputs"
+            placeholder="Enter Security Answer"
+            value={forgotPwdInfo.securityAnswer}
+            error={forgotPwdInfo.errors.securityAnswer !== ""}
+            helperText={forgotPwdInfo.errors.securityAnswer}
+            onChange={(e) => onhandleChange("securityAnswer", e.target.value)}
+            onBlur={handleSecurityAnswerErrors}
           />
         </div>
         <br />

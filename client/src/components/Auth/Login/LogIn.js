@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -11,92 +12,123 @@ import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
 import blingsvg from "../../../images/LOGO BLING SVG.svg";
-import useForm from "../../../Helpers/useForm";
-import validate, { validateEmail } from "../../../Helpers/validateInfo";
-import Switch from '@mui/material/Switch';
+import { validateEmail } from "../../../Helpers/validateInfo";
 import axios from "axios";
 import SuccessAlert from "../../SuccessAlert";
-import M from "materialize-css";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { isUserLoggedIn } from "../../../Helpers/helper";
 
 const theme = createTheme();
 
 export default function SignIn() {
-
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     errors: {
-      email: '',
-      password: ''
-    }
+      email: "",
+      password: "",
+    },
   });
+
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/recommendation") : navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleEmailErrors = () => {
     setUserInfo({
       ...userInfo,
       errors: {
         ...userInfo.errors,
-        email: validateEmail(userInfo.email)
-      }
-    })
-
-  }
+        email: validateEmail(userInfo.email),
+      },
+    });
+  };
 
   const handlePwdErrors = () => {
     if (!userInfo.password) {
       setUserInfo({
-        ...userInfo, errors: {
+        ...userInfo,
+        errors: {
           ...userInfo.errors,
-          password: "Password is required"
-        }
-      })
+          password: "Password is required",
+        },
+      });
     } else if (userInfo.password.length < 8) {
-
       setUserInfo({
-        ...userInfo, errors: {
-          ...userInfo.errors, password: "Password needs to be 8 characters or more"
-        }
-      })
-    }
-    else {
+        ...userInfo,
+        errors: {
+          ...userInfo.errors,
+          password: "Password needs to be 8 characters or more",
+        },
+      });
+    } else {
       setUserInfo({
-        ...userInfo, errors: {
-          ...userInfo.errors, password: ""
-        }
-      })
+        ...userInfo,
+        errors: {
+          ...userInfo.errors,
+          password: "",
+        },
+      });
     }
-  }
+  };
 
   const onhandleChange = (name, value) => {
     setUserInfo({
-
       ...userInfo,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   // const [checked, setChecked] = useState(true)
 
   const onhandleSubmit = (e) => {
     e.preventDefault();
-    if (userInfo.errors.email == '' && userInfo.errors.password == '') {
-      axios.post("http://localhost:8080/login", {
-        email: userInfo.email,
-        password: userInfo.password
-      }).then(res => {
-        console.log(res.data);
-        if (res.data.success === true) {
-          if (res.data.user.role == "customer") {
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("role", res.data.user.role);
-
-            console.log("I AM HERE" + res.data.message);
-            toast.success(res.data.message, {
+    if (userInfo.errors.email === "" && userInfo.errors.password === "") {
+      axios
+        .post("http://localhost:8080/login", {
+          email: userInfo.email,
+          password: userInfo.password,
+        })
+        .then((res) => {
+          if (res.data.success === true) {
+            if (res.data.user.role === "customer") {
+              localStorage.setItem("token", res.data.session_token);
+              localStorage.setItem("role", res.data.user.role);
+              localStorage.setItem("user", JSON.stringify(res.data.user));
+              toast.success(res.data.message, {
+                position: "top-right",
+                theme: "dark",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onClose: () => {
+                  navigate("/recommendation");
+                },
+              });
+            } else {
+              toast.success(res.data.message, {
+                position: "top-right",
+                theme: "dark",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onClose: () => {
+                  navigate("/admin");
+                },
+              });
+            }
+          } else {
+            toast.error(res.data.message, {
               position: "top-right",
               theme: "dark",
               autoClose: 2000,
@@ -105,54 +137,19 @@ export default function SignIn() {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              onClose: () => {
-                navigate("/recommendation");
-              }
             });
           }
-          else {
-            toast.success(res.data.message, {
-              position: "top-right",
-              theme: "dark",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              onClose: () => {
-                navigate("/admin");
-              }
-            });
-
-          }
-        }
-        else {
-          toast.error(res.data.message, {
-            position: "top-right",
-            theme: "dark",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined
-          })
-        }
-      }
-      ).catch(err => {
-        console.log(err);
-      }
-      );
-    }
-    else {
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
       handleEmailErrors();
       handlePwdErrors();
     }
-  }
+  };
   return (
     <ThemeProvider theme={theme}>
-      {console.log(userInfo.errors)}
       <Box
         sx={{
           display: "flex",
@@ -199,13 +196,16 @@ export default function SignIn() {
               alignitems: "center",
             }}
           >
-            <Box >
+            <Box>
               <Typography component="h1" variant="h5">
                 Already a member?
               </Typography>
 
-              <form onSubmit={(e) => { onhandleSubmit(e); }}>
-
+              <form
+                onSubmit={(e) => {
+                  onhandleSubmit(e);
+                }}
+              >
                 <TextField
                   margin="normal"
                   required
@@ -242,9 +242,14 @@ export default function SignIn() {
                   type="submit"
                   fullWidth
                   variant="outlined"
-                  sx={{ mt: 3, mb: 2, backgroundColor: "black", color: "white" }}
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    backgroundColor: "black",
+                    color: "white",
+                  }}
                   onSubmit={<SuccessAlert />}
-                // onClick={(e) => { onhandleSubmit(e); }}
+                  // onClick={(e) => { onhandleSubmit(e); }}
                 >
                   Log In
                 </Button>
@@ -269,4 +274,3 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
-

@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useForm from "../../../Helpers/useForm";
-import validate, { validateEmail } from "../../../Helpers/validateInfo";
-// import Box from '@mui/material/Box';
+import { validateEmail } from "../../../Helpers/validateInfo";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import NavBar from "../../NavBar";
@@ -12,226 +10,239 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useState } from "react";
-import validateInfo from "../../../Helpers/validateInfo";
-import M from 'materialize-css';
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { isUserLoggedIn } from "../../../Helpers/helper";
 
 const FormSignUp = () => {
   const navigate = useNavigate();
-
-  // const { handleChange, values, handleSubmit, errors } = useForm(validate);
-  //const [SecurityQuestion, setSecurityQuestion] = React.useState("");
-  //console.log(setSecurityQuestion(""))
   const SecurityQuestion = "";
 
-
   const [signUpInfo, setSignUpInfo] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    securityAnswer: '',
-    securityQuestion: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    securityAnswer: "",
+    securityQuestion: "",
     errors: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      securityAnswer: '',
-      securityQuestion: ''
-    }
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      securityAnswer: "",
+      securityQuestion: "",
+    },
   });
 
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/recommendation") : navigate("/signup");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleEmailErrors = () => {
     setSignUpInfo({
       ...signUpInfo,
       errors: {
         ...signUpInfo.errors,
-        email: validateEmail(signUpInfo.email)
-      }
-    })
-
-  }
+        email: validateEmail(signUpInfo.email),
+      },
+    });
+  };
 
   const handleFirstNameErrors = () => {
     if (!signUpInfo.firstName) {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, firstName: "First Name is required"
-        }
-      })
-    }
-    else {
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          firstName: "First Name is required",
+        },
+      });
+    } else {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, firstName: ""
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          firstName: "",
+        },
+      });
     }
-  }
-
-
+  };
 
   const handleLastNameErrors = () => {
     if (!signUpInfo.lastName) {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, lastName: "Last Name is required"
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          lastName: "Last Name is required",
+        },
+      });
     } else {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, lastName: ""
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          lastName: "",
+        },
+      });
     }
-  }
+  };
   const handlePwdErrors = () => {
     if (!signUpInfo.password) {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, password: "Password is required"
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          password: "Password is required",
+        },
+      });
     } else if (signUpInfo.password.length < 8) {
-
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, password: "Password needs to be 8 characters or more"
-        }
-      })
-    }
-    else {
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          password: "Password needs to be 8 characters or more",
+        },
+      });
+    } else {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, password: ""
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          password: "",
+        },
+      });
     }
-  }
-
+  };
 
   const handleConfirmPwdErrors = () => {
     if (!signUpInfo.confirmPassword) {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, confirmPassword: "Password is required"
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          confirmPassword: "Password is required",
+        },
+      });
     } else if (signUpInfo.confirmPassword.length < 8) {
-
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, confirmPassword: "Password needs to be 8 characters or more"
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          confirmPassword: "Password needs to be 8 characters or more",
+        },
+      });
     } else if (signUpInfo.confirmPassword !== signUpInfo.password) {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, confirmPassword: "Passwords do not match"
-        }
-      })
-    }
-    else {
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          confirmPassword: "Passwords do not match",
+        },
+      });
+    } else {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, confirmPassword: ""
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          confirmPassword: "",
+        },
+      });
     }
-  }
-
+  };
 
   const handleSecuritAnswerErrors = () => {
     if (!signUpInfo.securityAnswer) {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, securityAnswer: "Security Answer is required"
-        }
-      })
-    }
-    else {
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          securityAnswer: "Security Answer is required",
+        },
+      });
+    } else {
       setSignUpInfo({
-        ...signUpInfo, errors: {
-          ...signUpInfo.errors, securityAnswer: ""
-        }
-      })
+        ...signUpInfo,
+        errors: {
+          ...signUpInfo.errors,
+          securityAnswer: "",
+        },
+      });
     }
-  }
+  };
   const onhandleChange = (name, value) => {
-    console.log(signUpInfo);
     setSignUpInfo({
-
       ...signUpInfo,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   const onhandleSubmit = (e) => {
     e.preventDefault();
-    console.log(signUpInfo);
-    if (signUpInfo.errors.firstName === '' && signUpInfo.errors.lastName === '' && signUpInfo.errors.email === '' && signUpInfo.errors.password === '' && signUpInfo.errors.confirmPassword === '' && signUpInfo.errors.securityAnswer === '') 
-    {
-      console.log(signUpInfo);
-      axios.post("http://localhost:8080/signup", {
-        firstName: signUpInfo.firstName,
-        lastName: signUpInfo.lastName,
-        email: signUpInfo.email,
-        password: signUpInfo.password,
-        confirmPassword: signUpInfo.confirmPassword,
-        securityAnswer: signUpInfo.securityAnswer,
-        securityQuestion: signUpInfo.securityQuestion
-      }).then(res => {
-        if (res.data.success) {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("role", res.data.user.role);
-          toast.success(res.data.message, {
-            position: "top-right",
-            theme: "dark",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            onClose: () => {
-              navigate("/");
-            }
-          })
-          // M.toast({ html: res.data.message, classes: "green", onClose: navigate("/login") });
-
-        } else {
-          toast.error(res.data.message, {
-            position: "top-right",
-            theme: "dark",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined
-          });
-        }
-      }
-      ).catch(err => {
-        console.log(err);
-      }
-      );
-    }
-    else {
+    if (
+      signUpInfo.errors.firstName === "" &&
+      signUpInfo.errors.lastName === "" &&
+      signUpInfo.errors.email === "" &&
+      signUpInfo.errors.password === "" &&
+      signUpInfo.errors.confirmPassword === "" &&
+      signUpInfo.errors.securityAnswer === ""
+    ) {
+      axios
+        .post("http://localhost:8080/signup", {
+          firstName: signUpInfo.firstName,
+          lastName: signUpInfo.lastName,
+          email: signUpInfo.email,
+          password: signUpInfo.password,
+          confirmPassword: signUpInfo.confirmPassword,
+          securityAnswer: signUpInfo.securityAnswer,
+          securityQuestion: signUpInfo.securityQuestion,
+        })
+        .then((res) => {
+          if (res.data.success) {
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("role", res.data.user.role);
+            toast.success(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClose: () => {
+                navigate("/");
+              },
+            });
+            // M.toast({ html: res.data.message, classes: "green", onClose: navigate("/login") });
+          } else {
+            toast.error(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
       handleFirstNameErrors();
       handleLastNameErrors();
       handleEmailErrors();
       handlePwdErrors();
     }
-  }
+  };
   const title = "Join us Today!";
   const color = "#000000";
   return (
@@ -345,7 +356,9 @@ const FormSignUp = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Security Question"
-              onChange={(e) => onhandleChange("securityQuestion", e.target.value)}
+              onChange={(e) =>
+                onhandleChange("securityQuestion", e.target.value)
+              }
             >
               <MenuItem value={"What's your pet name?"}>
                 What's your pet name?
@@ -392,6 +405,6 @@ const FormSignUp = () => {
       <ToastContainer />
     </div>
   );
- };
+};
 
 export default FormSignUp;

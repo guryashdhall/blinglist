@@ -1,10 +1,19 @@
 import { Container, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { isUserLoggedIn } from "../../Helpers/helper";
 import InputCard from "./InputCard";
 import ReviewCard from "./ReviewCard";
 import ReviewHeader from "./ReviewHeader";
 
 function ReviewPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/reviews") : navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Container
       fixed

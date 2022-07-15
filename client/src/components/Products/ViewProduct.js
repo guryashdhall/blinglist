@@ -1,13 +1,19 @@
-import { Avatar, Paper, Stack, Typography } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import  ReviewPage  from "../Review/ReviewPage"
+import { isUserLoggedIn } from "../../Helpers/helper";
+import ReviewPage from "../Review/ReviewPage";
 
 import "./Product.css";
 
 const ViewProduct = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/viewdetails") : navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <Grid align="center" mt={4} mb={4}>
@@ -81,7 +87,7 @@ const ViewProduct = () => {
                   </Grid>
                 </Grid>
                 <Grid xs={12} align="left" mt={4}>
-                  <ReviewPage/>
+                  <ReviewPage />
                 </Grid>
               </Paper>
             </Grid>

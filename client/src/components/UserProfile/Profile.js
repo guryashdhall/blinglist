@@ -1,12 +1,16 @@
 import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import blingsvg from "../../images/User Profile.svg";
 import "./Profile.css";
 import NavBarProfile from "../NavbarProfile";
+import { useNavigate } from "react-router-dom";
+import { isUserLoggedIn } from "../../Helpers/helper";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
   const title = "User Profile";
   const color = "#000000";
   const [user, setUser] = React.useState({
@@ -14,6 +18,11 @@ const Profile = () => {
     lastName: "Dhall",
     email: "guryash.dhall@dal.ca",
   });
+
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/profile") : navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;

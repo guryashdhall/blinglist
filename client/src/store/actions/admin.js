@@ -26,7 +26,6 @@ export const deleteProduct = (id) => {
 
 export const editProduct = (id, params) => {
   return AdminService.editProduct(id, params).then((result) => {
-    console.log(result)
     return result;
   });
 };

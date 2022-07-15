@@ -16,7 +16,6 @@ const useForm = (validate) => {
     const navigate=useNavigate();
     useEffect(() => {
         setIsSubmitting(true);
-        console.log("TEST HERE ");
         if (JSON.stringify(errors) === '{}' && clicked) {
           navigate("/recommendation" );
         }

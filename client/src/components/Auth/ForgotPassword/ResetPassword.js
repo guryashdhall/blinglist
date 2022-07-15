@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useForm from "../../../Helpers/useForm";
 import validate from "../../../Helpers/validateInfo";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import NavBar from "../../NavBar";
 import SuccessAlert from "../../SuccessAlert";
+import { isUserLoggedIn } from "../../../Helpers/helper";
+import { useNavigate } from "react-router-dom";
 
 const PasswordReset = () => {
   const { handleChange, values, handleSubmit, errors } = useForm(validate);
+  const navigate = useNavigate();
 
   const title = "Reset Password";
   const color = "#000000";
+
+  useEffect(() => {
+    isUserLoggedIn() ? navigate("/recommendation") : navigate("/resetPwd");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="form-content-right">
