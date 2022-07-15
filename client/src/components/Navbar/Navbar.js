@@ -1,8 +1,7 @@
 import React from "react";
 import { AppBar, Typography, TextField, Toolbar } from "@material-ui/core";
 import useStyles from "./Styles.js";
-import { Link } from "react-router-dom";
-// import blingLogo from "../../images/logo.svg";
+import { Link, useNavigate } from "react-router-dom";
 import bling from "../../images/bling.png";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -11,22 +10,17 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-//import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
 
   return (
     <div>
       <AppBar className={classes.appBar} color="inherit">
-        <Link to="/" className={classes.brandContainer}>
+        <Link to={"/"} className={classes.brandContainer}>
           <img src={bling} alt="TheBlingList" height="42px" />
-          {/* <img
-            className={classes.image}
-            src={blingLogo}
-            alt="memories"
-            height="40px"
-          /> */}
         </Link>
         <Link
           to="/blogs"
@@ -35,24 +29,19 @@ const Navbar = () => {
           <Typography>BLOGS</Typography>
         </Link>
         <Link
-          to="/recommendation"
+          to={"/recommendation"}
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>PRODUCTS</Typography>
         </Link>
-        
+
         <Link
-          to="/giftcard"
+          to={"/giftcard"}
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>GIFT CARD</Typography>
         </Link>
-        {/* <Link
-          to="/aboutus"
-          style={{ color: "inherit", textDecoration: "inherit" }}
-        >
-          <Typography>ABOUT US</Typography>
-        </Link> */}
+
         <Toolbar>
           <TextField
             label="Search"
@@ -67,7 +56,7 @@ const Navbar = () => {
             }}
           />
 
-          <Link to="/map">
+          <Link to={"/map"}>
             <LocationOnOutlinedIcon
               style={{
                 width: "50px",
@@ -77,7 +66,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/favorites">
+          <Link to={"/favorites"}>
             <FavoriteBorderIcon
               style={{
                 width: "50px",
@@ -87,7 +76,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/profile">
+          <Link to={"/profile"}>
             <PersonOutlineOutlinedIcon
               style={{
                 width: "50px",
@@ -97,7 +86,7 @@ const Navbar = () => {
               }}
             />
           </Link>
-          <Link to="/cart">
+          <Link to={"/cart"}>
             <ShoppingBagOutlinedIcon
               style={{
                 width: "50px",
@@ -107,16 +96,22 @@ const Navbar = () => {
               }}
             />
           </Link>
-          {/* <Link to="/contactus">
-            <CallOutlinedIcon
+          <div
+            onClick={() => {
+              localStorage.clear();
+              navigate("/");
+            }}
+          >
+            <LogoutIcon
               style={{
                 width: "50px",
                 height: "35px",
                 color: "black",
                 paddingTop: "14%",
+                cursor: "pointer",
               }}
             />
-          </Link> */}
+          </div>
         </Toolbar>
       </AppBar>
     </div>

@@ -5,3 +5,9 @@ export const checkoutPayment = (params) => {
     return result;
   });
 };
+
+export const giftCardPayment = (params) => {
+  return PaymentService.giftCardPayment(params).then((result) => {
+    return result;
+  });
+};

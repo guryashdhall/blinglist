@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import useStyles from "./Styles.js";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
-import FileBase from 'react-file-base64';
-import { ALPHABET_REGEX } from '../../../Constants/constants.js';
-import { NUMBER_REGEX } from '../../../Constants/constants';
+import FileBase from "react-file-base64";
+import { ALPHABET_REGEX } from "../../../Constants/constants.js";
+import { NUMBER_REGEX } from "../../../Constants/constants";
 import { ToastContainer, toast } from "react-toastify";
-import { createProduct, getProduct, editProduct } from "../../../store/actions/admin";
-
+import {
+  createProduct,
+  getProduct,
+  editProduct,
+} from "../../../store/actions/admin";
 
 const Form = ({ currentProductId }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log(currentProductId)
-
     if (currentProductId) {
       getProduct(currentProductId).then((result) => {
         if (result.success === true) {
-
           setProductInfo({
             name: result["product"]["productName"],
             desc: result["product"]["productDescription"],
@@ -28,41 +28,41 @@ const Form = ({ currentProductId }) => {
             type: result["product"]["productType"],
             image: result["product"]["productImage"],
             errors: {
-              name: '',
-              desc: '',
-              price: '',
-              quantity: '',
-              color: '',
-              metal: '',
-              type: '',
-              image: '',
+              name: "",
+              desc: "",
+              price: "",
+              quantity: "",
+              color: "",
+              metal: "",
+              type: "",
+              image: "",
             },
-          })
+          });
         }
-      })
+      });
     }
-  }, [currentProductId])  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentProductId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   var [productInfo, setProductInfo] = useState({
-    name: '',
-    desc: '',
-    price: '',
-    quantity: '',
-    color: '',
-    metal: '',
-    type: '',
-    image: '',
+    name: "",
+    desc: "",
+    price: "",
+    quantity: "",
+    color: "",
+    metal: "",
+    type: "",
+    image: "",
     errors: {
-      name: '',
-      desc: '',
-      price: '',
-      quantity: '',
-      color: '',
-      metal: '',
-      type: '',
-      image: '',
+      name: "",
+      desc: "",
+      price: "",
+      quantity: "",
+      color: "",
+      metal: "",
+      type: "",
+      image: "",
     },
-  })
+  });
 
   const handleProductNameEvents = () => {
     if (productInfo.name === "" || !productInfo.name.match(ALPHABET_REGEX)) {
@@ -78,11 +78,11 @@ const Form = ({ currentProductId }) => {
         ...productInfo,
         errors: {
           ...productInfo.errors,
-          name: '',
+          name: "",
         },
       });
     }
-  }
+  };
 
   const handleProductPriceEvents = () => {
     if (productInfo.price === "" || !productInfo.price.match(NUMBER_REGEX)) {
@@ -98,14 +98,17 @@ const Form = ({ currentProductId }) => {
         ...productInfo,
         errors: {
           ...productInfo.errors,
-          price: '',
+          price: "",
         },
       });
     }
   };
 
   const handleProductQuantityEvents = () => {
-    if (productInfo.quantity === "" || !productInfo.quantity.match(NUMBER_REGEX)) {
+    if (
+      productInfo.quantity === "" ||
+      !productInfo.quantity.match(NUMBER_REGEX)
+    ) {
       setProductInfo({
         ...productInfo,
         errors: {
@@ -118,7 +121,7 @@ const Form = ({ currentProductId }) => {
         ...productInfo,
         errors: {
           ...productInfo.errors,
-          quantity: '',
+          quantity: "",
         },
       });
     }
@@ -126,26 +129,26 @@ const Form = ({ currentProductId }) => {
 
   const handleClear = () => {
     setProductInfo({
-      name: '',
-      desc: '',
-      price: '',
-      quantity: '',
-      color: '',
-      metal: '',
-      type: '',
-      image: '',
+      name: "",
+      desc: "",
+      price: "",
+      quantity: "",
+      color: "",
+      metal: "",
+      type: "",
+      image: "",
       errors: {
-        name: '',
-        desc: '',
-        quantity: '',
-        price: '',
-        color: '',
-        metal: '',
-        type: '',
-        image: '',
+        name: "",
+        desc: "",
+        quantity: "",
+        price: "",
+        color: "",
+        metal: "",
+        type: "",
+        image: "",
       },
-    })
-  }
+    });
+  };
 
   const handleProductInformation = (fieldName, value) => {
     setProductInfo({
@@ -153,7 +156,6 @@ const Form = ({ currentProductId }) => {
       [fieldName]: value,
     });
   };
-
 
   const addProduct = (e) => {
     e.preventDefault();
@@ -195,8 +197,7 @@ const Form = ({ currentProductId }) => {
             draggable: true,
             progress: undefined,
           });
-        }
-        else {
+        } else {
           toast.success("Product could not be edited. Please try again!", {
             position: "bottom-right",
             theme: "dark",
@@ -209,9 +210,7 @@ const Form = ({ currentProductId }) => {
           });
         }
       });
-
-    }
-    else {
+    } else {
       createProduct(body).then((result) => {
         if (result.success === true) {
           toast.success("Added product successfully!", {
@@ -224,8 +223,7 @@ const Form = ({ currentProductId }) => {
             draggable: true,
             progress: undefined,
           });
-        }
-        else {
+        } else {
           toast.error("Please fill all the fields!", {
             position: "bottom-right",
             theme: "dark",
@@ -237,14 +235,20 @@ const Form = ({ currentProductId }) => {
             progress: undefined,
           });
         }
-      })
+      });
     }
   };
 
   return (
     <Paper className={classes.paper} elevation={10}>
-      <form autoComplete="off" className={`${classes.root} ${classes.form}`} onSubmit={addProduct}>
-        <Typography variant="h6">{currentProductId ? "Edit Product" : "Add Product"}</Typography>
+      <form
+        autoComplete="off"
+        className={`${classes.root} ${classes.form}`}
+        onSubmit={addProduct}
+      >
+        <Typography variant="h6">
+          {currentProductId ? "Edit Product" : "Add Product"}
+        </Typography>
         <TextField
           name="name"
           variant="outlined"
@@ -256,7 +260,8 @@ const Form = ({ currentProductId }) => {
           onChange={(e) => {
             handleProductInformation("name", e.target.value);
           }}
-          onBlur={handleProductNameEvents} />
+          onBlur={handleProductNameEvents}
+        />
         <TextField
           name="description"
           variant="outlined"
@@ -280,7 +285,8 @@ const Form = ({ currentProductId }) => {
           onChange={(e) => {
             handleProductInformation("price", e.target.value);
           }}
-          onBlur={handleProductPriceEvents} />
+          onBlur={handleProductPriceEvents}
+        />
         <TextField
           name="quantity"
           variant="outlined"
@@ -292,7 +298,8 @@ const Form = ({ currentProductId }) => {
           onChange={(e) => {
             handleProductInformation("quantity", e.target.value);
           }}
-          onBlur={handleProductQuantityEvents} />
+          onBlur={handleProductQuantityEvents}
+        />
         <TextField
           name="color"
           variant="outlined"
@@ -334,11 +341,31 @@ const Form = ({ currentProductId }) => {
           <FileBase
             type="file"
             multiple={false}
-            onDone={({ base64 }) => handleProductInformation("image", base64)} />
+            onDone={({ base64 }) => handleProductInformation("image", base64)}
+          />
         </div>
 
-        <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" disabled={false}>Submit</Button>
-        <Button className={classes.buttonSubmit} variant="contained" color="secondary" size="large" onClick={() => { handleClear() }} >Clear</Button>
+        <Button
+          className={classes.buttonSubmit}
+          variant="contained"
+          color="primary"
+          size="large"
+          type="submit"
+          disabled={false}
+        >
+          Submit
+        </Button>
+        <Button
+          className={classes.buttonSubmit}
+          variant="contained"
+          color="secondary"
+          size="large"
+          onClick={() => {
+            handleClear();
+          }}
+        >
+          Clear
+        </Button>
       </form>
       <ToastContainer />
     </Paper>
