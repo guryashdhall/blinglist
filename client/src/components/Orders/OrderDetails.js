@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from "@mui/material/Container";
@@ -8,17 +8,18 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 
-import { CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea, CardActions } from "@mui/material";
 import item2 from "../../images/j2.jpg";
 import Cart from "../Cart/Cart";
 import ReviewPage from "../Review/ReviewPage";
 import { useNavigate } from "react-router-dom";
 
 import { getOrder } from "../../store/actions/order.js";
+import { isUserLoggedIn } from "../../Helpers/helper";
 
 const theme = createTheme();
 function OrderDetails() {
@@ -32,14 +33,28 @@ function OrderDetails() {
   };
 
   useEffect(() => {
-    getOrder(`${params.id}`).then((result) => {
-      result.data[0].createdAt = new Date(result.data[0].createdAt).toDateString();
-      result.data[0].delivery = new Date(result.data[0].delivery).toDateString();
-      result.data[0].userName = "Group 17"
-      setOrder(result.data[0])
-    })
+    let role = localStorage.getItem("role");
+    if (isUserLoggedIn()) {
+      if (role === "customer") {
+        getOrder(`${params.id}`).then((result) => {
+          result.data[0].createdAt = new Date(
+            result.data[0].createdAt
+          ).toDateString();
+          result.data[0].delivery = new Date(
+            result.data[0].delivery
+          ).toDateString();
+          result.data[0].userName = "Group 17";
+          setOrder(result.data[0]);
+        });
+      } else if (role === "admin") {
+        navigate("/admin");
+      }
+    } else {
+      navigate("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(order)
+
   const toCart = (e) => {
     e.preventDefault();
     <Cart />;
@@ -148,7 +163,6 @@ function OrderDetails() {
             }}
           >
             <Grid
-
               container
               component="form"
               sx={{
@@ -195,99 +209,100 @@ function OrderDetails() {
               </Grid>
             </Grid>
 
-
-            {order.itemsList?.map(item => {
-              return <Grid
-                key={item._id}
-                container
-                component="form"
-                sx={{
-                  p: 1,
-                  alignItems: "left",
-                  justifyContent: "left",
-                }}
-              >
-                <Grid item xs style={{ maxInlineSize: "max-content" }}>
-                  <img
-                    src={item.productImage}
-                    alt="earring1"
-                    width="150"
-                    height="120"
-                    alignitems="left"
-                  />
-                  <br></br>
-                </Grid>
-                <Grid item xs style={{ padding: 5 }}>
-                  <Link href="#" sx={{ color: "purple" }} underline="hover">
-                    {item.productName}
-                  </Link>
-                  <Typography
-                    sx={{ color: "#808080" }}
-                    variant="caption"
-                    gutterBottom
-                    component="div"
-                  >
-                    {item.productColor} {item.productType}
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#808080" }}
-                    variant="body2"
-                    gutterBottom
-                    component="div"
-                  >
-                    Metal Type: {item.metalType}
-                  </Typography>
-                </Grid>
-
+            {order.itemsList?.map((item) => {
+              return (
                 <Grid
-                  item
-                  xs
-                  style={{
-                    textAlign: "right",
-                    maxInlineSize: "max-content",
-                    padding: 3,
+                  key={item._id}
+                  container
+                  component="form"
+                  sx={{
+                    p: 1,
+                    alignItems: "left",
+                    justifyContent: "left",
                   }}
                 >
-                  <br></br>
-                  <Button
-                    sx={{
-                      color: "#800080",
-                      border: "1px solid #80008059",
-                      "&:hover": {
-                        backgroundColor: "#e8b8ff96",
-                        opacity: [0.9, 0.8, 0.7],
-                      },
+                  <Grid item xs style={{ maxInlineSize: "max-content" }}>
+                    <img
+                      src={item.productImage}
+                      alt="earring1"
+                      width="150"
+                      height="120"
+                      alignitems="left"
+                    />
+                    <br></br>
+                  </Grid>
+                  <Grid item xs style={{ padding: 5 }}>
+                    <Link href="#" sx={{ color: "purple" }} underline="hover">
+                      {item.productName}
+                    </Link>
+                    <Typography
+                      sx={{ color: "#808080" }}
+                      variant="caption"
+                      gutterBottom
+                      component="div"
+                    >
+                      {item.productColor} {item.productType}
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#808080" }}
+                      variant="body2"
+                      gutterBottom
+                      component="div"
+                    >
+                      Metal Type: {item.metalType}
+                    </Typography>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs
+                    style={{
+                      textAlign: "right",
+                      maxInlineSize: "max-content",
+                      padding: 3,
                     }}
-                    onClick={toReviews}
                   >
-                    Write a review
-                  </Button>
-                </Grid>
-                <Grid
-                  item
-                  xs
-                  style={{
-                    textAlign: "right",
-                    maxInlineSize: "max-content",
-                    padding: 3,
-                  }}
-                >
-                  <br></br>
-                  <Button
-                    sx={{
-                      color: "#800080",
-                      border: "1px solid #80008059",
-                      "&:hover": {
-                        backgroundColor: "#e8b8ff96",
-                        opacity: [0.9, 0.8, 0.7],
-                      },
+                    <br></br>
+                    <Button
+                      sx={{
+                        color: "#800080",
+                        border: "1px solid #80008059",
+                        "&:hover": {
+                          backgroundColor: "#e8b8ff96",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                      }}
+                      onClick={toReviews}
+                    >
+                      Write a review
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    xs
+                    style={{
+                      textAlign: "right",
+                      maxInlineSize: "max-content",
+                      padding: 3,
                     }}
-                    onClick={toCart}
                   >
-                    Repurchase
-                  </Button>
+                    <br></br>
+                    <Button
+                      sx={{
+                        color: "#800080",
+                        border: "1px solid #80008059",
+                        "&:hover": {
+                          backgroundColor: "#e8b8ff96",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                      }}
+                      onClick={toCart}
+                    >
+                      Repurchase
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
+              );
             })}
           </Box>
           <Grid

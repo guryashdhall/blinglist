@@ -1,7 +1,6 @@
 import { BACKEND_URL } from "../config/config";
 
 const AdminService = {
-
   getProduct: (id) => {
     const token = "jwt-token";
 
@@ -17,7 +16,6 @@ const AdminService = {
         return data;
       });
   },
-
 
   getProducts: () => {
     const token = "jwt-token";
@@ -35,10 +33,8 @@ const AdminService = {
       });
   },
 
-
   createProduct: (params) => {
     const token = "jwt-token";
-    console.log("create product");
 
     return fetch(BACKEND_URL + "administration/admin", {
       method: "POST",

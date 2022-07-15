@@ -5,95 +5,104 @@ import { Grid, Divider, CircularProgress } from "@material-ui/core";
 import Category from "./Categories/Category";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { getNewArrivalsProducts, getMostPopularProducts } from "../../store/actions/recommendation";
+import {
+  getNewArrivalsProducts,
+  getMostPopularProducts,
+} from "../../store/actions/recommendation";
+import { isUserLoggedIn } from "../../Helpers/helper";
 
 const Recommendation = () => {
   const navigate = useNavigate();
-  const [earringImages, setEarringImages] = useState([])
-  const [necklaceImages, setNecklaceImages] = useState([])
-  const [ringImages, setRingImages] = useState([])
+  const [earringImages, setEarringImages] = useState([]);
+  const [necklaceImages, setNecklaceImages] = useState([]);
+  const [ringImages, setRingImages] = useState([]);
 
-  const [earringMpImages, setEarringMpImages] = useState([])
-  const [necklaceMpImages, setNecklaceMpImages] = useState([])
-  const [ringMpImages, setRingMpImages] = useState([])
+  const [earringMpImages, setEarringMpImages] = useState([]);
+  const [necklaceMpImages, setNecklaceMpImages] = useState([]);
+  const [ringMpImages, setRingMpImages] = useState([]);
 
   useEffect(() => {
-    var jewels1 = []
-    var jewels2 = []
-    var jewels3 = []
+    if (isUserLoggedIn()) {
+      var jewels1 = [];
+      var jewels2 = [];
+      var jewels3 = [];
 
-    getNewArrivalsProducts().then((result) => {
-
-      for (var i = 0; i < result["earring"].length; i++) {
-        var arr1 = {
-          label: result["earring"][i]["productName"],
-          imgPath: result["earring"][i]["productImage"]
-        }
-        jewels1.push(arr1)
-      }
-      setEarringImages(jewels1)
-
-      for (var i = 0; i < result["necklace"].length; i++) {
-        var arr2 = {
-          label: result["necklace"][i]["productName"],
-          imgPath: result["necklace"][i]["productImage"]
-        }
-        jewels2.push(arr2)
-      }
-      setNecklaceImages(jewels2)
-
-      for (var i = 0; i < result["ring"].length; i++) {
-        var arr3 = {
-          label: result["ring"][i]["productName"],
-          imgPath: result["ring"][i]["productImage"]
-        }
-        jewels3.push(arr3)
-      }
-      setRingImages(jewels3)
-      console.log("-----------brpoooooooooo11 ", ringImages)
-    })
-
-
-    //--------------------------------
-    var mp_earring = []
-    var mp_necklace = []
-    var mp_ring = []
-
-    getMostPopularProducts().then((result) => {
-      for(var i=0; i< result["message"].length; i++) {
-        if(result["message"][i]["productsList"]["productType"] === "ring") {
+      getNewArrivalsProducts().then((result) => {
+        for (var i = 0; i < result["earring"].length; i++) {
           var arr1 = {
-            label: result["message"][i]["productsList"]["productName"],
-            imgPath: result["message"][i]["productsList"]["productImage"]
-          }
-          mp_ring.push(arr1)
+            label: result["earring"][i]["productName"],
+            imgPath: result["earring"][i]["productImage"],
+          };
+          jewels1.push(arr1);
         }
-      }
-      setRingMpImages(mp_ring)
+        setEarringImages(jewels1);
 
-      for(var i=0; i< result["message"].length; i++) {
-        if(result["message"][i]["productsList"]["productType"] === "necklace") {
+        for (var i = 0; i < result["necklace"].length; i++) {
           var arr2 = {
-            label: result["message"][i]["productsList"]["productName"],
-            imgPath: result["message"][i]["productsList"]["productImage"]
-          }
-          mp_necklace.push(arr2)
+            label: result["necklace"][i]["productName"],
+            imgPath: result["necklace"][i]["productImage"],
+          };
+          jewels2.push(arr2);
         }
-      }
-      setNecklaceMpImages(mp_necklace)
+        setNecklaceImages(jewels2);
 
-      for(var i=0; i< result["message"].length; i++) {
-        if(result["message"][i]["productsList"]["productType"] === "earring") {
+        for (var i = 0; i < result["ring"].length; i++) {
           var arr3 = {
-            label: result["message"][i]["productsList"]["productName"],
-            imgPath: result["message"][i]["productsList"]["productImage"]
-          }
-          mp_earring.push(arr3)
+            label: result["ring"][i]["productName"],
+            imgPath: result["ring"][i]["productImage"],
+          };
+          jewels3.push(arr3);
         }
-      }
-      setEarringMpImages(mp_earring)
-    })
-  }, [])
+        setRingImages(jewels3);
+      });
+
+      var mp_earring = [];
+      var mp_necklace = [];
+      var mp_ring = [];
+
+      getMostPopularProducts().then((result) => {
+        for (var i = 0; i < result["message"].length; i++) {
+          if (result["message"][i]["productsList"]["productType"] === "ring") {
+            var arr1 = {
+              label: result["message"][i]["productsList"]["productName"],
+              imgPath: result["message"][i]["productsList"]["productImage"],
+            };
+            mp_ring.push(arr1);
+          }
+        }
+        setRingMpImages(mp_ring);
+
+        for (var i = 0; i < result["message"].length; i++) {
+          if (
+            result["message"][i]["productsList"]["productType"] === "necklace"
+          ) {
+            var arr2 = {
+              label: result["message"][i]["productsList"]["productName"],
+              imgPath: result["message"][i]["productsList"]["productImage"],
+            };
+            mp_necklace.push(arr2);
+          }
+        }
+        setNecklaceMpImages(mp_necklace);
+
+        for (var i = 0; i < result["message"].length; i++) {
+          if (
+            result["message"][i]["productsList"]["productType"] === "earring"
+          ) {
+            var arr3 = {
+              label: result["message"][i]["productsList"]["productName"],
+              imgPath: result["message"][i]["productsList"]["productImage"],
+            };
+            mp_earring.push(arr3);
+          }
+        }
+        setEarringMpImages(mp_earring);
+      });
+    } else {
+      navigate("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -108,39 +117,36 @@ const Recommendation = () => {
         <Typography variant="h4" align="center">
           New Arrivals
         </Typography>
-        {
-          earringImages.length > 0 ? (
-            <Grid
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
+        {earringImages.length > 0 ? (
+          <Grid
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
               }}
-            >
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={earringImages}
-              />
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={necklaceImages}
-              />
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={ringImages}
-              />
-            </Grid>
-
-          ) : <CircularProgress />
-        }
-
-
+              images={earringImages}
+            />
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
+              }}
+              images={necklaceImages}
+            />
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
+              }}
+              images={ringImages}
+            />
+          </Grid>
+        ) : (
+          <CircularProgress />
+        )}
       </div>
 
       <div style={{ margin: "70px" }}>
@@ -151,39 +157,36 @@ const Recommendation = () => {
           You May Also Like
         </Typography>
 
-        {
-          earringImages.length > 0 ? (
-            <Grid
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
+        {earringImages.length > 0 ? (
+          <Grid
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
               }}
-            >
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={earringImages}
-              />
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={earringImages}
-              />
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={earringImages}
-              />
-            </Grid>
-
-          ) : <CircularProgress />
-        }
-
-
+              images={earringImages}
+            />
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
+              }}
+              images={earringImages}
+            />
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
+              }}
+              images={earringImages}
+            />
+          </Grid>
+        ) : (
+          <CircularProgress />
+        )}
       </div>
 
       <div style={{ margin: "70px" }}>
@@ -194,37 +197,36 @@ const Recommendation = () => {
           Most Popular
         </Typography>
 
-        {
-          earringImages.length > 0 ? (
-            <Grid
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
+        {earringImages.length > 0 ? (
+          <Grid
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
               }}
-            >
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={ringMpImages}
-              />
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={necklaceMpImages}
-              />
-              <Slider
-                onClick={() => {
-                  navigate("/viewdetails");
-                }}
-                images={earringMpImages}
-              />
-            </Grid>
-
-          ) : <CircularProgress />
-        }
+              images={ringMpImages}
+            />
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
+              }}
+              images={necklaceMpImages}
+            />
+            <Slider
+              onClick={() => {
+                navigate("/viewdetails");
+              }}
+              images={earringMpImages}
+            />
+          </Grid>
+        ) : (
+          <CircularProgress />
+        )}
       </div>
     </div>
   );

@@ -66,6 +66,17 @@ export const validateExpireDate = (date) => {
   }
 };
 
+export const isUserLoggedIn = () => {
+  let user = JSON.parse(localStorage.getItem("user"));
+  let token = localStorage.getItem("token");
+
+  if (user === null || token === null) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 const getFilteredDate = (date) => {
   return date.slice(0, 2) + date.slice(3);
 };

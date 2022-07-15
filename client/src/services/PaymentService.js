@@ -4,7 +4,6 @@ const PaymentService = {
   checkout: (params) => {
     // const token = localStorage.getItem("token");
     const token = "jwt-token";
-    console.log("Payment");
 
     return fetch(BACKEND_URL + "checkout/payment", {
       method: "POST",
@@ -17,6 +16,23 @@ const PaymentService = {
       .then((res) => res.json())
       .then((data) => {
         return data;
+      });
+  },
+
+  giftCardPayment: (params) => {
+    const token = localStorage.getItem("token");
+
+    return fetch(BACKEND_URL + "checkout/payGiftCard", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+      body: JSON.stringify(params),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        return result;
       });
   },
 };

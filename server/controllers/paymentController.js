@@ -3,6 +3,7 @@ const stripe = require("stripe")(
 );
 
 const { Orders } = require("../models/Orders");
+const { GiftCards } = require("../models/GiftCard");
 
 exports.makePayment = async (req, res) => {
   try {
@@ -53,5 +54,54 @@ exports.makePayment = async (req, res) => {
     return res
       .status(502)
       .json({ success: false, error: `Something went wrong!! ${err}` });
+  }
+};
+
+exports.makeGiftCardPayment = async (req, res) => {
+  try {
+    const { token, amount, user, giftCardImage } = req.body;
+    return await stripe.customers
+      .create({
+        email: user.email,
+        source: token.id,
+      })
+      .then((customer) => {
+        stripe.charges.create({
+          amount: amount,
+          currency: "cad",
+          customer: customer.id,
+          receipt_email: user.email,
+          description: "Gift card payment successful!",
+        });
+      })
+      .then(async () => {
+        const giftCard = new GiftCards({
+          email: user.email,
+          username: user.username,
+          deliveryAddress: user.address,
+          amount: amount * 100,
+          giftCardImage: giftCardImage,
+        });
+
+        await giftCard
+          .save()
+          .then((result) => {
+
+            return res.status(200).json({
+              success: true,
+              message: `Payment done! Email is ${user.email}!`,
+            });
+          })
+          .catch((err) => {
+            return res.status(502).json({
+              success: false,
+              error: `Something went wrong!! ${err}`,
+            });
+          });
+      });
+  } catch (error) {
+    return res
+      .status(502)
+      .json({ success: false, error: `Something went wrong!! ${error}` });
   }
 };
