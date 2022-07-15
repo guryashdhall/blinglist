@@ -12,22 +12,27 @@ import Select from "@mui/material/Select";
 import { validateEmail } from "../../../Helpers/validateInfo";
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
-import M from "materialize-css";
+import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ForgotPwd = () => {
   // const { handleChange, values, handleSubmit, errors } = useForm(validate);
-  const [SecurityQuestion, setSecurityQuestion] = React.useState("");
+  // const [SecurityQuestion, setSecurityQuestion] = React.useState("");
 
   const title = "Forgot Password?";
   const color = "#000000";
   const navigate = useNavigate();
+  const SecurityQuestion ="";
 
   const [forgotPwdInfo, setforgotPwdInfo] = useState({
     email: '',
     securityAnswer: '',
+    securityQuestion: '',
     errors: {
       email: '',
-      securityAnswer: ''
+      securityAnswer: '',
+      securityQuestion: '',
     }
   });
 
@@ -64,15 +69,54 @@ const ForgotPwd = () => {
       [name]: value
     })
   }
-  
+
   const onhandleSubmit = (e) => { 
-    if(forgotPwdInfo.errors.email == '' && forgotPwdInfo.errors.securityAnswer == '')
+  e.preventDefault();
+    if (forgotPwdInfo.errors.email === '' && forgotPwdInfo.errors.securityAnswer ==='') 
     {
-      navigate("/resetPwd");
+      axios.post("http://localhost:8080/forgot-password", {
+       
+        email: forgotPwdInfo.email,
+        securityAnswer: forgotPwdInfo.securityAnswer,
+        securityQuestion: forgotPwdInfo.securityQuestion
+      }).then(res => {
+        console.log(forgotPwdInfo)
+        console.log(res.data.success)
+        if (res.data.success === true) {
+          console.log("CORRECt");
+          toast.success(res.data.message, {
+            position: "top-right",
+            theme: "dark",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            onClose: () => {
+              navigate("/reset-password");
+            }
+          })
+        } else {
+          toast.error(res.data.message, {
+            position: "top-right",
+            theme: "dark",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
+        }
+      }
+      ).catch(err => {
+        console.log(err);
+      }
+      );
     }
-    else{
+    else {
       handleEmailErrors();
-      handleSecurityAnswerErrors();
     }
   }
   return (
@@ -109,19 +153,17 @@ const ForgotPwd = () => {
         <br />
         <Box sx={{ minWidth: 225 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
+            <InputLabel id="demo-simple-select-label" value ={SecurityQuestion}>
               Security Question
             </InputLabel>
             <Select
+             name="securityQuestion"
               color="secondary"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={SecurityQuestion}
+              // value={SecurityQuestion}
               label="Security Question"
-              onChange={(e) => {
-                console.log("here");
-                setSecurityQuestion(e.target.value);
-              }}
+              onChange={(e) => onhandleChange("securityQuestion", e.target.value)}
             >
               <MenuItem value={10}>What's your pet name?</MenuItem>
               <MenuItem value={20}>What's your mother's maiden name?</MenuItem>
@@ -157,11 +199,12 @@ const ForgotPwd = () => {
           type="submit"
           style={{ background: "#000000" }}
           // onClick={handleUserSubmit}
-          onSubmit={onhandleSubmit}
+          onClick={onhandleSubmit}
         >
           Submit
         </Button>
       </form>
+      <ToastContainer/>
     </div>
   );
 };

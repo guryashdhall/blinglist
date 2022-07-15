@@ -18,7 +18,6 @@ import validate, { validateEmail } from "../../../Helpers/validateInfo";
 import Switch from '@mui/material/Switch';
 import axios from "axios";
 import SuccessAlert from "../../SuccessAlert";
-import M from "materialize-css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -95,7 +94,6 @@ export default function SignIn() {
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("role", res.data.user.role);
 
-            console.log("I AM HERE" + res.data.message);
             toast.success(res.data.message, {
               position: "top-right",
               theme: "dark",

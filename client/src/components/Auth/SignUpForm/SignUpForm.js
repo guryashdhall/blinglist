@@ -190,6 +190,7 @@ const FormSignUp = () => {
         securityQuestion: signUpInfo.securityQuestion
       }).then(res => {
         if (res.data.success) {
+          console.log(signUpInfo);
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.user.role);
           toast.success(res.data.message, {
@@ -205,7 +206,6 @@ const FormSignUp = () => {
               navigate("/");
             }
           })
-          // M.toast({ html: res.data.message, classes: "green", onClose: navigate("/login") });
 
         } else {
           toast.error(res.data.message, {

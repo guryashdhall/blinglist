@@ -168,20 +168,23 @@ router.post('/login', (req, res) => {
 router.post('/forgot-password', (req, res) => {
     const { email, securityQuestion, securityAnswer } = req.body;
     if (!email | !securityQuestion | !securityAnswer) {
-        res.status(422).send('Please fill out all fields');
-    }
+        return res.status(200).json({
+            success: false,
+            message: 'Please fill out all fields'
+    })
+}
     else {
         User.findOne({ email: email })
         .then(savedUser => {
             if (!savedUser) {
-                return res.status(422).json({
+                return res.status(200).json({
                     success: false,
                     message: 'User does not exist'
                 });
             }
             else {
                 if (savedUser.securityQuestion !== securityQuestion || savedUser.securityAnswer !== securityAnswer) {
-                    return res.status(422).json({
+                    return res.status(200).json({
                         success: false,
                         message: 'Incorrect security question or answer'
                     });
