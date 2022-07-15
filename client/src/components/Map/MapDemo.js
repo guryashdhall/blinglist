@@ -37,7 +37,12 @@ function MapDemo() {
   const citiesLayerRef = useRef(null);
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/map") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/map")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -59,8 +59,13 @@ const GiftCard = () => {
   const [errorInAmount, setErrorInAmount] = useState("");
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/giftcard") : navigate("/");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/giftcard")
+        : navigate("/admin")
+      : navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectGiftCard = (imageIndex) => {

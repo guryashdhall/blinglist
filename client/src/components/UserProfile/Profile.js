@@ -20,7 +20,12 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/profile") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/profile")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

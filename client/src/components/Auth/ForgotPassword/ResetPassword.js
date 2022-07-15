@@ -16,7 +16,12 @@ const PasswordReset = () => {
   const color = "#000000";
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/recommendation") : navigate("/resetPwd");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/recommendation")
+        : navigate("/admin")
+      : navigate("/resetPwd");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

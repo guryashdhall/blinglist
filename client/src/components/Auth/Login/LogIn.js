@@ -19,6 +19,7 @@ import SuccessAlert from "../../SuccessAlert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isUserLoggedIn } from "../../../Helpers/helper";
+import { login } from "../../../store/actions/auth";
 
 const theme = createTheme();
 
@@ -34,7 +35,12 @@ export default function SignIn() {
   });
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/recommendation") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/recommendation")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -88,47 +94,29 @@ export default function SignIn() {
   const onhandleSubmit = (e) => {
     e.preventDefault();
     if (userInfo.errors.email === "" && userInfo.errors.password === "") {
-      axios
-        .post("http://localhost:8080/login", {
-          email: userInfo.email,
-          password: userInfo.password,
-        })
-        .then((res) => {
-          if (res.data.success === true) {
-            if (res.data.user.role === "customer") {
-              localStorage.setItem("token", res.data.session_token);
-              localStorage.setItem("role", res.data.user.role);
-              localStorage.setItem("user", JSON.stringify(res.data.user));
-              toast.success(res.data.message, {
-                position: "top-right",
-                theme: "dark",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                onClose: () => {
-                  navigate("/recommendation");
-                },
-              });
-            } else {
-              toast.success(res.data.message, {
-                position: "top-right",
-                theme: "dark",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                onClose: () => {
-                  navigate("/admin");
-                },
-              });
-            }
+      login({ email: userInfo.email, password: userInfo.password }).then(
+        (response) => {
+          console.log(response);
+          if (response.data.success) {
+            toast.success(response.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClose: () => {
+                navigate(
+                  response.data.user.role === "customer"
+                    ? "/recommendation"
+                    : "/admin"
+                );
+              },
+            });
           } else {
-            toast.error(res.data.message, {
+            toast.error(response.data.message, {
               position: "top-right",
               theme: "dark",
               autoClose: 2000,
@@ -139,10 +127,8 @@ export default function SignIn() {
               progress: undefined,
             });
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        }
+      );
     } else {
       handleEmailErrors();
       handlePwdErrors();

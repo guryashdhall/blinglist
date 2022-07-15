@@ -22,7 +22,12 @@ function Cart() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/cart") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/cart")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

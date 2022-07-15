@@ -18,9 +18,11 @@ const Jewels = () => {
   const [user, setUser] = useState("admin");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const role = localStorage.getItem("role");
+
   useEffect(() => {
     isUserLoggedIn() ? navigate("/admin") : navigate("/");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(
@@ -43,7 +45,7 @@ const Jewels = () => {
 
   return (
     <div>
-      {user === "admin" ? <Form currentProductId={currentProductId} /> : null}
+      {role === "admin" && <Form currentProductId={currentProductId} />}
 
       {jewels["products"] ? (
         <Grid

@@ -10,7 +10,12 @@ import "./Product.css";
 const ViewProduct = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/viewdetails") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/viewdetails")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

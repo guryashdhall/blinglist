@@ -33,17 +33,22 @@ function OrderDetails() {
   };
 
   useEffect(() => {
+    let role = localStorage.getItem("role");
     if (isUserLoggedIn()) {
-      getOrder(`${params.id}`).then((result) => {
-        result.data[0].createdAt = new Date(
-          result.data[0].createdAt
-        ).toDateString();
-        result.data[0].delivery = new Date(
-          result.data[0].delivery
-        ).toDateString();
-        result.data[0].userName = "Group 17";
-        setOrder(result.data[0]);
-      });
+      if (role === "customer") {
+        getOrder(`${params.id}`).then((result) => {
+          result.data[0].createdAt = new Date(
+            result.data[0].createdAt
+          ).toDateString();
+          result.data[0].delivery = new Date(
+            result.data[0].delivery
+          ).toDateString();
+          result.data[0].userName = "Group 17";
+          setOrder(result.data[0]);
+        });
+      } else if (role === "admin") {
+        navigate("/admin");
+      }
     } else {
       navigate("/");
     }

@@ -19,7 +19,12 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/checkout") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/checkout")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

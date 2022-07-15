@@ -12,7 +12,12 @@ const ViewBlog = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/blogs") : navigate("/");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/blogs")
+        : navigate("/admin")
+      : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

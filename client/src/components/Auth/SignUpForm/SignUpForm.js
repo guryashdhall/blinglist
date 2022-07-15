@@ -14,6 +14,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isUserLoggedIn } from "../../../Helpers/helper";
+import { signUp } from "../../../store/actions/auth";
 
 const FormSignUp = () => {
   const navigate = useNavigate();
@@ -39,7 +40,12 @@ const FormSignUp = () => {
   });
 
   useEffect(() => {
-    isUserLoggedIn() ? navigate("/recommendation") : navigate("/signup");
+    let role = localStorage.getItem("role");
+    isUserLoggedIn()
+      ? role === "customer"
+        ? navigate("/recommendation")
+        : navigate("/admin")
+      : navigate("/signup");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -192,50 +198,34 @@ const FormSignUp = () => {
       signUpInfo.errors.confirmPassword === "" &&
       signUpInfo.errors.securityAnswer === ""
     ) {
-      axios
-        .post("http://localhost:8080/signup", {
-          firstName: signUpInfo.firstName,
-          lastName: signUpInfo.lastName,
-          email: signUpInfo.email,
-          password: signUpInfo.password,
-          confirmPassword: signUpInfo.confirmPassword,
-          securityAnswer: signUpInfo.securityAnswer,
-          securityQuestion: signUpInfo.securityQuestion,
-        })
-        .then((res) => {
-          if (res.data.success) {
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("role", res.data.user.role);
-            toast.success(res.data.message, {
-              position: "top-right",
-              theme: "dark",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              onClose: () => {
-                navigate("/");
-              },
-            });
-            // M.toast({ html: res.data.message, classes: "green", onClose: navigate("/login") });
-          } else {
-            toast.error(res.data.message, {
-              position: "top-right",
-              theme: "dark",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      signUp(signUpInfo).then((response) => {
+        if (response.data.success) {
+          toast.success(response.data.message, {
+            position: "top-right",
+            theme: "dark",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            onClose: () => {
+              navigate("/");
+            },
+          });
+        } else {
+          toast.error(response.data.message, {
+            position: "top-right",
+            theme: "dark",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
     } else {
       handleFirstNameErrors();
       handleLastNameErrors();
