@@ -13,6 +13,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { isUserLoggedIn } from "../../../Helpers/helper";
+import { BACKEND_URL } from "../../../config/config";
 
 const ForgotPwd = () => {
   // const { handleChange, values, handleSubmit, errors } = useForm(validate);
@@ -85,7 +86,7 @@ const ForgotPwd = () => {
   e.preventDefault();
     if (forgotPwdInfo.errors.email === '' && forgotPwdInfo.errors.securityAnswer ==='') 
     {
-      axios.post("http://localhost:8080/forgot-password", {
+      axios.post(BACKEND_URL + "forgot-password", {
         email: forgotPwdInfo.email,
         securityAnswer: forgotPwdInfo.securityAnswer,
         securityQuestion: forgotPwdInfo.securityQuestion
