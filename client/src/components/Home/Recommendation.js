@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 import React, { useEffect, useState } from "react";
 import Poster from "./Poster/Poster";
 import Slider from "./Slider/Slider";

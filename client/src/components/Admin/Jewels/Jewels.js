@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 import React, { useState, useEffect } from "react";
 import useStyles from "./Styles.js";
 import Jewel from "./Jewel/Jewel.js";
