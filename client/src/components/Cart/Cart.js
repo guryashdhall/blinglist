@@ -1,11 +1,15 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isUserLoggedIn } from "../../Helpers/helper";
+import { addToCart } from "../../store/actions/Jewels";
 import ProductCard from "./ProductCard";
 import Summary from "./Summary";
-
-function Cart() {
+import { connect, shallowEqual, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+function Cart(props) {
+  const location = useLocation();
+  const[product,setProduct] = useState({})
   const boxStyles = (Theme) => ({
     background: "#f3e5f5",
     width: "95%",
@@ -30,9 +34,17 @@ function Cart() {
       : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(()=>{
+    console.log(location.state)
+    props.setItem(location.state)
+  },[product])
 
   return (
     <>
+    {console.log( useSelector(
+    (state) => state.jewelsReducer.cart,
+    shallowEqual
+  ))}
       <Box>
         <Typography variant="h2" sx={{ p: 2 }}>
           Your Cart
@@ -58,4 +70,11 @@ function Cart() {
   );
 }
 
-export default Cart;
+const mapDispatchtoProps = (dispatch) => {
+  return {
+    setItem: (data) => {
+      dispatch(addToCart(data));
+    },
+  };
+};
+export default connect(null, mapDispatchtoProps)(Cart);
