@@ -2,7 +2,7 @@ const initstate = {
   stars: -1,
   reviews: [],
   filtered_reviews: [],
-  cart: []
+  cart: {userid:"",items:[]}
 };
 const jewelsReducer = (state = initstate, action) => {
   switch (action.type) {
@@ -54,6 +54,16 @@ const jewelsReducer = (state = initstate, action) => {
         ],
       };
       return state;
+    
+    case "ADD_TO_CART":
+      state.cart.items=[...state.cart.items,action.item]
+      console.log(state.cart)
+      return state;
+    
+    case "FETCH_TO_CART":
+      state.cart= action.cart;
+      return state;
+
 
     default:
       return state;
