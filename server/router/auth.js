@@ -209,7 +209,6 @@ router.post("/forgot-password", (req, res) => {
 
 router.post("/reset-password", (req, res) => {
   const { email, newpassword, confirmNewPassword } = req.body;
-  console.log(req.body);
   if (!email | !newpassword | !confirmNewPassword) {
     return res.status(200).json({
       success: false,

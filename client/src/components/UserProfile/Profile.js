@@ -1,3 +1,9 @@
+/***
+ * @author : Guryash Singh Dhall
+ * @bannerID : B00910690
+ * @email : guryash.dhall@dal.ca
+ ***/
+
 import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import React, { useEffect } from "react";
@@ -13,11 +19,11 @@ const Profile = () => {
 
   const title = "User Profile";
   const color = "#000000";
-  const [user, setUser] = React.useState({
-    firstName: "Guryash Singh",
-    lastName: "Dhall",
-    email: "guryash.dhall@dal.ca",
-  });
+  // const [user, setUser] = React.useState({
+  //   firstName: "Guryash Singh",
+  //   lastName: "Dhall",
+  //   email: "guryash.dhall@dal.ca",
+  // });
 
   useEffect(() => {
     let role = localStorage.getItem("role");
