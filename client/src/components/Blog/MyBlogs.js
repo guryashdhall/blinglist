@@ -3,25 +3,24 @@
  * @bannerID : B00910690
  * @email : guryash.dhall@dal.ca
  ***/
-
  import React, { useEffect, useState } from "react";
  import { useNavigate } from "react-router-dom";
  import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
  import { deepPurple } from "@mui/material/colors";
+ import { ToastContainer, toast } from "react-toastify";
  import moment from "moment";
+ import "react-toastify/dist/ReactToastify.css";
  import "./Blogs.css";
  import { isUserLoggedIn } from "../../Helpers/helper";
- import { getAllUserBlogs } from "../../store/actions/blog";
- const ViewBlog = () => {
+ import { deleteUserBlog, getUserBlogByID } from "../../store/actions/blog";
+ const MyBlogs = () => {
    const navigate = useNavigate();
    const [blogs, setBlogs] = useState([]);
    useEffect(() => {
      let role = localStorage.getItem("role");
      if (isUserLoggedIn()) {
        if (role === "customer") {
-         getAllUserBlogs().then((response) => {
-           setBlogs(response.data);
-         });
+         getUserBlogs();
        } else if (role === "admin") {
          navigate("/admin");
        }
@@ -30,6 +29,41 @@
      }
      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
+   const getUserBlogs = () => {
+     getUserBlogByID().then((response) => {
+       setBlogs(response.data);
+     });
+   };
+   const handleDelete = (id) => {
+     deleteUserBlog(id).then((response) => {
+       if (response.success) {
+         toast.success(response.message, {
+           position: "bottom-right",
+           theme: "dark",
+           autoClose: 1000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+           onClose: () => {
+             getUserBlogs();
+           },
+         });
+       } else {
+         toast.error("Blog not deleted successfully", {
+           position: "bottom-right",
+           theme: "dark",
+           autoClose: 1000,
+           hideProgressBar: false,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: true,
+           progress: undefined,
+         });
+       }
+     });
+   };
    return (
      <>
        <Grid container>
@@ -42,22 +76,14 @@
              alignItems="center"
              justifyContent={"center"}
            >
-             Bling Stories and Blogs
+             My Blogs
              <Button
                variant="outlined"
                color="secondary"
                sx={{ marginLeft: "2%" }}
-               onClick={() => navigate("/addBlog")}
+               onClick={() => navigate("/blogs")}
              >
-               Add a Blog
-             </Button>
-             <Button
-               variant="outlined"
-               color="secondary"
-               sx={{ marginLeft: "1%" }}
-               onClick={() => navigate("/myBlog")}
-             >
-               My Blogs
+               BACK
              </Button>
            </Typography>
          </Grid>
@@ -114,6 +140,7 @@
                      mt={2}
                      ml={1}
                    >
+                     <b> </b>{" "}
                      <span className="blog-title">{blog.blogTitle}</span>
                    </Typography>
                    <Typography
@@ -125,6 +152,14 @@
                    >
                      {blog.blogDescription}
                    </Typography>
+                   <Button
+                     variant="outlined"
+                     color="error"
+                     sx={{ marginTop: "2%" }}
+                     onClick={() => handleDelete(blog._id)}
+                   >
+                     DELETE
+                   </Button>
                  </Paper>
                </Grid>
              );
@@ -132,8 +167,9 @@
          ) : (
            <h1>No Blogs Found</h1>
          )}
+         <ToastContainer />
        </Grid>
      </>
    );
  };
- export default ViewBlog;
+ export default MyBlogs;
