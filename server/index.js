@@ -23,18 +23,16 @@ app.use(express.urlencoded({ limit: "50mb" }));
 app.use(cors());
 app.use(router);
 
-
 app.use(express.json());
 app.use(require('./router/auth'));
 app.use(require('./router/favourites'));
 app.use(require('./router/search'));
-
-app.get('/', (req, res) => {
-  return res.send("Hii")
-})
 app.use(require('./router/reveiws'));
 app.use(require('./router/products'));
 
+app.get('/', (req, res) => {
+  return res.send("The Blinglist Backend Server")
+})
 
 app.listen(PORT, (err) => {
   if (err) {

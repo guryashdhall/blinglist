@@ -6,7 +6,6 @@ exports.addToFavourites = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
         const alreadyFavourited = await Favourites.find({ userId: ObjectId(user_id), productId: ObjectId(product_id) })
-        console.log(alreadyFavourited);
         if (alreadyFavourited.length == 0) {
             const data = await Favourites({ userId: ObjectId(user_id), productId: ObjectId(product_id) }).save();
             if (data == null || data == '') {
@@ -47,7 +46,6 @@ fetchProductDetails=(data)=>{
 exports.fetchFavourites = async (req, res) => {
     try {
         const id = req.query.id;
-        console.log(id);
         let favourites = []
         favourites = await Favourites.find({ userId: ObjectId(id) }).then(async data => {
             const favourites=await fetchProductDetails(data)
@@ -92,9 +90,7 @@ exports.fetchFavourites = async (req, res) => {
 exports.removeFavourites = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
-        console.log(user_id)
-        console.log(product_id);
-        const data = await Favourites.findOneAndRemove({ user_id: user_id, product_id: product_id })
+        const data = await Favourites.findOneAndRemove({ userId: user_id, productId: product_id })
         if(data == null) {
             return res.status(400).json({ data:[], message: 'Something went wrong', success: false})
         }

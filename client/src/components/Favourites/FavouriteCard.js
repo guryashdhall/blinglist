@@ -10,40 +10,24 @@ import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutl
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { removeFavourites } from "./Favourites";
+import { BACKEND_URL } from "../../config/config";
 
-// base64ToArrayBuffer = base64 => {
-//   var binaryString = window.atob(base64);
-//   var binaryLen = binaryString.length;
-//   var bytes = new Uint8Array(binaryLen);
-//   for (var i = 0; i < binaryLen; i++) {
-//     var ascii = binaryString.charCodeAt(i);
-//     bytes[i] = ascii;
-//   }
-//   return bytes;
-// };
-
-// getImages = data =>{
-//   var sampleArr = this.base64ToArrayBuffer(data);
-//   var imagePath=""
-//   return imagePath
-// }
 export default function FavouriteCard({ data }) {
   const navigate = useNavigate();
-  
-  const removeFavourites = async (e)=>{
+
+  const removeFavourites = async (e) => {
     e.preventDefault();
     console.log("Removing favorites");
-    const result = await axios.put("http://localhost:8080/favourites/removefavourites", {
-      body: JSON.stringify({user_id: data.user_data._id, product_id: data.product_details._id })
-    })
+    console.log("UID:  "+JSON.parse(localStorage.getItem("user"))._id+" PID: "+data.product_details._id)
+    const result = await axios.put(BACKEND_URL + "favourites/removefavourites", 
+    { user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data.product_details._id })
     console.log(result.data)
     if (result.data.success) {
-      console.log(result.data)
+      console.log(result.data.data)
       toast.success("Product has been removed successfully!", {
         position: "top-right",
         theme: "dark",
-        autoClose: 2000,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -58,7 +42,7 @@ export default function FavouriteCard({ data }) {
       toast.error("Something went wrong! Please refresh your page and try again.", {
         position: "top-right",
         theme: "dark",
-        autoClose: 2000,
+        autoClose: 700,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -66,8 +50,15 @@ export default function FavouriteCard({ data }) {
         progress: undefined,
       });
     }
-    
   }
+
+  const viewProductDetails = (e)=>{
+    e.preventDefault();
+    console.log("View Product Details")
+    localStorage.setItem('productDetailsId', data._id)
+    navigate('/viewdetails')
+  }
+
   return (
     <div>
       <Card
@@ -78,14 +69,14 @@ export default function FavouriteCard({ data }) {
       >
         <CardHeader
           action={
-            <IconButton aria-label="remove" onClick={event => removeFavourites(event)}>
+            <IconButton id={data.product_details._id} aria-label="remove" onClick={event => removeFavourites(event)}>
               <CloseIcon />
             </IconButton>
           }
-          title={data.product_details.productName.length<25?data.product_details.productName:data.product_details.productName.substring(0, 25)+ "..."}
+          title={data.product_details.productName.length < 23 ? data.product_details.productName : data.product_details.productName.substring(0, 20) + "..."}
           subheader={new Date(data.product_details.createdAt).toISOString().
             replace(/T/, ' ').      // replace T with a space
-            replace(/\..+/, '') }
+            replace(/\..+/, '')}
         />
         <CardMedia
           sx={{ boxShadow: 3 }}
@@ -98,7 +89,7 @@ export default function FavouriteCard({ data }) {
           }}
         />
 
-        <CardContent>
+        <CardContent style={{ height: "7vw"}}>
           <table width="100%" maxWidth="100%">
             <tr>
               <td style={{ textAlign: "left" }}>
@@ -132,14 +123,22 @@ export default function FavouriteCard({ data }) {
               <b>Description:</b>
             </tr>
           </table>
-          <Typography textAlign="justify">{data.product_details.productDescription.length>330?
-          data.product_details.productDescription.substring(0, 330)+"...":data.product_details.productDescription}</Typography>
+          <Typography textAlign="justify">
+          {
+              data.product_details.productDescription.length > 99 ?
+                data.product_details.productDescription.substring(0, 96) + "..."
+                : data.product_details.productDescription.length == 0 ?
+                  "No description available"
+                  :
+                  data.product_details.productDescription
+            }
+          </Typography>
         </CardContent>
-        <div> 
+        <div>
           <table align="center">
             <tr>
               <td>
-                <Button variant="outlined" onClick={() => navigate("/viewdetails")}>
+                <Button variant="outlined" onClick={event=>viewProductDetails(event)}>
                   {" "}
                   {<InfoOutlinedIcon />}&nbsp;View Details
                 </Button>

@@ -29,7 +29,7 @@ const Navbar = () => {
           <Typography>BLOGS</Typography>
         </Link>
         <Link
-          to={"/recommendation"}
+          to={"/products"}
           style={{ color: "inherit", textDecoration: "inherit" }}
         >
           <Typography>PRODUCTS</Typography>
