@@ -1,3 +1,7 @@
+// **Name** : Suchitra Dhamu
+// **Banner ID** : B0897187
+// **Group Id** : 7
+
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 const productSchema = require("../models/Product");

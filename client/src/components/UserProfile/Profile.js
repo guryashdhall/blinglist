@@ -1,3 +1,9 @@
+/***
+ * @author : Guryash Singh Dhall
+ * @bannerID : B00910690
+ * @email : guryash.dhall@dal.ca
+ ***/
+
 import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import React, { useEffect } from "react";

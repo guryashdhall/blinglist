@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';

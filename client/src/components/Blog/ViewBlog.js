@@ -1,4 +1,10 @@
-import React, { useEffect } from "react";
+/***
+ * @author : Guryash Singh Dhall
+ * @bannerID : B00910690
+ * @email : guryash.dhall@dal.ca
+ ***/
+
+ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Grid, Paper, Typography } from "@mui/material";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";

@@ -1,6 +1,6 @@
-const stripe = require("stripe")(
-    "sk_test_51LIC1bE41Y5D29LDh8L9rJtAivoKhMhAxj7dp1oQlIlmiZ73wAg8mKWlFeO0tJkMVzsCknQIRMXyge0HzgEyIFtc00SYXO38ly"
-);
+// **Name** : Suchitra Dhamu
+// **Banner ID** : B0897187
+// **Group Id** : 7
 
 const { Orders } = require("../models/Orders");
 const ObjectId = require("mongodb").ObjectId;

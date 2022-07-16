@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 import React from "react";
 import { Box } from "@material-ui/core";
 import Carousel from "react-material-ui-carousel";
