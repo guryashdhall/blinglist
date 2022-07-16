@@ -1,3 +1,9 @@
+/***
+ * @author : Guryash Singh Dhall
+ * @bannerID : B00910690
+ * @email : guryash.dhall@dal.ca
+ ***/
+
 import React, { useEffect } from "react";
 import useForm from "../../../Helpers/useForm";
 import validate from "../../../Helpers/validateInfo";

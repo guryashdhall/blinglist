@@ -1,3 +1,10 @@
+/***
+ * @author : Guryash Singh Dhall
+ * @bannerID : B00910690
+ * @email : guryash.dhall@dal.ca
+ ***/
+
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AppBar, Button } from "@mui/material";
