@@ -14,7 +14,9 @@ exports.addReviews = async (req, res) => {
 
 exports.getReviews = async (req, res) => {
   try {
-    const data = await Reviews.find();
+    console.log(req.body.product_id)
+    const data = await Reviews.find({product_id: req.body.product_id});
+    console.log(data)
     res.status(200);
     res.send(data);
   } catch (error) {

@@ -107,7 +107,7 @@ const ViewProduct = () => {
                   </Grid>
                 </Grid>
                 <Grid xs={12} align="left" mt={4}>
-                  <ReviewPage />
+                  <ReviewPage id={product._id} />
                 </Grid>
               </Paper>
             </Grid>

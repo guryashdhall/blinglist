@@ -47,6 +47,7 @@ function ReviewHeader(props) {
     </>
   );
 }
+//state managaement 
 const mapDispatchtoProps = (dispatch) => {
   return {
     setStars: (stars) => {

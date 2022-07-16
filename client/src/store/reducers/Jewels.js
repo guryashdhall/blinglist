@@ -2,6 +2,7 @@ const initstate = {
   stars: -1,
   reviews: [],
   filtered_reviews: [],
+  cart: []
 };
 const jewelsReducer = (state = initstate, action) => {
   switch (action.type) {
@@ -25,6 +26,12 @@ const jewelsReducer = (state = initstate, action) => {
       return state;
 
     case "INSERT_REVIEW":
+      console.log( {
+        title: action.title,
+        description: action.description,
+        rating: action.rating,
+        user_name: action.user_name
+      })
       state = {
         stars: -1,
         reviews: [
@@ -33,6 +40,7 @@ const jewelsReducer = (state = initstate, action) => {
             title: action.title,
             description: action.description,
             rating: action.rating,
+            user_name: action.user_name
           },
         ],
         filtered_reviews: [
@@ -41,6 +49,7 @@ const jewelsReducer = (state = initstate, action) => {
             title: action.title,
             description: action.description,
             rating: action.rating,
+            user_name: action.user_name
           },
         ],
       };
