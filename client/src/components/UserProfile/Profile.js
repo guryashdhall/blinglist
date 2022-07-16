@@ -19,11 +19,11 @@ const Profile = () => {
 
   const title = "User Profile";
   const color = "#000000";
-  // const [user, setUser] = React.useState({
-  //   firstName: "Guryash Singh",
-  //   lastName: "Dhall",
-  //   email: "guryash.dhall@dal.ca",
-  // });
+  const [user, setUser] = React.useState({
+    firstName: "Guryash Singh",
+    lastName: "Dhall",
+    email: "guryash.dhall@dal.ca",
+  });
 
   useEffect(() => {
     let role = localStorage.getItem("role");

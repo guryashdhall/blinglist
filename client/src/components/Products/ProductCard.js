@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { BACKEND_URL } from "../../config/config";
 import { red } from "@mui/material/colors";
+import moment from 'moment';
 
 export default function ProductCard({ data }) {
   const navigate = useNavigate();
@@ -24,9 +25,7 @@ export default function ProductCard({ data }) {
   const removeFavourites = async (e) => {
     e.preventDefault();
     console.log("Removing favorites");
-    const result = await axios.put(BACKEND_URL + "favourites/removefavourites", {
-      body: JSON.stringify({ user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data._id })
-    })
+    const result = await axios.put(BACKEND_URL + "favourites/removefavourites", { user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data._id })
     console.log(result.data)
     if (result.data.success) {
       console.log(result.data)
@@ -120,9 +119,9 @@ export default function ProductCard({ data }) {
               </IconButton>
           }
           title={data.productName.length > 22 ? data.productName.substring(0, 20) + "..." : data.productName}
-          subheader={new Date(data.createdAt).toISOString().
+          subheader={moment(new Date(data.createdAt).toISOString().
             replace(/T/, ' ').      // replace T with a space
-            replace(/\..+/, '')}
+            replace(/\..+/, '')).format('MMMM DD, YYYY')}
         />
         <CardMedia
           sx={{ boxShadow: 3 }}

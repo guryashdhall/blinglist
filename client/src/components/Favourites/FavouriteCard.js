@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { BACKEND_URL } from "../../config/config";
+import moment from "moment";
 
 export default function FavouriteCard({ data }) {
   const navigate = useNavigate();
@@ -74,9 +75,9 @@ export default function FavouriteCard({ data }) {
             </IconButton>
           }
           title={data.product_details.productName.length < 23 ? data.product_details.productName : data.product_details.productName.substring(0, 20) + "..."}
-          subheader={new Date(data.product_details.createdAt).toISOString().
+          subheader={moment(new Date(data.product_details.createdAt).toISOString().
             replace(/T/, ' ').      // replace T with a space
-            replace(/\..+/, '')}
+            replace(/\..+/, '')).format('MMMM DD, YYYY')}
         />
         <CardMedia
           sx={{ boxShadow: 3 }}

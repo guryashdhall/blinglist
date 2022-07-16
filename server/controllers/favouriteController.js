@@ -90,6 +90,7 @@ exports.fetchFavourites = async (req, res) => {
 exports.removeFavourites = async (req, res) => {
     try {
         const { user_id, product_id } = req.body;
+        console.log(user_id)
         const data = await Favourites.findOneAndRemove({ userId: user_id, productId: product_id })
         if(data == null) {
             return res.status(400).json({ data:[], message: 'Something went wrong', success: false})
