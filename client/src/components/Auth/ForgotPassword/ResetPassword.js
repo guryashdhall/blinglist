@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {ToastContainer, toast } from "react-toastify";
 import { isUserLoggedIn } from "../../../Helpers/helper";
+import { BACKEND_URL } from "../../../config/config";
 
 const PasswordReset = () => {
 
@@ -98,7 +99,7 @@ const navigate=useNavigate();
     {
       console.log(resetPwdInfo);
       const email =localStorage.getItem("email");
-      axios.post("http://localhost:8080/reset-password", {
+      axios.post(BACKEND_URL +  "reset-password", {
         email: email,
         newpassword: resetPwdInfo.newpassword,
         confirmNewPassword: resetPwdInfo.confirmNewPassword

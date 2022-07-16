@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 const { Products } = require("../models/Product");
 const { Orders } = require("../models/Orders");
 

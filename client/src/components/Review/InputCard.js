@@ -9,6 +9,7 @@ import { Rating } from "@mui/material";
 import { insertReview } from "../../store/actions/Jewels.js";
 import { connect } from "react-redux";
 import axios from "axios";
+import { BACKEND_URL } from "../../config/config.js";
 
 function InputCard(props) {
   const [check_title, setCheckTitle] = useState(false);
@@ -66,7 +67,7 @@ function InputCard(props) {
       props.insertReview(titleValue, descriptionValue, ratingValue);
 
       axios
-        .post("http://localhost:8080/reviews/addReviews", {
+        .post(BACKEND_URL + "reviews/addReviews", {
           title: titleValue,
           description: descriptionValue,
           rating: ratingValue,

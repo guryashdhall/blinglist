@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 import React, { useState } from "react";
 import useStyles from "./Styles.js";
 import {

@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 import { BACKEND_URL } from "../config/config";
 
 const AdminService = {
@@ -51,7 +57,6 @@ const AdminService = {
   },
 
   deleteProduct: (id) => {
-    //const token = localStorage.getItem("token");
     const token = "jwt-token";
 
     return fetch(BACKEND_URL + `administration/admin/${id}`, {
@@ -68,7 +73,6 @@ const AdminService = {
   },
 
   editProduct: (id, params) => {
-    //const token = localStorage.getItem("token");
     const token = "jwt-token";
 
     return fetch(BACKEND_URL + `administration/admin/${id}`, {
