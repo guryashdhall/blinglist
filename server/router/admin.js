@@ -1,3 +1,9 @@
+/***
+ * @author : Aayushi Rashesh Gandhi
+ * @bannerID : B00890697
+ * @email : aayushi.gandhi@dal.ca
+ ***/
+
 const router = require("express").Router();
 
 const { getProducts, getProduct, createProduct, deleteProduct, editProduct } = require("../controllers/adminController");
