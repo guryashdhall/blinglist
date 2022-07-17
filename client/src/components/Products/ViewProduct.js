@@ -174,7 +174,7 @@ const ViewProduct = () => {
 
                         <button
                           onClick={() => {
-                            navigate("/cart");
+                            navigate("/cart",{state:{...product,quantity:1}});
                           }}
                           className="product-btn"
                         >
@@ -188,6 +188,7 @@ const ViewProduct = () => {
                   </Grid>
                 </Grid>
                 <Grid xs={12} align="left" mt={4}>
+                  {console.log(product)}
                   <ReviewPage id={product._id} />
                 </Grid>
               </Paper>

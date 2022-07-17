@@ -20,6 +20,8 @@ import Recommendation from "./components/Home/Recommendation";
 import ViewProduct from "./components/Products/ViewProduct";
 import Favourites from "./components/Favourites/Favourites";
 import Product from "./components/Products/Product";
+import AddBlog from "./components/Blog/AddBlog";
+import MyBlogs from "./components/Blog/MyBlogs";
 
 const App = () => {
   return (
@@ -80,6 +82,12 @@ const App = () => {
         </Routes>
         <Routes>
           <Route path="/products" element={<Product />} />
+        </Routes>
+        <Routes>
+          <Route path="/addBlog" element={<AddBlog />} />
+        </Routes>
+        <Routes>
+          <Route path="/myBlog" element={<MyBlogs />} />
         </Routes>
       </Container>
     </BrowserRouter>
