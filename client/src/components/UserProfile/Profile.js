@@ -13,17 +13,74 @@ import "./Profile.css";
 import NavBarProfile from "../NavbarProfile";
 import { useNavigate } from "react-router-dom";
 import { isUserLoggedIn } from "../../Helpers/helper";
+import { useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../../config/config";
+
+
 
 const Profile = () => {
   const navigate = useNavigate();
 
   const title = "User Profile";
   const color = "#000000";
-  // const [user, setUser] = React.useState({
-  //   firstName: "Guryash Singh",
-  //   lastName: "Dhall",
-  //   email: "guryash.dhall@dal.ca",
-  // });
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [profileInfo , setProfileInfo] = useState({
+    firstName:user.firstName,
+    lastName :(user.lastName),
+    email :(user.email),
+    errors: { 
+      firstName: "",
+      lastName: "",
+      email: "",
+    },
+  });
+
+
+// Handle first name change
+
+  const handleFirstNameErrors = () => {
+    if (!profileInfo.firstName) {
+      setProfileInfo({
+        ...profileInfo,
+        errors: {
+          ...profileInfo.errors,
+          firstName: "First Name is required",
+        },
+      });
+    } else {
+      setProfileInfo({
+        ...profileInfo,
+        errors: {
+          ...profileInfo.errors,
+          firstName: "",
+        },
+      });
+    }
+  };
+
+//  Handle last name errors
+
+  const handleLastNameErrors = () => {
+    if (!profileInfo.lastName) {
+      setProfileInfo({
+        ...profileInfo,
+        errors: {
+          ...profileInfo.errors,
+          lastName: "Last Name is required",
+        },
+      });
+    } else {
+      setProfileInfo({
+        ...profileInfo,
+        errors: {
+          ...profileInfo.errors,
+          lastName: "",
+        },
+      });
+    }
+  };
+
 
   useEffect(() => {
     let role = localStorage.getItem("role");
@@ -35,24 +92,64 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
+    setProfileInfo({ ...profileInfo, [name]: value });
   };
-
-  const saveProfile = () => {
-    toast.success("Profile Updated Susccessfully!", {
-      position: "bottom-right",
-      theme: "dark",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
+  const onhandleSubmit = (e) => { 
+    // e.preventDefault();
+    if (
+      profileInfo.errors.firstName === "" &&
+      profileInfo.errors.lastName === "" &&
+      profileInfo.errors.email === "" 
+    )
+      {
+        axios.post(BACKEND_URL + "edit-profile", {
+          email: profileInfo.email,
+          firstName: profileInfo.firstName,
+          lastName: profileInfo.lastName
+        }).then(res => {
+          console.log(profileInfo)
+          console.log(res.data.success)
+          if (res.data.success === true) {
+            toast.success(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClose: () => {
+                navigate("/resetPwd");
+              }
+            })
+          } else {
+            toast.error(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined
+            });
+          }
+        }
+        ).catch(err => {
+          console.log(err);
+        }
+        );
+      }
+      else {
+        handleFirstNameErrors();
+        handleLastNameErrors();
+      }
+    };
+   
   return (
     <Grid container>
       <Grid xs={12} align="center" mb={3}>
@@ -106,8 +203,11 @@ const Profile = () => {
                 placeholder="Update your First Name"
                 variant="outlined"
                 color="secondary"
-                value={user.firstName}
-                onChange={handleChange}
+                value={profileInfo.firstName}
+                error={profileInfo.errors.firstName !== ""}
+                helperText={profileInfo.errors.firstName}
+               onChange={handleChange}
+                onBlur={handleFirstNameErrors}
               />
               <br />
               <br />
@@ -120,8 +220,12 @@ const Profile = () => {
                 placeholder="Update your Last Name"
                 variant="outlined"
                 color="secondary"
-                value={user.lastName}
-                onChange={handleChange}
+                value={profileInfo.lastName}
+                error={profileInfo.errors.lastName !== ""}
+                helperText={profileInfo.errors.lastName}
+                onChange ={handleChange}
+                // onChange={(e) => handleChange("lastName", e.target.value)}
+                onBlur={handleLastNameErrors}
               />
               <br />
               <br />
@@ -134,8 +238,9 @@ const Profile = () => {
                 placeholder="Update your Email"
                 variant="outlined"
                 color="secondary"
-                value={user.email}
-                onChange={handleChange}
+                value={profileInfo.email}
+                // onChange={handleChange}
+                disabled={true}
               />
               <br />
               <br />
@@ -155,7 +260,7 @@ const Profile = () => {
                     justifyContent: "center",
                     alignContent: "center",
                   }}
-                  onClick={saveProfile}
+                  onClick={onhandleSubmit}
                 >
                   Save Profile
                 </Button>
