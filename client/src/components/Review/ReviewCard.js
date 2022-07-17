@@ -13,7 +13,7 @@ import { BACKEND_URL } from "../../config/config.js";
 function ReviewCard(props) {
 //update global state with database 
   useEffect(() => {
-    axios.post(BACKEND_URL+"/reviews/getreviews",{product_id:props.id}).then((response) => {
+    axios.post(BACKEND_URL+"reviews/getreviews",{product_id:props.id}).then((response) => {
       console.log(response)
       props.setIntialReviewState(response.data);
     });
