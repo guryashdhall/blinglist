@@ -11,30 +11,27 @@ import { setIntialReviewState } from "../../store/actions/Jewels.js";
 import { BACKEND_URL } from "../../config/config.js";
 
 function ReviewCard(props) {
+//update global state with database 
   useEffect(() => {
-    axios.get(BACKEND_URL + "reviews/getreviews").then((response) => {
+    axios.post(BACKEND_URL+"reviews/getreviews",{product_id:props.id}).then((response) => {
+      console.log(response)
       props.setIntialReviewState(response.data);
     });
-  }, []);
-  var reviews = useSelector(
-    (state) => state.jewelsReducer.reviews,
-    shallowEqual
-  );
-  var stars = useSelector((state) => state.jewelsReducer.stars, shallowEqual);
+  }, [props.id]);
+ 
   var filtered_reviews = useSelector(
     (state) => state.jewelsReducer.filtered_reviews,
     shallowEqual
   );
-
-  //setReviews([get_reviews])
   return (
     <>
       {filtered_reviews.map((review, index) => {
         return (
           <Card sx={{ width: "90%", m: 2 }} key={index}>
             <Stack direction="row">
-              <Avatar sx={{ m: 1 }}>N</Avatar>
-              <Typography sx={{ m: 2 }}>User_name</Typography>
+              <Avatar sx={{ m: 1 }}></Avatar>
+              {console.log(review)}
+              <Typography sx={{ mt: 2,ml:1 }}>{review.user_name}</Typography>
             </Stack>
 
             <CardContent>
@@ -53,7 +50,7 @@ function ReviewCard(props) {
     </>
   );
 }
-
+//state managaement 
 const mapDispatchtoProps = (dispatch) => {
   return {
     setIntialReviewState: (data) => {

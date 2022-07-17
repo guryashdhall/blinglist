@@ -1,14 +1,17 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isUserLoggedIn } from "../../Helpers/helper";
 import ReviewPage from "../Review/ReviewPage";
-
+import axios from "axios";
 import "./Product.css";
+import { BACKEND_URL } from "../../config/config";
+import Product from "./Product";
 
 const ViewProduct = () => {
   const navigate = useNavigate();
+  const [product, setProducts]=useState({})
   useEffect(() => {
     let role = localStorage.getItem("role");
     isUserLoggedIn()
@@ -16,6 +19,18 @@ const ViewProduct = () => {
         ? navigate("/viewdetails")
         : navigate("/admin")
       : navigate("/");
+
+      async function fetchData() {
+        console.log("Fetching data..."+localStorage.getItem("productDetailsId"));
+        // Temporary
+        localStorage.getItem("productDetailsId")?localStorage.getItem("productDetailsId"):localStorage.setItem("productDetailsId", "62cdae4b200dc61b6c6080b2")
+        const res = await axios.get(BACKEND_URL + "products/getproductsById?" + `id=${localStorage.getItem("productDetailsId")}`);
+        console.log(res.data.data)
+        if (res.data.success) {
+          setProducts(res.data.data)
+        }
+      }
+      fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,7 +55,7 @@ const ViewProduct = () => {
                   <Grid xs={3} align="left">
                     <img
                       alt=""
-                      src="https://cdn-fsly.yottaa.net/609426734f1bbfff95ac5607/ca.pandora.net/v~4b.5/dw/image/v2/AAVX_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw83b3044f/productimages/main/791678C01_RGB.JPG?sw=150&sh=150&sm=fit&sfrm=png&bgcolor=F5F5F5&yocs=1_"
+                      src={product.productImage}
                       height="100%"
                       width="90%"
                     />
@@ -52,20 +67,20 @@ const ViewProduct = () => {
                       gutterBottom
                       component="div"
                     >
-                      Tropical Starfish & Shell Clip Charm
+                      {product.productName}
                     </Typography>
                     <div>
                       <Typography className="item-info-text">
-                        <b>Product number: </b> 791678C01
+                        <b>Product number: </b> {product._id}
                       </Typography>
                       <Typography className="item-info-text">
-                        <b>Metal: </b> Sterling Silver
+                        <b>Metal: </b> {product.metalType}
                       </Typography>
                       <Typography className="item-info-text">
-                        <b>Type: </b> Pendant
+                        <b>Type: </b> {product.productType}
                       </Typography>
                       <Typography className="item-info-text">
-                        <b>Color: </b> Blue
+                        <b>Color: </b> {product.productColor}
                       </Typography>
                       <Stack mt={3} spacing={2} direction="row">
                         <button
@@ -78,7 +93,7 @@ const ViewProduct = () => {
                         </button>
                         <button
                           onClick={() => {
-                            navigate("/cart");
+                            navigate("/cart",{state:{...product,quantity:1}});
                           }}
                           className="product-btn"
                         >
@@ -88,11 +103,12 @@ const ViewProduct = () => {
                     </div>
                   </Grid>
                   <Grid xs={2} align="right">
-                    <b>$7.99</b>
+                    <b>CAD {product.productPrice}</b>
                   </Grid>
                 </Grid>
                 <Grid xs={12} align="left" mt={4}>
-                  <ReviewPage />
+                  {console.log(product)}
+                  <ReviewPage id={product._id} />
                 </Grid>
               </Paper>
             </Grid>
