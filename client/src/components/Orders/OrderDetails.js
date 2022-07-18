@@ -12,12 +12,6 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
-
-import { CardActionArea, CardActions } from "@mui/material";
-import item2 from "../../images/j2.jpg";
 import Cart from "../Cart/Cart";
 import ReviewPage from "../Review/ReviewPage";
 import { useNavigate } from "react-router-dom";

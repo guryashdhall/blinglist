@@ -1,11 +1,8 @@
 import React from "react";
-import { AppBar, Typography, TextField, Toolbar } from "@material-ui/core";
+import { AppBar, Typography, Toolbar } from "@material-ui/core";
 import useStyles from "./Styles.js";
 import { Link, useNavigate } from "react-router-dom";
 import bling from "../../images/bling.png";
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import SearchIcon from "@material-ui/icons/Search";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";

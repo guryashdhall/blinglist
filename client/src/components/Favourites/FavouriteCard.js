@@ -19,12 +19,22 @@ export default function FavouriteCard({ data }) {
   const removeFavourites = async (e) => {
     e.preventDefault();
     console.log("Removing favorites");
-    console.log("UID:  "+JSON.parse(localStorage.getItem("user"))._id+" PID: "+data._id)
-    const result = await axios.put(BACKEND_URL + "favourites/removefavourites", 
-    { user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data._id })
-    console.log(result.data)
+    console.log(
+      "UID:  " +
+        JSON.parse(localStorage.getItem("user"))._id +
+        " PID: " +
+        data._id
+    );
+    const result = await axios.put(
+      BACKEND_URL + "favourites/removefavourites",
+      {
+        user_id: JSON.parse(localStorage.getItem("user"))._id,
+        product_id: data._id,
+      }
+    );
+    console.log(result.data);
     if (result.data.success) {
-      console.log(result.data.data)
+      console.log(result.data.data);
       toast.success("Product has been removed successfully!", {
         position: "top-right",
         theme: "dark",
@@ -40,25 +50,28 @@ export default function FavouriteCard({ data }) {
       });
     } else {
       console.log(result);
-      toast.error("Something went wrong! Please refresh your page and try again.", {
-        position: "top-right",
-        theme: "dark",
-        autoClose: 700,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.error(
+        "Something went wrong! Please refresh your page and try again.",
+        {
+          position: "top-right",
+          theme: "dark",
+          autoClose: 700,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
     }
-  }
+  };
 
-  const viewProductDetails = (e)=>{
+  const viewProductDetails = (e) => {
     e.preventDefault();
-    console.log("View Product Details")
-    localStorage.setItem('productDetailsId', data._id)
-    navigate('/viewdetails')
-  }
+    console.log("View Product Details");
+    localStorage.setItem("productDetailsId", data._id);
+    navigate("/viewdetails");
+  };
 
   return (
     <div>
@@ -70,14 +83,25 @@ export default function FavouriteCard({ data }) {
       >
         <CardHeader
           action={
-            <IconButton id={data._id} aria-label="remove" onClick={event => removeFavourites(event)}>
+            <IconButton
+              id={data._id}
+              aria-label="remove"
+              onClick={(event) => removeFavourites(event)}
+            >
               <CloseIcon />
             </IconButton>
           }
-          title={data.productName.length < 23 ? data.productName : data.productName.substring(0, 20) + "..."}
-          subheader={moment(new Date(data.createdAt).toISOString().
-            replace(/T/, ' ').      // replace T with a space
-            replace(/\..+/, '')).format('MMMM DD, YYYY')}
+          title={
+            data.productName.length < 23
+              ? data.productName
+              : data.productName.substring(0, 20) + "..."
+          }
+          subheader={moment(
+            new Date(data.createdAt)
+              .toISOString()
+              .replace(/T/, " ")
+              .replace(/\..+/, "")
+          ).format("MMMM DD, YYYY")}
         />
         <CardMedia
           sx={{ boxShadow: 3 }}
@@ -90,7 +114,7 @@ export default function FavouriteCard({ data }) {
           }}
         />
 
-        <CardContent style={{ height: "7vw"}}>
+        <CardContent style={{ height: "7vw" }}>
           <table width="100%" maxWidth="100%">
             <tr>
               <td style={{ textAlign: "left" }}>
@@ -125,27 +149,32 @@ export default function FavouriteCard({ data }) {
             </tr>
           </table>
           <Typography textAlign="justify">
-          {
-              data.productDescription.length > 99 ?
-                data.productDescription.substring(0, 96) + "..."
-                : data.productDescription.length == 0 ?
-                  "No description available"
-                  :
-                  data.productDescription
-            }
+            {data.productDescription.length > 99
+              ? data.productDescription.substring(0, 96) + "..."
+              : data.productDescription.length === 0
+              ? "No description available"
+              : data.productDescription}
           </Typography>
         </CardContent>
         <div>
           <table align="center">
             <tr>
               <td>
-                <Button variant="outlined" onClick={event=>viewProductDetails(event)}>
+                <Button
+                  variant="outlined"
+                  onClick={(event) => viewProductDetails(event)}
+                >
                   {" "}
                   {<InfoOutlinedIcon />}&nbsp;View Details
                 </Button>
               </td>
               <td>
-                <Button variant="outlined" onClick={() => navigate("/cart",{state:{...data,quantity:1}})}>
+                <Button
+                  variant="outlined"
+                  onClick={() =>
+                    navigate("/cart", { state: { ...data, quantity: 1 } })
+                  }
+                >
                   Add to Cart&nbsp; {<AddShoppingCartOutlinedIcon />}
                 </Button>
               </td>
