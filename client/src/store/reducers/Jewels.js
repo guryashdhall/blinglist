@@ -56,14 +56,15 @@ const jewelsReducer = (state = initstate, action) => {
       return state;
     
     case "ADD_TO_CART":
-      console.log(state)
-      state.cart.items=[...state.cart.items,action.item]
-      state.cart.userid=JSON.parse(localStorage.getItem('user'))._id
-      console.log(state.cart)
+
+    state.cart.items=[...state.cart.items,action.item]
+    state.cart.userid=JSON.parse(localStorage.getItem('user'))._id
+    state.cart.items = state.cart.items.filter((v,i,a)=>a.findIndex(v2=>(v2._id===v._id))===i)
       return state;
     
     case "FETCH_TO_CART":
-      state.cart= action.cart;
+      state = {...state,cart:action.cart};
+      console.log(state.cart)
       return state;
     
     case "INCREASE_QUANTITY":
@@ -80,6 +81,13 @@ const jewelsReducer = (state = initstate, action) => {
       state = {...tempAdd}
       console.log(state)
       return state;
+    
+    case "REMOVE_ITEM":
+        let tempCart = state.cart
+        tempCart.items = tempCart.items.filter((item) => {if (action.id !== item._id) {return item}})
+        state = {...state,cart:{userid:state.cart.userid,items:[...tempCart.items]}}
+        console.log(state.cart.items)
+        return state
 
     default:
       return state;

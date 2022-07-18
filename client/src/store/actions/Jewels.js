@@ -45,3 +45,16 @@ export const increase = (index) => {
     };
 };
 
+export const fetchCart = (cart) => {
+  return{
+    type: "FETCH_TO_CART",
+    cart: cart
+  }
+}
+export const deleteItem =(id) => {
+  return{
+    type: "REMOVE_ITEM",
+    id:id
+  } 
+}
+
