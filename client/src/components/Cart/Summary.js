@@ -1,9 +1,4 @@
-import {
-  Button,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Paper, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -21,15 +16,19 @@ function Summary(props) {
       m: "auto",
     },
   });
-  const cart_products = useSelector((state) => state.jewelsReducer.cart,shallowEqual)
+  const cart_products = useSelector(
+    (state) => state.jewelsReducer.cart,
+    shallowEqual
+  );
   useEffect(() => {
-  let total =4.99
-  cart_products.items.forEach((item) => {
-      total += item.quantity*item.productPrice})
-  setTotalPrice(total)
-  },[cart_products])
-  const [totalPrice,setTotalPrice] = useState(0)
-  
+    let total = 4.99;
+    cart_products.items.forEach((item) => {
+      total += item.quantity * item.productPrice;
+    });
+    setTotalPrice(total);
+  }, [cart_products]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
   return (
     <>
       <Paper elevation={10} sx={boxStyles}>
@@ -48,16 +47,20 @@ function Summary(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cart_products.items.map(product => {
+                {cart_products.items.map((product) => {
                   return (
                     <TableRow>
-                    <TableCell align="center">{product.productName}</TableCell>
-                    <TableCell align="center">{product.quantity}</TableCell>
-                    <TableCell  align="center">{product.productPrice*product.quantity}</TableCell>
-                  </TableRow>
-                    )
+                      <TableCell align="center">
+                        {product.productName}
+                      </TableCell>
+                      <TableCell align="center">{product.quantity}</TableCell>
+                      <TableCell align="center">
+                        {product.productPrice * product.quantity}
+                      </TableCell>
+                    </TableRow>
+                  );
                 })}
-                
+
                 <TableRow>
                   <TableCell align="center">Shipping</TableCell>
                   <TableCell align="center">{}</TableCell>
@@ -75,7 +78,9 @@ function Summary(props) {
             <Button
               variant="outlined"
               color="secondary"
-              onClick={() => {navigate("/checkout")}}
+              onClick={() => {
+                navigate("/checkout");
+              }}
               sx={{ m: 2 }}
             >
               Checkout

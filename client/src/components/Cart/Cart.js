@@ -5,43 +5,44 @@ import { isUserLoggedIn } from "../../Helpers/helper";
 import { addToCart, fetchCart } from "../../store/actions/Jewels";
 import ProductCard from "./ProductCard";
 import Summary from "./Summary";
-import { connect, shallowEqual, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 function Cart(props) {
   const location = useLocation();
-  const[product,setProduct] = useState({})
-  const cart_products = useSelector(
-    (state) => state.jewelsReducer.cart
-  )
-  useEffect(()=>{
-    getCart()
-  },[])  
-  const getCart = async() => {
-      await axios.post("http://localhost:8080/cart/getCart",{userid:JSON.parse(localStorage.getItem('user'))._id}).then(data => {
-      if(localStorage.getItem('cart') == null){
-        localStorage.setItem('cart',JSON.stringify(data.data))
-        props.fetchCart(data.data)
-      }
-      else{
-        props.fetchCart(JSON.parse(localStorage.getItem('cart')))
-      }
-    })
-    
-  }
-  useEffect(()=>{
-      saveCart()
-  },[])
-  const saveCart = async() => {
-    await axios.post("http://localhost:8080/cart/addCart",cart_products).then(response => {
-      JSON.stringify(cart_products)
-      localStorage.setItem('cart',JSON.stringify(cart_products))
-      props.fetchCart(JSON.parse(localStorage.getItem('cart')))
-    }).catch(error => {
-      console.log(error)
-    })
-    
-  }
+  const cart_products = useSelector((state) => state.jewelsReducer.cart);
+  useEffect(() => {
+    getCart();
+  }, []);
+  const getCart = async () => {
+    await axios
+      .post("http://localhost:8080/cart/getCart", {
+        userid: JSON.parse(localStorage.getItem("user"))._id,
+      })
+      .then((data) => {
+        if (localStorage.getItem("cart") == null) {
+          localStorage.setItem("cart", JSON.stringify(data.data));
+          props.fetchCart(data.data);
+        } else {
+          props.fetchCart(JSON.parse(localStorage.getItem("cart")));
+        }
+      });
+  };
+  useEffect(() => {
+    saveCart();
+  }, []);
+  const saveCart = async () => {
+    await axios
+      .post("http://localhost:8080/cart/addCart", cart_products)
+      .then((response) => {
+        JSON.stringify(cart_products);
+        localStorage.setItem("cart", JSON.stringify(cart_products));
+        props.fetchCart(JSON.parse(localStorage.getItem("cart")));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const boxStyles = (Theme) => ({
     background: "#f3e5f5",
     width: "95%",
@@ -66,34 +67,31 @@ function Cart(props) {
       : navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(()=>{
-    if(location.state){
-      props.setItem(location.state)
+  useEffect(() => {
+    if (location.state) {
+      props.setItem(location.state);
     }
-  },[cart_products])
+  }, [cart_products]);
 
   return (
     <div>
-      <Box >
+      <Box>
         <Typography variant="h2" sx={{ p: 2 }}>
           Your Cart
         </Typography>
       </Box>
       <Grid container sx={boxStyles} direction="row" justifyContent="center">
         <Grid container item xs={12} md={8}>
-          {cart_products.items.map((products,index) => {
-  
-            return(
+          {cart_products.items.map((products, index) => {
+            return (
               <Grid item xs={12} md={8} sx={{ mb: 1, mt: 1 }} key={index}>
-                  <ProductCard products={products} index={index}/>
+                <ProductCard products={products} index={index} />
               </Grid>
-            )
-            
+            );
           })}
-          
         </Grid>
         <Grid item xs={12} md={3} sx={{ mb: 6, mr: 2, mt: 1 }}>
-          <Summary products={cart_products.items}/>
+          <Summary products={cart_products.items} />
         </Grid>
       </Grid>
     </div>
@@ -106,8 +104,8 @@ const mapDispatchtoProps = (dispatch) => {
       dispatch(addToCart(data));
     },
     fetchCart: (cart) => {
-      dispatch(fetchCart(cart))
-    }
+      dispatch(fetchCart(cart));
+    },
   };
 };
 export default connect(null, mapDispatchtoProps)(Cart);
