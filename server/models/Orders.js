@@ -12,10 +12,12 @@ const ordersSchema = new mongoose.Schema(
     totalPrice: Number,
     quantity: Number,
     tax: Number,
+    discount: Number,
     retail: Number,
     address: String,
     itemsList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
     status: String,
+    delivery: Date,
   },
   {
     timestamps: true,

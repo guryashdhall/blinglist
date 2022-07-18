@@ -11,3 +11,15 @@ export const giftCardPayment = (params) => {
     return result;
   });
 };
+
+export const checkPromoCode = (promoCode) => {
+  return PaymentService.checkPromoCode(promoCode).then((response) => {
+    return response;
+  });
+};
+
+export const getCartItems = () => {
+  return PaymentService.getUserCartItems().then((response) => {
+    return response;
+  });
+};
