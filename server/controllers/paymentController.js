@@ -23,21 +23,23 @@ exports.makePayment = async (req, res) => {
       cartDetails,
     } = req.body;
 
-    return await stripe.customers
+    console.log(req.body);
+
+    await stripe.customers
       .create({
         email: user.email,
         source: token.id,
       })
       .then((customer) => {
         stripe.charges.create({
-          amount: totalPayableAmount * 100,
+          amount: Math.ceil(totalPayableAmount),
           currency: "cad",
           customer: customer.id,
           receipt_email: user.email,
           description: `Payment is successful and $${totalPayableAmount} is paid by ${user.name} for order.`,
         });
       })
-      .then(async () => {
+      .then(() => {
         let currentDate = new Date();
 
         const order = new Orders({
@@ -53,38 +55,20 @@ exports.makePayment = async (req, res) => {
           delivery: currentDate.setDate(currentDate.getDate() + 15),
         });
 
-        await order
+        order
           .save()
           .then((result) => {
-            console.log("Result after saving orders: ", result);
-
-            Cart.findByIdAndDelete(cartID, async (err, docs) => {
+            Cart.findByIdAndDelete(cartID, (err, docs) => {
               if (err) {
                 return res
                   .status(502)
                   .json({ success: false, message: "Something went wrong!" });
               }
-              console.log(cardDetails);
-              await cartDetails.map(async (item) => {
-                await Products.findByIdAndUpdate(
-                  cartDetails.id,
-                  {
-                    inventoryQuantity: item.inventoryQuantity - item.quantity,
-                  },
-                  (err, docs) => {
-                    if (err) {
-                      return res.status(502).json({
-                        success: false,
-                        message: "Something went wrong in updating!",
-                      });
-                    }
-                  }
-                );
-              });
-              return res.status(200).json({
-                success: true,
-                message: "Payment done! Orders are added to the order table!",
-              });
+              console.log(cartDetails);
+
+              return res
+                .status(200)
+                .json({ success: true, message: "Payment done successfully!" });
             });
           })
           .catch((err) => {
@@ -131,7 +115,7 @@ exports.makeGiftCardPayment = async (req, res) => {
           giftCardImage: giftCardImage,
         });
 
-        await giftCard
+        return await giftCard
           .save()
           .then((result) => {
             return res.status(200).json({

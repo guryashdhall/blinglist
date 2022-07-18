@@ -1,4 +1,7 @@
 const router = require("express").Router();
-const { addCart } = require("../controllers/cartController");
+const { addCart, getCart } = require("../controllers/cartController");
 
 router.post("/reviews/addCart", addCart);
+router.post("/cart/addCart", addCart);
+router.post("/cart/getCart", getCart);
+module.exports = router;
