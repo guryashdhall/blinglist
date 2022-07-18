@@ -4,6 +4,8 @@ const stripe = require("stripe")(
 
 const { Orders } = require("../models/Orders");
 const { GiftCards } = require("../models/GiftCard");
+const { PromoCode } = require("../models/PromoCode");
+const { response } = require("express");
 
 exports.makePayment = async (req, res) => {
   try {
@@ -86,7 +88,6 @@ exports.makeGiftCardPayment = async (req, res) => {
         await giftCard
           .save()
           .then((result) => {
-
             return res.status(200).json({
               success: true,
               message: `Payment done! Email is ${user.email}!`,
@@ -104,4 +105,21 @@ exports.makeGiftCardPayment = async (req, res) => {
       .status(502)
       .json({ success: false, error: `Something went wrong!! ${error}` });
   }
+};
+
+exports.checkPromoCode = async (req, res) => {
+  const { promoCode } = req.params;
+
+  await PromoCode.find({ name: promoCode })
+    .then((response) => {
+      if (response.length > 0) {
+        return res.status(200).json({ success: true, data: response });
+      }
+      return res.status(200).json({ success: false, data: response });
+    })
+    .catch((err) => {
+      return res
+        .status(502)
+        .json({ success: false, message: "Something went wrong!" });
+    });
 };

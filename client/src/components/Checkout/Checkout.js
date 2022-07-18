@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 import StripeCheckout from "react-stripe-checkout";
 
-import { checkoutPayment } from "../../store/actions/payment";
+import { checkoutPayment, checkPromoCode } from "../../store/actions/payment";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./Checkout.css";
@@ -17,14 +17,24 @@ import { isUserLoggedIn } from "../../Helpers/helper";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const [promoCode, setPromoCode] = useState("");
+  const [disablePromoCodeButton, setDisablePromoCodeButton] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     let role = localStorage.getItem("role");
-    isUserLoggedIn()
-      ? role === "customer"
-        ? navigate("/checkout")
-        : navigate("/admin")
-      : navigate("/");
+    if (isUserLoggedIn()) {
+      if (role === "customer") {
+        setSubTotalAmount(15);
+        calculateTotalAmount(15);
+      } else {
+        navigate("/admin");
+      }
+    } else {
+      navigate("/");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,12 +62,13 @@ const Checkout = () => {
   ];
 
   const makePayment = (token) => {
+    const id = JSON.parse(localStorage.getItem("user"))._id;
     const body = {
       token: token,
       totalPayableAmount: 1000,
-      orders: ["1", "2", "3", "4"],
+      orders: [id, id, id],
       user: {
-        id: 1,
+        id: id,
         name: "Dhairya",
         email: "doctordhairya@gmail.com",
       },
@@ -68,19 +79,21 @@ const Checkout = () => {
         toast.success("Payment successfull!", {
           position: "bottom-right",
           theme: "dark",
-          autoClose: 5000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          onClose: () => {
+            navigate("/reviews");
+          },
         });
-        navigate("/reviews");
       } else {
         toast.error("Please fill all the fields!", {
           position: "bottom-right",
           theme: "dark",
-          autoClose: 5000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -89,6 +102,71 @@ const Checkout = () => {
         });
       }
     });
+  };
+
+  const calculateTotalAmount = (amount) => {
+    setTotalAmount(amount + 9.95 + amount * 0.15);
+  };
+
+  const setSubTotalAmount = (amount) => {
+    setSubTotal(amount);
+  };
+
+  const setDiscountedAmount = (discountPrecent) => {
+    setDiscount(discountPrecent);
+  };
+
+  const applyDiscount = (discountPercent) => {
+    setTotalAmount(totalAmount - totalAmount * (discountPercent / 100));
+  };
+
+  const disableButton = () => {
+    setDisablePromoCodeButton(true);
+  };
+
+  const checkUserPromoCode = () => {
+    if (promoCode === "") {
+      toast.error("No promocode applied", {
+        position: "bottom-right",
+        theme: "dark",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      checkPromoCode(promoCode).then((response) => {
+        console.log(response.data[0].discount);
+        if (response.success) {
+          disableButton();
+          setDiscountedAmount(response.data[0].discount);
+          toast.success("Promocode applied!", {
+            position: "bottom-right",
+            theme: "dark",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            onClose: () => applyDiscount(response.data[0].discount),
+          });
+        } else {
+          toast.info("No such promo code exists!", {
+            position: "bottom-right",
+            theme: "dark", 
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
+    }
   };
 
   return (
@@ -101,7 +179,7 @@ const Checkout = () => {
             color="initial"
             className="heading-2"
           >
-            Your Bag (1 Item)
+            Your Bag ({itemDetails.length} Item)
           </Typography>
           <Typography variant="p" color="initial" className="heading-3">
             Items are not reserved until payment is made.
@@ -171,7 +249,7 @@ const Checkout = () => {
                 <div>
                   <span className="pricing-type">Subtotal</span>
                 </div>
-                <div>C$ 55.00</div>
+                <div>C$ {subTotal}</div>
               </div>
               <div className="pricing-information">
                 <div>
@@ -183,13 +261,21 @@ const Checkout = () => {
                 <div>
                   <span className="pricing-type">Estimated Tax</span>
                 </div>
-                <di>TBD</di>
+                <div>15%</div>
               </div>
+              {discount > 0 && (
+                <div className="pricing-information">
+                  <div>
+                    <span className="pricing-type">Discount Applied</span>
+                  </div>
+                  <div>{discount}%</div>
+                </div>
+              )}
               <div className="total">
                 <div>
                   <span>Total</span>
                 </div>
-                <div>C$ 64.95</div>
+                <div>C$ {totalAmount}</div>
               </div>
               <div className="coupon-class">
                 <Typography variant="h6" gutterBottom component="div">
@@ -201,8 +287,16 @@ const Checkout = () => {
                   variant="outlined"
                   placeholder="123 456"
                   className="coupon-input"
+                  value={promoCode}
+                  disabled={disablePromoCodeButton}
+                  onChange={(event) => setPromoCode(event.target.value)}
                 />
-                <Button variant="contained" className="promo-code-btn">
+                <Button
+                  variant="contained"
+                  onClick={checkUserPromoCode}
+                  disabled={disablePromoCodeButton}
+                  className="promo-code-btn"
+                >
                   APPLY
                 </Button>
               </div>
@@ -218,9 +312,9 @@ const Checkout = () => {
               </StripeCheckout>
             </Paper>
           </Grid>
+          <ToastContainer />
         </Grid>
       </div>
-      <ToastContainer />
     </div>
   );
 };

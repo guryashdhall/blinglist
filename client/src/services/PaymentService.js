@@ -2,14 +2,10 @@ import { BACKEND_URL } from "../config/config";
 
 const PaymentService = {
   checkout: (params) => {
-    // const token = localStorage.getItem("token");
-    const token = "jwt-token";
-
     return fetch(BACKEND_URL + "checkout/payment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "bearer " + token,
       },
       body: JSON.stringify(params),
     })
@@ -20,19 +16,43 @@ const PaymentService = {
   },
 
   giftCardPayment: (params) => {
-    const token = localStorage.getItem("token");
-
     return fetch(BACKEND_URL + "checkout/payGiftCard", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "bearer " + token,
       },
       body: JSON.stringify(params),
     })
       .then((res) => res.json())
       .then((result) => {
         return result;
+      });
+  },
+
+  getUserCartService: () => {
+    const userID = JSON.parse(localStorage.getItem("user"))._id;
+    return fetch(`${BACKEND_URL}cart/getUserItems/${userID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        return response;
+      });
+  },
+
+  checkPromoCode: (promoCode) => {
+    return fetch(`${BACKEND_URL}checkout/checkPromoCode/${promoCode}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        return response;
       });
   },
 };
