@@ -30,8 +30,8 @@ function OrderDetails() {
   const navigate = useNavigate();
   const params = useParams();
   const [order, setOrder] = useState({ data: [] });
-  const toReviews = (e) => {
-    e.preventDefault();
+  const toReviews = (pid) => {
+    localStorage.setItem("productDetailsId", pid);
     <ReviewPage />;
     navigate("/viewdetails");
   };
@@ -276,7 +276,7 @@ function OrderDetails() {
                           opacity: [0.9, 0.8, 0.7],
                         },
                       }}
-                      onClick={toReviews}
+                      onClick={() => toReviews(item._id)}
                     >
                       Write a review
                     </Button>

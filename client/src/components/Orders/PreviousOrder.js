@@ -69,9 +69,8 @@ function PreviousOrder() {
     });
   };
 
-  const toReviews = (e) => {
-    e.preventDefault();
-    <ReviewPage />;
+  const toReviews = (pid) => {
+    localStorage.setItem("productDetailsId", pid);
     navigate("/viewdetails");
   };
 
@@ -320,7 +319,7 @@ function PreviousOrder() {
                                   opacity: [0.9, 0.8, 0.7],
                                 },
                               }}
-                              onClick={toReviews}
+                              onClick={() => toReviews(item._id)}
                             >
                               Write a review
                             </Button>
