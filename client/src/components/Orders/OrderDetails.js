@@ -53,10 +53,11 @@ function OrderDetails() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const toCart = (e) => {
-    e.preventDefault();
+  const toCart = (data) => {
+    // e.preventDefault();
     <Cart />;
-    navigate("/cart");
+    // navigate("/cart");
+    navigate("/cart", { state: { ...data, quantity: 1 } })
   };
   return (
     <ThemeProvider theme={theme}>
@@ -294,7 +295,7 @@ function OrderDetails() {
                           opacity: [0.9, 0.8, 0.7],
                         },
                       }}
-                      onClick={toCart}
+                      onClick={toCart(item)}
                     >
                       Repurchase
                     </Button>
