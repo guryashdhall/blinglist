@@ -71,16 +71,16 @@ const jewelsReducer = (state = initstate, action) => {
       let tempSub ={}
       tempSub = Object.assign(tempSub,state)
       tempSub.cart.items[action.index].quantity += 1
-      state = {...tempSub}
-      return state;
+      state = {...state,cart:{userid:state.cart.userid,items:[...tempSub.cart.items]}}
+      return {...state};
 
     case "DECREASE_QUANTITY":
       let tempAdd ={}
       tempAdd = Object.assign(tempAdd,state)
       tempAdd.cart.items[action.index].quantity -= 1
-      state = {...tempAdd}
+      state = {...state,cart:{userid:state.cart.userid,items:[...tempAdd.cart.items]}}
       console.log(state)
-      return state;
+      return {...state};
     
     case "REMOVE_ITEM":
         let tempCart = state.cart

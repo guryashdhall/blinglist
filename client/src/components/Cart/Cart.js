@@ -27,7 +27,7 @@ function Cart(props) {
         props.fetchCart(data.data)
       }
       else{
-        console.log("in else")
+        console.log("get cart in else")
         console.log(JSON.parse(localStorage.getItem('cart')))
         props.fetchCart(JSON.parse(localStorage.getItem('cart')))
       }
@@ -101,7 +101,7 @@ function Cart(props) {
           
         </Grid>
         <Grid item xs={12} md={3} sx={{ mb: 6, mr: 2, mt: 1 }}>
-          <Summary />
+          <Summary products={cart_products.items}/>
         </Grid>
       </Grid>
     </div>

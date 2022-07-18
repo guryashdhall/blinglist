@@ -53,7 +53,7 @@
 
     const handleRemove = async(id) => {
       await props.remove(id)
-      localStorage.setItem('cart',cart_products)
+      localStorage.setItem('cart',JSON.stringify(cart_products))
     }
     return (
       <>
