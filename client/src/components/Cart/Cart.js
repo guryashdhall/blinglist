@@ -12,7 +12,12 @@ import axios from "axios";
 const Cart = (props) => {
   const location = useLocation();
   const cart_products = useSelector((state) => state.jewelsReducer.cart);
-
+  useEffect(() => {
+    if (location.state) {
+      props.setItem(location.state);
+      localStorage.setItem('cart',JSON.stringify(cart_products))
+    }
+  }, [cart_products]);
   useEffect(() => {
     getCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,12 +72,7 @@ const Cart = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (location.state) {
-      props.setItem(location.state);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cart_products]);
+
 
   return (
     <div>
