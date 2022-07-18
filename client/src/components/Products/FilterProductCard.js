@@ -190,7 +190,7 @@ export default function FilterProductCard({ data }) {
                 </Button>
               </td>
               <td>
-                <Button variant="outlined" onClick={() => navigate("/cart",{state:{...product,quantity:1}})}>
+                <Button variant="outlined" onClick={() => navigate("/cart",{state:{...data,quantity:1}})}>
                   Add to Cart&nbsp; {<AddShoppingCartOutlinedIcon />}
                 </Button>
               </td>
