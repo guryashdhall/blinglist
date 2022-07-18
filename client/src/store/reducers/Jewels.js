@@ -58,7 +58,7 @@ const jewelsReducer = (state = initstate, action) => {
     
     case "FETCH_TO_CART":
       state = {...state,cart:action.cart};
-      return state;
+      return {...state};
     
     case "INCREASE_QUANTITY":
       let tempSub ={}
