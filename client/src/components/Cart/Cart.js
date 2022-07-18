@@ -18,17 +18,12 @@ function Cart(props) {
     getCart()
   },[])  
   const getCart = async() => {
-      console.log("inside if")
       await axios.post("http://localhost:8080/cart/getCart",{userid:JSON.parse(localStorage.getItem('user'))._id}).then(data => {
       if(localStorage.getItem('cart') == null){
-        console.log(JSON.stringify(data.data))
         localStorage.setItem('cart',JSON.stringify(data.data))
-        console.log(JSON.parse(localStorage.getItem('cart')))
         props.fetchCart(data.data)
       }
       else{
-        console.log("get cart in else")
-        console.log(JSON.parse(localStorage.getItem('cart')))
         props.fetchCart(JSON.parse(localStorage.getItem('cart')))
       }
     })
@@ -38,10 +33,7 @@ function Cart(props) {
       saveCart()
   },[])
   const saveCart = async() => {
-    console.log("save_cart",cart_products)
-    console.log("save cart called")
     await axios.post("http://localhost:8080/cart/addCart",cart_products).then(response => {
-      console.log(response)
       JSON.stringify(cart_products)
       localStorage.setItem('cart',JSON.stringify(cart_products))
       props.fetchCart(JSON.parse(localStorage.getItem('cart')))

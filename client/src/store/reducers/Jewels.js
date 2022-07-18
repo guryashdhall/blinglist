@@ -26,12 +26,6 @@ const jewelsReducer = (state = initstate, action) => {
       return state;
 
     case "INSERT_REVIEW":
-      console.log( {
-        title: action.title,
-        description: action.description,
-        rating: action.rating,
-        user_name: action.user_name
-      })
       state = {
         stars: -1,
         reviews: [
@@ -64,7 +58,6 @@ const jewelsReducer = (state = initstate, action) => {
     
     case "FETCH_TO_CART":
       state = {...state,cart:action.cart};
-      console.log(state.cart)
       return state;
     
     case "INCREASE_QUANTITY":
@@ -79,14 +72,12 @@ const jewelsReducer = (state = initstate, action) => {
       tempAdd = Object.assign(tempAdd,state)
       tempAdd.cart.items[action.index].quantity -= 1
       state = {...state,cart:{userid:state.cart.userid,items:[...tempAdd.cart.items]}}
-      console.log(state)
       return {...state};
     
     case "REMOVE_ITEM":
         let tempCart = state.cart
         tempCart.items = tempCart.items.filter((item) => {if (action.id !== item._id) {return item}})
         state = {...state,cart:{userid:state.cart.userid,items:[...tempCart.items]}}
-        console.log(state.cart.items)
         return state
 
     default:
