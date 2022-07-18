@@ -14,141 +14,148 @@ import SuccessAlert from "../../SuccessAlert";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { isUserLoggedIn } from "../../../Helpers/helper";
 import { BACKEND_URL } from "../../../config/config";
 
 const PasswordReset = () => {
-
   const title = "Reset Password";
   const color = "#000000";
-const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [resetPwdInfo, setResetPwdInfo] = useState({
-    email: '',
-    newpassword: '',
-    confirmNewPassword: '',
+    email: "",
+    newpassword: "",
+    confirmNewPassword: "",
     errors: {
-      email: '',
-      newpassword: '',
-      confirmNewPassword: '',
-    }
+      email: "",
+      newpassword: "",
+      confirmNewPassword: "",
+    },
   });
 
   useEffect(() => {
     let role = localStorage.getItem("role");
     isUserLoggedIn()
       ? role === "customer"
-        ? navigate("/recommendation") 
+        ? navigate("/recommendation")
         : navigate("/admin")
       : navigate("/resetPwd");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  
-  const handlePwdErrors = () => { 
+  const handlePwdErrors = () => {
     if (!resetPwdInfo.newpassword) {
       setResetPwdInfo({
-        ...resetPwdInfo, errors: {
-          ...resetPwdInfo.errors, newpassword: "Password is required"
-        }
-      })
+        ...resetPwdInfo,
+        errors: {
+          ...resetPwdInfo.errors,
+          newpassword: "Password is required",
+        },
+      });
     } else if (resetPwdInfo.newpassword.length < 8) {
       setResetPwdInfo({
-        ...resetPwdInfo, errors: {
-          ...resetPwdInfo.errors, newpassword: "Password needs to be 8 characters or more"
-        }
-      })
-    }
-    else {
+        ...resetPwdInfo,
+        errors: {
+          ...resetPwdInfo.errors,
+          newpassword: "Password needs to be 8 characters or more",
+        },
+      });
+    } else {
       setResetPwdInfo({
-        ...resetPwdInfo, errors: {
-          ...resetPwdInfo.errors, newpassword: ""
-        }
-      })
+        ...resetPwdInfo,
+        errors: {
+          ...resetPwdInfo.errors,
+          newpassword: "",
+        },
+      });
     }
   };
 
   const handleConfirmPwdErrors = () => {
     if (!resetPwdInfo.confirmNewPassword) {
       setResetPwdInfo({
-        ...resetPwdInfo, errors: {
-          ...resetPwdInfo.errors, confirmNewPassword: "Confirm Password is required"
-        }
-      })
+        ...resetPwdInfo,
+        errors: {
+          ...resetPwdInfo.errors,
+          confirmNewPassword: "Confirm Password is required",
+        },
+      });
     } else if (resetPwdInfo.confirmNewPassword !== resetPwdInfo.newpassword) {
       setResetPwdInfo({
-        ...resetPwdInfo, errors: {
-          ...resetPwdInfo.errors, confirmNewPassword: "Passwords do not match"
-        }
-      })
-    }
-    else {
+        ...resetPwdInfo,
+        errors: {
+          ...resetPwdInfo.errors,
+          confirmNewPassword: "Passwords do not match",
+        },
+      });
+    } else {
       setResetPwdInfo({
-        ...resetPwdInfo, errors: {
-          ...resetPwdInfo.errors, confirmNewPassword: ""
-        }
+        ...resetPwdInfo,
+        errors: {
+          ...resetPwdInfo.errors,
+          confirmNewPassword: "",
+        },
       });
     }
   };
   const onhandleChange = (name, value) => {
     setResetPwdInfo({
-
       ...resetPwdInfo,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   const onhandleSubmit = (e) => {
     e.preventDefault();
-    if (resetPwdInfo.errors.email == '' && resetPwdInfo.errors.newpassword == '' && resetPwdInfo.errors.confirmNewPassword == '')
-    {
-      console.log(resetPwdInfo);
-      const email =localStorage.getItem("email");
-      axios.post(BACKEND_URL +  "reset-password", {
-        email: email,
-        newpassword: resetPwdInfo.newpassword,
-        confirmNewPassword: resetPwdInfo.confirmNewPassword
-      }).then(res => {
-        console.log(res);
-        if (res.data.success) {
-          toast.success(res.data.message, {
-            position: "top-right",
-            theme: "dark",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            onClose: () => {
-              navigate("/");
-            }
-          })
-
-        } else {
-          toast.error(res.data.message, {
-            position: "top-right",
-            theme: "dark",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined
-          });
-        }
-      }
-      ).catch(err => {
-        console.log(err);
-      }
-      );
+    if (
+      resetPwdInfo.errors.email == "" &&
+      resetPwdInfo.errors.newpassword == "" &&
+      resetPwdInfo.errors.confirmNewPassword == ""
+    ) {
+      const email = localStorage.getItem("email");
+      axios
+        .post(BACKEND_URL + "reset-password", {
+          email: email,
+          newpassword: resetPwdInfo.newpassword,
+          confirmNewPassword: resetPwdInfo.confirmNewPassword,
+        })
+        .then((res) => {
+          if (res.data.success) {
+            toast.success(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClose: () => {
+                navigate("/");
+              },
+            });
+          } else {
+            toast.error(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      handleConfirmPwdErrors();
+      handlePwdErrors();
     }
-    else {
-     handleConfirmPwdErrors();
-     handlePwdErrors();
-    }
-  }
+  };
 
   useEffect(() => {
     let role = localStorage.getItem("role");
@@ -190,7 +197,9 @@ const navigate=useNavigate();
             error={resetPwdInfo.errors.newpassword !== ""}
             helperText={resetPwdInfo.errors.newpassword}
             onBlur={handlePwdErrors}
-            onChange={(e) => { onhandleChange("newpassword", e.target.value) }}
+            onChange={(e) => {
+              onhandleChange("newpassword", e.target.value);
+            }}
           />
         </div>
         <br />
@@ -207,11 +216,13 @@ const navigate=useNavigate();
             value={resetPwdInfo.confirmNewPassword}
             error={resetPwdInfo.errors.confirmNewPassword !== ""}
             helperText={resetPwdInfo.errors.confirmNewPassword}
-         onChange={(e) => { onhandleChange("confirmNewPassword", e.target.value) }}
+            onChange={(e) => {
+              onhandleChange("confirmNewPassword", e.target.value);
+            }}
             onBlur={handleConfirmPwdErrors}
           />
-          <br/>
-          <br/>
+          <br />
+          <br />
         </div>
         <Button
           onSubmit={<SuccessAlert />}
@@ -224,7 +235,7 @@ const navigate=useNavigate();
           Submit
         </Button>
       </form>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

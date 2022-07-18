@@ -50,7 +50,6 @@ const jewelsReducer = (state = initstate, action) => {
       return state;
 
     case "ADD_TO_CART":
-      console.log("----------------------------------- ", action);
       state.cart.items = [...state.cart.items, action.item];
       state.cart.userid = JSON.parse(localStorage.getItem("user"))._id;
       state.cart.items = state.cart.items.filter(

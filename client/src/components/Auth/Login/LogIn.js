@@ -4,7 +4,6 @@
  * @email : guryash.dhall@dal.ca
  ***/
 
-
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -103,7 +102,6 @@ export default function SignIn() {
     if (userInfo.errors.email === "" && userInfo.errors.password === "") {
       login({ email: userInfo.email, password: userInfo.password }).then(
         (response) => {
-          console.log(response);
           if (response.data.success) {
             toast.success(response.data.message, {
               position: "top-right",

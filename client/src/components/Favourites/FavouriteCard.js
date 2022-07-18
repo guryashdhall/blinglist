@@ -18,13 +18,7 @@ export default function FavouriteCard({ data }) {
 
   const removeFavourites = async (e) => {
     e.preventDefault();
-    console.log("Removing favorites");
-    console.log(
-      "UID:  " +
-        JSON.parse(localStorage.getItem("user"))._id +
-        " PID: " +
-        data._id
-    );
+
     const result = await axios.put(
       BACKEND_URL + "favourites/removefavourites",
       {
@@ -32,9 +26,8 @@ export default function FavouriteCard({ data }) {
         product_id: data._id,
       }
     );
-    console.log(result.data);
+
     if (result.data.success) {
-      console.log(result.data.data);
       toast.success("Product has been removed successfully!", {
         position: "top-right",
         theme: "dark",
@@ -49,7 +42,6 @@ export default function FavouriteCard({ data }) {
         },
       });
     } else {
-      console.log(result);
       toast.error(
         "Something went wrong! Please refresh your page and try again.",
         {
@@ -68,7 +60,6 @@ export default function FavouriteCard({ data }) {
 
   const viewProductDetails = (e) => {
     e.preventDefault();
-    console.log("View Product Details");
     localStorage.setItem("productDetailsId", data._id);
     navigate("/viewdetails");
   };

@@ -22,10 +22,6 @@ const ViewProduct = () => {
       : navigate("/");
 
     async function fetchData() {
-      console.log(
-        "Fetching data..." + localStorage.getItem("productDetailsId")
-      );
-      // Temporary
       const user_id = JSON.parse(localStorage.getItem("user"))._id;
       const res = await axios.get(
         BACKEND_URL +
@@ -33,10 +29,9 @@ const ViewProduct = () => {
           user_id +
           `&id=${localStorage.getItem("productDetailsId")}`
       );
-      console.log(res.data.data);
+
       if (res.data.success) {
         setProducts(res.data.data);
-        console.log(product.favourite);
         setFavourites(product.favourite);
       }
     }
@@ -46,7 +41,7 @@ const ViewProduct = () => {
 
   const removeFavourites = async (e) => {
     e.preventDefault();
-    console.log("Removing favorites");
+
     const result = await axios.put(
       BACKEND_URL + "favourites/removefavourites",
       {
@@ -67,7 +62,6 @@ const ViewProduct = () => {
         progress: undefined,
       });
     } else {
-      console.log(result);
       toast.error(
         "Something went wrong! Please refresh your page and try again.",
         {
@@ -86,7 +80,7 @@ const ViewProduct = () => {
 
   const addToFavourites = async (e) => {
     e.preventDefault();
-    console.log("Adding favorites");
+
     const result = await axios.post(
       BACKEND_URL + "favourites/addToFavourites",
       {
@@ -94,10 +88,8 @@ const ViewProduct = () => {
         product_id: product._id,
       }
     );
-    console.log(result.data);
-    console.log(result.data.success);
+
     if (result.data.success) {
-      console.log(result.data);
       setFavourites(1);
       toast.success("Product added to your wishlist!", {
         position: "top-right",
@@ -110,7 +102,6 @@ const ViewProduct = () => {
         progress: undefined,
       });
     } else {
-      console.log(result);
       toast.error(
         "Something went wrong! Please refresh your page and try again.",
         {
@@ -214,7 +205,6 @@ const ViewProduct = () => {
                   </Grid>
                 </Grid>
                 <Grid xs={12} align="left" mt={4}>
-                  {console.log(product)}
                   <ReviewPage id={product._id} />
                 </Grid>
               </Paper>

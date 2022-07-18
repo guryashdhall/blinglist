@@ -45,7 +45,7 @@ const Product = () => {
           const res = await axios.get(
             BACKEND_URL + `products/getproducts?id=${user._id}`
           );
-          console.log(res.data.data);
+
           if (res.data.success) {
             setProducts(res.data.data);
           } else {
@@ -70,7 +70,7 @@ const Product = () => {
     } catch (error) {
       console.log(error);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSearchChange = (e) => {
@@ -79,14 +79,11 @@ const Product = () => {
 
   const handleSearchSubmit = async (e) => {
     ClearFilter();
-    console.log("Searching...", keyword);
     const user = JSON.parse(localStorage.getItem("user"));
     if (keyword.length > 0) {
-      console.log("searching:" + keyword);
       const res = await axios.get(
         `${BACKEND_URL}search/products?id=${user._id}&keyword=${keyword}`
       );
-      console.log(res.data.data);
       if (res.data.success) {
         setProducts(res.data.data);
       }
@@ -94,7 +91,7 @@ const Product = () => {
       const res = await axios.get(
         `${BACKEND_URL}products/getproducts?id=${user._id}`
       );
-      console.log(res.data.data);
+
       if (res.data.success) {
         setProducts(res.data.data);
       }
@@ -139,7 +136,6 @@ const Product = () => {
         (filter.type.ring || filter.type.necklace || filter.type.earring) &&
         (filter.availibility.available || filter.availibility.notavailable)
       ) {
-        console.log("NA1");
         if (filter.type.ring && product.productType.toLowerCase() === "ring") {
           if (
             filter.availibility.available ||
@@ -294,58 +290,10 @@ const Product = () => {
         }
       }
     });
-    console.log(filterData_temp);
+
     setFilterData([...filterData_temp]);
     setFilterApplied(true);
   };
-
-  useEffect(() => {
-    if (filterData === undefined || filterData === {}) {
-      console.log("Filter data is not available");
-    } else {
-      console.log("Filter is available");
-    }
-  }, [filterData]);
-
-  useEffect(() => {
-    if (availableF === true) {
-      console.log("Filter is available");
-    } else {
-      console.log("Filter is not available");
-    }
-  }, [availableF]);
-
-  useEffect(() => {
-    if (notavailableF === true) {
-      console.log("Filter is not available");
-    } else {
-      console.log("Filter is not not available");
-    }
-  }, [notavailableF]);
-
-  useEffect(() => {
-    if (ringF === true) {
-      console.log("Filter is ring");
-    } else {
-      console.log("Filter is not ring");
-    }
-  }, [ringF]);
-
-  useEffect(() => {
-    if (necklaceF === true) {
-      console.log("Filter is necklace");
-    } else {
-      console.log("Filter is not necklace");
-    }
-  }, [necklaceF]);
-
-  useEffect(() => {
-    if (earringF === true) {
-      console.log("Filter is earring");
-    } else {
-      console.log("Filter is not earring");
-    }
-  }, [earringF]);
 
   const ClearFilter = () => {
     let temp = false;

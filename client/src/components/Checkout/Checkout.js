@@ -38,7 +38,6 @@ const Checkout = () => {
     if (isUserLoggedIn()) {
       if (role === "customer") {
         getCartItems().then((response) => {
-          console.log(response.data[0]);
           setCartItems(response.data[0].items);
           setCartID(response.data[0]._id);
           let items = response.data[0].items;
@@ -66,7 +65,6 @@ const Checkout = () => {
           calculateTotalAmount(totalCartAmount);
           setSubTotalAmount(totalCartAmount);
           if (discount !== 0) {
-            console.log(discount, totalAmount, subTotal);
             applyDiscount(discount);
           }
         });
@@ -122,7 +120,7 @@ const Checkout = () => {
             draggable: true,
             progress: undefined,
             onClose: () => {
-              localStorage.removeItem('cart')
+              localStorage.removeItem("cart");
               navigate("/cart");
             },
           });

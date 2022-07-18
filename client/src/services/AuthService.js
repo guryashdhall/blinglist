@@ -14,7 +14,6 @@ const AuthService = {
   },
 
   signUp: (signUpInfo) => {
-    console.log("------------------------ ");
     return axios
       .post(BACKEND_URL + "signup", {
         firstName: signUpInfo.firstName,

@@ -35,8 +35,6 @@ const Favourites = () => {
   useEffect(() => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      console.log(user._id);
-      console.log(user);
       if (!isUserLoggedIn()) {
         navigate("/");
       } else {
@@ -47,7 +45,6 @@ const Favourites = () => {
           const res = await axios.get(
             BACKEND_URL + `favourites/fetchfavourites?id=${user._id}`
           );
-          console.log(res);
           if (res.data.success) {
             setFavourites(res.data.data);
             let maxCost = 0;
@@ -79,14 +76,12 @@ const Favourites = () => {
 
   const handleSearchSubmit = async (e) => {
     ClearFilter();
-    console.log("Searching...", keyword);
     const user = JSON.parse(localStorage.getItem("user"));
     if (keyword.length > 0) {
-      console.log("searching:" + keyword);
       const res = await axios.get(
         `${BACKEND_URL}search/favourites?id=${user._id}&keyword=${keyword}`
       );
-      console.log(res.data.data);
+
       if (res.data.success) {
         setFavourites(res.data.data);
       }
@@ -94,7 +89,7 @@ const Favourites = () => {
       const res = await axios.get(
         BACKEND_URL + `favourites/fetchfavourites?id=${user._id}`
       );
-      console.log(res.data.data);
+
       if (res.data.success) {
         setFavourites(res.data.data);
       }
@@ -293,58 +288,10 @@ const Favourites = () => {
         }
       }
     });
-    console.log(filterData_temp);
+
     setFilterData([...filterData_temp]);
     setFilterApplied(true);
   };
-
-  useEffect(() => {
-    if (filterData === undefined || filterData === {}) {
-      console.log("Filter data is not available");
-    } else {
-      console.log("Filter is available");
-    }
-  }, [filterData]);
-
-  useEffect(() => {
-    if (availableF === true) {
-      console.log("Filter is available");
-    } else {
-      console.log("Filter is not available");
-    }
-  }, [availableF]);
-
-  useEffect(() => {
-    if (notavailableF === true) {
-      console.log("Filter is not available");
-    } else {
-      console.log("Filter is not not available");
-    }
-  }, [notavailableF]);
-
-  useEffect(() => {
-    if (ringF === true) {
-      console.log("Filter is ring");
-    } else {
-      console.log("Filter is not ring");
-    }
-  }, [ringF]);
-
-  useEffect(() => {
-    if (necklaceF === true) {
-      console.log("Filter is necklace");
-    } else {
-      console.log("Filter is not necklace");
-    }
-  }, [necklaceF]);
-
-  useEffect(() => {
-    if (earringF === true) {
-      console.log("Filter is earring");
-    } else {
-      console.log("Filter is not earring");
-    }
-  }, [earringF]);
 
   const ClearFilter = () => {
     let temp = false;
