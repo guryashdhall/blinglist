@@ -12,11 +12,11 @@ import axios from "axios";
 import { BACKEND_URL } from "../../config/config.js";
 
 function InputCard(props) {
-// get user details
-  useEffect(()=>{
-    setUserDetails(JSON.parse(localStorage.getItem("user")))
-  },[])
-  const [userDetails,setUserDetails] = useState({})
+  // get user details
+  useEffect(() => {
+    setUserDetails(JSON.parse(localStorage.getItem("user")));
+  }, []);
+  const [userDetails, setUserDetails] = useState({});
   const [check_title, setCheckTitle] = useState(false);
   const [check_description, setCheckDescription] = useState(false);
   const [checkRating, setCheckRating] = useState(false);
@@ -69,21 +69,18 @@ function InputCard(props) {
       setMessage("Please Fill all the details");
       setOpenbar(true);
     } else {
-      console.log(userDetails.firstName+" "+userDetails.lastName)
-      props.insertReview(titleValue, descriptionValue, ratingValue,userDetails.firstName+" "+userDetails.lastName);
-      console.log({
-        product_id: props.id,
-        user_id: userDetails._id,
-        user_name: userDetails.firstName+" "+userDetails.lastName,
-        title: titleValue,
-        description: descriptionValue,
-        rating: ratingValue,
-      })
+      props.insertReview(
+        titleValue,
+        descriptionValue,
+        ratingValue,
+        userDetails.firstName + " " + userDetails.lastName
+      );
+
       axios
-        .post(BACKEND_URL +"reviews/addReviews", {
+        .post(BACKEND_URL + "reviews/addReviews", {
           product_id: props.id,
           user_id: userDetails._id,
-          user_name: userDetails.firstName+" "+userDetails.lastName,
+          user_name: userDetails.firstName + " " + userDetails.lastName,
           title: titleValue,
           description: descriptionValue,
           rating: ratingValue,
@@ -164,8 +161,8 @@ function InputCard(props) {
 
 const mapDispatchtoProps = (dispatch) => {
   return {
-    insertReview: (title, description, rating,user_name) => {
-      dispatch(insertReview(title, description, rating,user_name));
+    insertReview: (title, description, rating, user_name) => {
+      dispatch(insertReview(title, description, rating, user_name));
     },
   };
 };

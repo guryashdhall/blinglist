@@ -24,7 +24,6 @@ const Cart = (props) => {
   }, []);
 
   const getCart = async () => {
-    console.log("inside get ");
     await axios
       .post("http://localhost:8080/cart/getCart", {
         userid: JSON.parse(localStorage.getItem("user"))._id,
@@ -34,14 +33,11 @@ const Cart = (props) => {
           localStorage.setItem("cart", JSON.stringify(data.data));
           props.fetchCart(data.data);
         } else {
-          console.log("inside else");
-          console.log(JSON.parse(localStorage.getItem("cart")));
           props.fetchCart(JSON.parse(localStorage.getItem("cart")));
-          console.log(cart_products);
+
           axios
             .post("http://localhost:8080/cart/addCart", cart_products)
             .then((response) => {
-              console.log("response");
               localStorage.setItem("cart", JSON.stringify(cart_products));
               props.fetchCart(JSON.parse(localStorage.getItem("cart")));
             })

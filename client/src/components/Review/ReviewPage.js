@@ -6,7 +6,6 @@ import InputCard from "./InputCard";
 import ReviewCard from "./ReviewCard";
 import ReviewHeader from "./ReviewHeader";
 
-
 function ReviewPage(props) {
   const navigate = useNavigate();
 
@@ -17,7 +16,7 @@ function ReviewPage(props) {
         ? navigate("/reviews")
         : navigate("/admin")
       : navigate("/");
-      console.log(props)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,9 +39,9 @@ function ReviewPage(props) {
         <ReviewHeader />
       </Grid>
       <Grid item xs>
-        <InputCard id={props.id}/>
-        {console.log(props.id)}
-        <ReviewCard id={props.id}/>
+        <InputCard id={props.id} />
+
+        <ReviewCard id={props.id} />
       </Grid>
     </Container>
   );

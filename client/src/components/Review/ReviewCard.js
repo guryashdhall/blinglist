@@ -11,14 +11,16 @@ import { setIntialReviewState } from "../../store/actions/Jewels.js";
 import { BACKEND_URL } from "../../config/config.js";
 
 function ReviewCard(props) {
-//update global state with database 
+  //update global state with database
   useEffect(() => {
-    axios.post(BACKEND_URL+"reviews/getreviews",{product_id:props.id}).then((response) => {
-      console.log(response)
-      props.setIntialReviewState(response.data);
-    });
+    axios
+      .post(BACKEND_URL + "reviews/getreviews", { product_id: props.id })
+      .then((response) => {
+        props.setIntialReviewState(response.data);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id]);
- 
+
   var filtered_reviews = useSelector(
     (state) => state.jewelsReducer.filtered_reviews,
     shallowEqual
@@ -30,8 +32,8 @@ function ReviewCard(props) {
           <Card sx={{ width: "90%", m: 2 }} key={index}>
             <Stack direction="row">
               <Avatar sx={{ m: 1 }}></Avatar>
-              {console.log(review)}
-              <Typography sx={{ mt: 2,ml:1 }}>{review.user_name}</Typography>
+
+              <Typography sx={{ mt: 2, ml: 1 }}>{review.user_name}</Typography>
             </Stack>
 
             <CardContent>
@@ -50,7 +52,7 @@ function ReviewCard(props) {
     </>
   );
 }
-//state managaement 
+//state managaement
 const mapDispatchtoProps = (dispatch) => {
   return {
     setIntialReviewState: (data) => {

@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const Slider = ({ images, onClick }) => {
-  console.log(images);
   const theme = useTheme();
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -59,28 +58,29 @@ const Slider = ({ images, onClick }) => {
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {images.length > 0 && images.map((step, index) => (
-          <div key={index}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <Box
-                component="img"
-                sx={{
-                  height: 255,
-                  display: "block",
-                  maxWidth: 400,
-                  overflow: "hidden",
-                  width: "100%",
-                }}
-                src={step.imgPath}
-                alt={step.label}
-                onClick={() => {
-                  navigate("/viewdetails");
-                  //navigate(`/viewdetails/${step.productID}`);
-                }}
-              />
-            ) : null}
-          </div>
-        ))}
+        {images.length > 0 &&
+          images.map((step, index) => (
+            <div key={index}>
+              {Math.abs(activeStep - index) <= 2 ? (
+                <Box
+                  component="img"
+                  sx={{
+                    height: 255,
+                    display: "block",
+                    maxWidth: 400,
+                    overflow: "hidden",
+                    width: "100%",
+                  }}
+                  src={step.imgPath}
+                  alt={step.label}
+                  onClick={() => {
+                    navigate("/viewdetails");
+                    //navigate(`/viewdetails/${step.productID}`);
+                  }}
+                />
+              ) : null}
+            </div>
+          ))}
       </AutoPlaySwipeableViews>
       <MobileStepper
         steps={maxSteps}

@@ -58,7 +58,7 @@ const PaymentService = {
 
   getUserCartItems: () => {
     const userID = JSON.parse(localStorage.getItem("user"))._id;
-    console.log(userID);
+
     return fetch(BACKEND_URL + `checkout/getUserCartItems/${userID}`, {
       method: "GET",
       headers: {

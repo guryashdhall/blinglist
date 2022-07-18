@@ -23,8 +23,6 @@ exports.makePayment = async (req, res) => {
       cartDetails,
     } = req.body;
 
-    console.log(req.body);
-
     await stripe.customers
       .create({
         email: user.email,
@@ -64,7 +62,6 @@ exports.makePayment = async (req, res) => {
                   .status(502)
                   .json({ success: false, message: "Something went wrong!" });
               }
-              console.log(cartDetails);
 
               return res
                 .status(200)
@@ -160,7 +157,6 @@ exports.getCartItems = async (req, res) => {
 
     await Cart.find({ userid: userID })
       .then((response) => {
-        console.log("Response: ", response);
         return res.status(200).json({ success: true, data: response });
       })
       .catch((err) => {

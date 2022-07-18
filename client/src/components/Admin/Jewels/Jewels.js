@@ -14,10 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getSearchProducts } from "../../../store/actions/recommendation.js";
 import { isUserLoggedIn } from "../../../Helpers/helper.js";
 import { toast } from "react-toastify";
-import {
-  createProduct,
-  editProduct,
-} from "../../../store/actions/admin";
+import { createProduct, editProduct } from "../../../store/actions/admin";
 
 const Jewels = () => {
   const classes = useStyles();
@@ -50,28 +47,25 @@ const Jewels = () => {
   const role = localStorage.getItem("role");
 
   const getPro = () => {
-      if (searchParams.get("search")) {
-        getSearchProducts(searchParams.get("search")).then((result) => {
-          setJewels(result);
-        });
-      } else {
-        getProducts().then((result) => {
-          console.log("---------- ", result)
-          setJewels(result);
-        });
-      }
-  }
+    if (searchParams.get("search")) {
+      getSearchProducts(searchParams.get("search")).then((result) => {
+        setJewels(result);
+      });
+    } else {
+      getProducts().then((result) => {
+        setJewels(result);
+      });
+    }
+  };
 
   useEffect(() => {
-    if(isUserLoggedIn()) {
-      getPro()
-    }
-    else {
-      navigate("/")
+    if (isUserLoggedIn()) {
+      getPro();
+    } else {
+      navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   const addProduct = (e) => {
     e.preventDefault();
@@ -89,9 +83,9 @@ const Jewels = () => {
 
     if (currentProductId) {
       editProduct(currentProductId, body).then((result) => {
-        getPro()
-        setCurrentProductId(null)
-        handleClear()
+        getPro();
+        setCurrentProductId(null);
+        handleClear();
         if (result.success === true) {
           toast.success("Product edited successfully", {
             position: "bottom-right",
@@ -118,8 +112,8 @@ const Jewels = () => {
       });
     } else {
       createProduct(body).then((result) => {
-        getPro()
-        handleClear()
+        getPro();
+        handleClear();
         if (result.success === true) {
           toast.success("Added product successfully!", {
             position: "bottom-right",
@@ -168,13 +162,20 @@ const Jewels = () => {
         image: "",
       },
     });
-    setCurrentProductId(null)
+    setCurrentProductId(null);
   };
-
 
   return (
     <div>
-      {role === "admin" && <Form currentProductId={currentProductId} handleClear={handleClear} addProduct={addProduct} productInfo={productInfo} setProductInfo={setProductInfo}/>}
+      {role === "admin" && (
+        <Form
+          currentProductId={currentProductId}
+          handleClear={handleClear}
+          addProduct={addProduct}
+          productInfo={productInfo}
+          setProductInfo={setProductInfo}
+        />
+      )}
 
       {jewels["products"] ? (
         <Grid
@@ -185,7 +186,11 @@ const Jewels = () => {
         >
           {jewels["products"].map((jewel) => (
             <Grid key={jewel._id} item xs={12} sm={12} md={6} lg={4}>
-              <Jewel jewel={jewel} getPro={getPro} setCurrentProductId={setCurrentProductId} />
+              <Jewel
+                jewel={jewel}
+                getPro={getPro}
+                setCurrentProductId={setCurrentProductId}
+              />
             </Grid>
           ))}
         </Grid>

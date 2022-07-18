@@ -23,7 +23,7 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
   const [count, setCount]= useState(countI)
   const removeFavourites = async (e) => {
     e.preventDefault();
-    console.log("Removing favorites");
+
     const result = await axios.put(
       BACKEND_URL + "favourites/removefavourites",
       {
@@ -46,7 +46,6 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
         progress: undefined,
       });
     } else {
-      console.log(result);
       toast.error(
         "Something went wrong! Please refresh your page and try again.",
         {
@@ -86,7 +85,6 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
         progress: undefined,
       });
     } else {
-      console.log(result);
       toast.error(
         "Something went wrong! Please refresh your page and try again.",
         {
@@ -105,7 +103,6 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
 
   const viewProductDetails = (e) => {
     e.preventDefault();
-    console.log("View Product Details");
     localStorage.setItem("productDetailsId", data._id);
     navigate("/viewdetails");
   };

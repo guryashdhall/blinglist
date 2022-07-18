@@ -65,9 +65,6 @@ export default function FilterProductCard({ data, favouriteInitial, countI }) {
 
   const addToFavourites = async (e) => {
     e.preventDefault();
-    console.log("Adding favorites");
-    console.log(JSON.parse(localStorage.getItem("user"))._id);
-    console.log(data._id);
     const result = await axios.post(
       BACKEND_URL + "favourites/addToFavourites",
       {
@@ -75,8 +72,7 @@ export default function FilterProductCard({ data, favouriteInitial, countI }) {
         product_id: data._id,
       }
     );
-    console.log(result.data);
-    console.log(result.data.success);
+
     if (result.data.success) {
       setCount(1)
       console.log(result.data)
@@ -92,7 +88,6 @@ export default function FilterProductCard({ data, favouriteInitial, countI }) {
         progress: undefined,
       });
     } else {
-      console.log(result);
       toast.error(
         "Something went wrong! Please refresh your page and try again.",
         {
@@ -111,7 +106,6 @@ export default function FilterProductCard({ data, favouriteInitial, countI }) {
 
   const viewProductDetails = (e) => {
     e.preventDefault();
-    console.log("View Product Details");
     localStorage.setItem("productDetailsId", data._id);
     navigate("/viewdetails");
   };

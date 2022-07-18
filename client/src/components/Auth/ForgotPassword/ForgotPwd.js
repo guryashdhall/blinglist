@@ -4,7 +4,6 @@
  * @email : guryash.dhall@dal.ca
  ***/
 
-
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
@@ -17,8 +16,8 @@ import Select from "@mui/material/Select";
 import { validateEmail } from "../../../Helpers/validateInfo";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { isUserLoggedIn } from "../../../Helpers/helper";
 import { BACKEND_URL } from "../../../config/config";
 
@@ -29,19 +28,18 @@ const ForgotPwd = () => {
   const title = "Forgot Password?";
   const color = "#000000";
   const navigate = useNavigate();
-  const SecurityQuestion ="";
+  const SecurityQuestion = "";
 
   const [forgotPwdInfo, setforgotPwdInfo] = useState({
-    email: '',
-    securityAnswer: '',
-    securityQuestion: '',
+    email: "",
+    securityAnswer: "",
+    securityQuestion: "",
     errors: {
-      email: '',
-      securityAnswer: '',
-      securityQuestion: '',
-    }
+      email: "",
+      securityAnswer: "",
+      securityQuestion: "",
+    },
   });
-
 
   useEffect(() => {
     let role = localStorage.getItem("role");
@@ -85,55 +83,55 @@ const ForgotPwd = () => {
   const onhandleChange = (name, value) => {
     setforgotPwdInfo({
       ...forgotPwdInfo,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
-  const onhandleSubmit = (e) => { 
-  e.preventDefault();
-    if (forgotPwdInfo.errors.email === '' && forgotPwdInfo.errors.securityAnswer ==='') 
-    {
-      axios.post(BACKEND_URL + "forgot-password", {
-        email: forgotPwdInfo.email,
-        securityAnswer: forgotPwdInfo.securityAnswer,
-        securityQuestion: forgotPwdInfo.securityQuestion
-      }).then(res => {
-        console.log(forgotPwdInfo)
-        console.log(res.data.success)
-        if (res.data.success === true) {
-          localStorage.setItem("email",forgotPwdInfo.email);
-          toast.success(res.data.message, {
-            position: "top-right",
-            theme: "dark",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            onClose: () => {
-              navigate("/resetPwd");
-            }
-          })
-        } else {
-          toast.error(res.data.message, {
-            position: "top-right",
-            theme: "dark",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined
-          });
-        }
-      }
-      ).catch(err => {
-        console.log(err);
-      }
-      );
-    }
-    else {
+  const onhandleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      forgotPwdInfo.errors.email === "" &&
+      forgotPwdInfo.errors.securityAnswer === ""
+    ) {
+      axios
+        .post(BACKEND_URL + "forgot-password", {
+          email: forgotPwdInfo.email,
+          securityAnswer: forgotPwdInfo.securityAnswer,
+          securityQuestion: forgotPwdInfo.securityQuestion,
+        })
+        .then((res) => {
+          if (res.data.success === true) {
+            localStorage.setItem("email", forgotPwdInfo.email);
+            toast.success(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              onClose: () => {
+                navigate("/resetPwd");
+              },
+            });
+          } else {
+            toast.error(res.data.message, {
+              position: "top-right",
+              theme: "dark",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
       handleEmailErrors();
     }
   };
@@ -171,20 +169,26 @@ const ForgotPwd = () => {
         <br />
         <Box sx={{ minWidth: 225 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label" value ={SecurityQuestion}>
+            <InputLabel id="demo-simple-select-label" value={SecurityQuestion}>
               Security Question
             </InputLabel>
             <Select
-             name="securityQuestion"
+              name="securityQuestion"
               color="secondary"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               // value={SecurityQuestion}
               label="Security Question"
-              onChange={(e) => onhandleChange("securityQuestion", e.target.value)}
+              onChange={(e) =>
+                onhandleChange("securityQuestion", e.target.value)
+              }
             >
-              <MenuItem value={"What's your pet name?"}>What's your pet name?</MenuItem>
-              <MenuItem value={"What's your mother's maiden name?"}>What's your mother's maiden name?</MenuItem>
+              <MenuItem value={"What's your pet name?"}>
+                What's your pet name?
+              </MenuItem>
+              <MenuItem value={"What's your mother's maiden name?"}>
+                What's your mother's maiden name?
+              </MenuItem>
               <MenuItem value={"What's the brand of your first car?"}>
                 What's the brand of your first car?
               </MenuItem>
@@ -222,7 +226,7 @@ const ForgotPwd = () => {
           Submit
         </Button>
       </form>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

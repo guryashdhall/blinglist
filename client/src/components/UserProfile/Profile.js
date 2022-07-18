@@ -17,27 +17,24 @@ import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config/config";
 
-
-
 const Profile = () => {
   const navigate = useNavigate();
 
   const title = "User Profile";
   const color = "#000000";
   const user = JSON.parse(localStorage.getItem("user"));
-  const [profileInfo , setProfileInfo] = useState({
-    firstName:user.firstName,
-    lastName :(user.lastName),
-    email :(user.email),
-    errors: { 
+  const [profileInfo, setProfileInfo] = useState({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    errors: {
       firstName: "",
       lastName: "",
       email: "",
     },
   });
 
-
-// Handle first name change
+  // Handle first name change
 
   const handleFirstNameErrors = () => {
     if (!profileInfo.firstName) {
@@ -59,7 +56,7 @@ const Profile = () => {
     }
   };
 
-//  Handle last name errors
+  //  Handle last name errors
 
   const handleLastNameErrors = () => {
     if (!profileInfo.lastName) {
@@ -81,7 +78,6 @@ const Profile = () => {
     }
   };
 
-
   useEffect(() => {
     let role = localStorage.getItem("role");
     isUserLoggedIn()
@@ -92,26 +88,24 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setProfileInfo({ ...profileInfo, [name]: value });
   };
-  const onhandleSubmit = (e) => { 
+  const onhandleSubmit = (e) => {
     // e.preventDefault();
     if (
       profileInfo.errors.firstName === "" &&
       profileInfo.errors.lastName === "" &&
-      profileInfo.errors.email === "" 
-    )
-      {
-        axios.post(BACKEND_URL + "edit-profile", {
+      profileInfo.errors.email === ""
+    ) {
+      axios
+        .post(BACKEND_URL + "edit-profile", {
           email: profileInfo.email,
           firstName: profileInfo.firstName,
-          lastName: profileInfo.lastName
-        }).then(res => {
-          console.log(profileInfo)
-          console.log(res.data.success)
+          lastName: profileInfo.lastName,
+        })
+        .then((res) => {
           if (res.data.success === true) {
             toast.success(res.data.message, {
               position: "top-right",
@@ -124,8 +118,8 @@ const Profile = () => {
               progress: undefined,
               onClose: () => {
                 navigate("/resetPwd");
-              }
-            })
+              },
+            });
           } else {
             toast.error(res.data.message, {
               position: "top-right",
@@ -135,21 +129,19 @@ const Profile = () => {
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
-              progress: undefined
+              progress: undefined,
             });
           }
-        }
-        ).catch(err => {
+        })
+        .catch((err) => {
           console.log(err);
-        }
-        );
-      }
-      else {
-        handleFirstNameErrors();
-        handleLastNameErrors();
-      }
-    };
-   
+        });
+    } else {
+      handleFirstNameErrors();
+      handleLastNameErrors();
+    }
+  };
+
   return (
     <Grid container>
       <Grid xs={12} align="center" mb={3}>
@@ -206,7 +198,7 @@ const Profile = () => {
                 value={profileInfo.firstName}
                 error={profileInfo.errors.firstName !== ""}
                 helperText={profileInfo.errors.firstName}
-               onChange={handleChange}
+                onChange={handleChange}
                 onBlur={handleFirstNameErrors}
               />
               <br />
@@ -223,7 +215,7 @@ const Profile = () => {
                 value={profileInfo.lastName}
                 error={profileInfo.errors.lastName !== ""}
                 helperText={profileInfo.errors.lastName}
-                onChange ={handleChange}
+                onChange={handleChange}
                 // onChange={(e) => handleChange("lastName", e.target.value)}
                 onBlur={handleLastNameErrors}
               />
