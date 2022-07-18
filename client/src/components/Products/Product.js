@@ -21,17 +21,19 @@ const Product = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState(null);
   const [keyword, setKeyword] = useState("");
-  const [filterClick, filterClickSet] = useState(0);
-  const [minCostFilter, minCostSet] = useState(0);
-  const [maxCostFilter, maxCostSet] = useState(1000);
-  const [filterCost, filterCostSet] = useState([0, 1000]);
-  const [filterData, setFilterData] = useState([]);
-  const [filterApplied, setFilterApplied] = useState(false);
-  const [availableF, setAvailableF] = useState(false);
-  const [notavailableF, setNotAvailableF] = useState(false);
-  const [ringF, setRingF] = useState(false);
-  const [necklaceF, setNecklaceF] = useState(false);
-  const [earringF, setEarringF] = useState(false);
+  const [filterClick, filterClickSet] = useState(0)
+  const [minCostFilter, minCostSet] = useState(0)
+  const [maxCostFilter, maxCostSet] = useState(1000)
+  const [filterCost, filterCostSet] = useState([0, 1000])
+  const [filterData, setFilterData] = useState([])
+  const [filterApplied, setFilterApplied] = useState(false)
+  const [availableF, setAvailableF] = useState(false)
+  const [notavailableF, setNotAvailableF] = useState(false)
+  const [ringF, setRingF] = useState(false)
+  const [necklaceF, setNecklaceF] = useState(false)
+  const [earringF, setEarringF] = useState(false)
+  const [favouritesList, setFavouritesList] = useState([])
+  const [productsFavourites, setProductsFavourites] = useState([])
 
   useEffect(() => {
     try {
@@ -47,7 +49,28 @@ const Product = () => {
           );
 
           if (res.data.success) {
-            setProducts(res.data.data);
+            let fL = []
+            res.data.data.forEach(product => {
+              if (product.favourite) {
+                fL.push(true)
+              } else {
+                fL.push(false)
+              }
+            })
+            setFavouritesList(fL)
+            setProductsFavourites(fL)
+            res.data.data.forEach(product => {
+              if (product.productPrice > maxCost) {
+                maxCost = product.productPrice;
+              }
+              if (product.productPrice < minCost) {
+                minCost = product.productPrice;
+              }
+            });
+            minCostSet(minCost);
+            maxCostSet(maxCost);
+            filterCostSet([minCostFilter, maxCostFilter]);
+            setProducts(res.data.data)
           } else {
             setProducts([]);
           }
@@ -55,17 +78,7 @@ const Product = () => {
         fetchData();
         let maxCost = 0;
         let minCost = 10000000;
-        products.forEach((product) => {
-          if (product.productPrice > maxCost) {
-            maxCost = product.productPrice;
-          }
-          if (product.productPrice < minCost) {
-            minCost = product.productPrice;
-          }
-        });
-        minCostSet(minCost);
-        maxCostSet(maxCost);
-        filterCostSet([minCostFilter, maxCostFilter]);
+
       }
     } catch (error) {
       console.log(error);
@@ -85,7 +98,18 @@ const Product = () => {
         `${BACKEND_URL}search/products?id=${user._id}&keyword=${keyword}`
       );
       if (res.data.success) {
-        setProducts(res.data.data);
+        let mn = []
+        res.data.data.forEach(product => {
+          if (product.favourite) {
+            mn.push(true)
+          } else {
+            mn.push(false)
+          }
+        })
+        setFavouritesList(mn)
+        setProductsFavourites(mn)
+        setProducts(res.data.data)
+        console.log(favouritesList)
       }
     } else {
       const res = await axios.get(
@@ -93,7 +117,21 @@ const Product = () => {
       );
 
       if (res.data.success) {
-        setProducts(res.data.data);
+        setFavouritesList([])
+        let ef = []
+
+        console.log(favouritesList)
+        res.data.data.forEach(product => {
+          if (product.favourite) {
+            ef.push(true)
+          } else {
+            ef.push(false)
+          }
+        })
+        setFavouritesList(ef)
+        setProductsFavourites(ef)
+        setProducts(res.data.data)
+        console.log(favouritesList)
       }
     }
   };
@@ -109,6 +147,9 @@ const Product = () => {
   };
 
   const costFilterValueLable = (value) => {
+    if (value === 600) {
+      return `CAD 600+`
+    }
     return `CAD ${value}`;
   };
 
@@ -163,33 +204,25 @@ const Product = () => {
               }
             }
           }
-        } else if (
-          filter.type.necklace &&
-          product.productType.toLowerCase() === "necklace"
-        ) {
-          if (
-            filter.availibility.available ||
-            filter.availibility.notavailable
-          ) {
-            if (
-              filter.availibility.available &&
-              product.inventoryQuantity > 0
-            ) {
-              if (
-                product.productPrice >= filter.cost.min &&
-                product.productPrice <= filter.cost.max
-              ) {
-                return product;
+        } else if (filter.type.necklace && product.productType.toLowerCase() == 'necklace') {
+          console.log("NA2")
+          if (filter.availibility.available || filter.availibility.notavailable) {
+            console.log("NA3")
+            if (filter.availibility.available && product.inventoryQuantity > 0) {
+              if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+                return product
+              } else if (filter.cost_max == 600) {
+                if (product.productPrice >= filter.cost.min) {
+                  return product
+                }
               }
-            } else if (
-              filter.availibility.notavailable &&
-              product.inventoryQuantity === 0
-            ) {
-              if (
-                product.productPrice >= filter.cost.min &&
-                product.productPrice <= filter.cost.max
-              ) {
-                return product;
+            } else if (filter.availibility.notavailable && product.inventoryQuantity == 0) {
+              if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+                return product
+              } else if (filter.cost_max == 600) {
+                if (product.productPrice >= filter.cost.min) {
+                  return product
+                }
               }
             }
           }
@@ -211,49 +244,41 @@ const Product = () => {
               ) {
                 return product;
               }
-            } else if (
-              filter.availibility.notavailable &&
-              product.inventoryQuantity === 0
-            ) {
-              if (
-                product.productPrice >= filter.cost.min &&
-                product.productPrice <= filter.cost.max
-              ) {
-                return product;
+            } else if (filter.availibility.notavailable && product.inventoryQuantity == 0) {
+              if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+                return product
+              } else if (filter.cost_max == 600) {
+                if (product.productPrice >= filter.cost.min) {
+                  return product
+                }
               }
             }
           }
         }
-      } else if (
-        (filter.type.ring || filter.type.necklace || filter.type.earring) &&
-        !(filter.availibility.available || filter.availibility.notavailable)
-      ) {
-        if (filter.type.ring && product.productType.toLowerCase() === "ring") {
-          if (
-            product.productPrice >= filter.cost.min &&
-            product.productPrice <= filter.cost.max
-          ) {
-            return product;
+      } else if ((filter.type.ring || filter.type.necklace || filter.type.earring) && !(filter.availibility.available || filter.availibility.notavailable)) {
+        if (filter.type.ring && product.productType.toLowerCase() == 'ring') {
+          if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+            return product
+          } else if (filter.cost_max == 600) {
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
-        } else if (
-          filter.type.necklace &&
-          product.productType.toLowerCase() === "necklace"
-        ) {
-          if (
-            product.productPrice >= filter.cost.min &&
-            product.productPrice <= filter.cost.max
-          ) {
-            return product;
+        } else if (filter.type.necklace && product.productType.toLowerCase() == 'necklace') {
+          if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+            return product
+          } else if (filter.cost_max == 600) {
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
-        } else if (
-          filter.type.earring &&
-          product.productType.toLowerCase() === "earring"
-        ) {
-          if (
-            product.productPrice >= filter.cost.min &&
-            product.productPrice <= filter.cost.max
-          ) {
-            return product;
+        } else if (filter.type.earring && product.productType.toLowerCase() == 'earring') {
+          if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+            return product
+          } else if (filter.cost_max == 600) {
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
         }
       } else if (
@@ -261,51 +286,59 @@ const Product = () => {
         !(filter.type.ring || filter.type.necklace || filter.type.earring)
       ) {
         if (filter.availibility.available && product.inventoryQuantity > 0) {
-          if (
-            product.productPrice >= filter.cost.min &&
-            product.productPrice <= filter.cost.max
-          ) {
-            return product;
+          if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+            return product
+          } else if (filter.cost_max == 600) {
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
-        } else if (
-          filter.availibility.notavailable &&
-          product.inventoryQuantity === 0
-        ) {
-          if (
-            product.productPrice >= filter.cost.min &&
-            product.productPrice <= filter.cost.max
-          ) {
-            return product;
+        } else if (filter.availibility.notavailable && product.inventoryQuantity == 0) {
+          if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+            return product
+          } else if (filter.cost_max == 600) {
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
         }
-      } else if (
-        !(filter.availibility.available || filter.availibility.notavailable) &&
-        !(filter.type.ring || filter.type.necklace || filter.type.earring)
-      ) {
-        if (
-          product.productPrice >= filter.cost.min &&
-          product.productPrice <= filter.cost.max
-        ) {
-          return product;
+
+      } else if (!(filter.availibility.available || filter.availibility.notavailable) && !(filter.type.ring || filter.type.necklace || filter.type.earring)) {
+        console.log('C')
+        if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
+          return product
+        } else if (filter.cost_max == 600) {
+          if (product.productPrice >= filter.cost.min) {
+            return product
+          }
         }
       }
-    });
-
+    })
+    setFavouritesList([])
+    let fL = []
+    filterData_temp.forEach(product => {
+      if (product.favourite) {
+        fL.push(true)
+      } else {
+        fL.push(false)
+      }
+    })
+    setFavouritesList(fL)
     setFilterData([...filterData_temp]);
-    setFilterApplied(true);
-  };
+    setFilterApplied(true)
+  }
 
   const ClearFilter = () => {
     let temp = false;
-    setFilterApplied(temp);
-    setAvailableF(temp);
-    setNotAvailableF(temp);
-    setRingF(temp);
-    setNecklaceF(temp);
-    setEarringF(temp);
-    filterCostSet([minCostFilter, maxCostFilter]);
-  };
-
+    setFilterApplied(temp)
+    setAvailableF(temp)
+    setNotAvailableF(temp)
+    setRingF(temp)
+    setNecklaceF(temp)
+    setEarringF(temp)
+    filterCostSet([0, 600])
+    setFavouritesList([])
+  }
   return (
     <div>
       <Container maxWidth="lg">
@@ -470,7 +503,7 @@ const Product = () => {
                     <Slider
                       getAriaLabel={() => "Cost"}
                       value={filterCost}
-                      min={50}
+                      min={0}
                       max={600}
                       onChange={handleFilterCostChange}
                       valueLabelDisplay="auto"
@@ -520,27 +553,24 @@ const Product = () => {
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
-            {products == null ? (
-              <h3>Loading Products...</h3>
-            ) : filterApplied ? (
-              filterData === [] || filterData.length === 0 ? (
-                <h3>No Filter Products found...</h3>
-              ) : (
-                filterData.map((product) => (
-                  <Grid item>
-                    <FilterProductCard data={product} />
-                  </Grid>
-                ))
-              )
-            ) : products.length === 0 ? (
-              <h3>No Products found...</h3>
-            ) : (
-              products.map((product) => (
-                <Grid item>
-                  <ProductCard data={product} />
-                </Grid>
-              ))
-            )}
+            {products == null ?
+              <h3>Loading Products...</h3> :
+              filterApplied ?
+                filterData == [] || filterData.length == 0 ?
+                  <h3>No Filter Products found...</h3>
+                  : filterData.map((product, index) => (
+                    <Grid item>
+                      <FilterProductCard data={product} favouriteInitial={favouritesList[index]} countI={0} />
+                    </Grid>
+                  ))
+                : products.length == 0 ?
+                  <h3>No Products found...</h3>
+                  : products.map((product, index) => (
+                    <Grid item>
+                      <ProductCard data={product} favouriteInitial={productsFavourites[index]} countI={0} />
+                    </Grid>
+                  ))
+            }
           </Grid>
         </Box>
       </Container>
