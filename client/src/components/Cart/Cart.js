@@ -21,8 +21,10 @@ function Cart(props) {
         userid: JSON.parse(localStorage.getItem("user"))._id,
       })
       .then((data) => {
+        console.log(data.data.items.length === 0)
         if(data.data.items.length === 0){
           localStorage.removeItem('cart')
+          props.fetchCart({userid: JSON.parse(localStorage.getItem("user"))._id,items:[]})
         }
         else{
           if (localStorage.getItem("cart") == null) {
