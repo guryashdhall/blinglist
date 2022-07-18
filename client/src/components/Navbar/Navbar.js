@@ -43,19 +43,6 @@ const Navbar = () => {
         </Link>
 
         <Toolbar>
-          <TextField
-            label="Search"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <IconButton>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
           <Link to={"/map"}>
             <LocationOnOutlinedIcon
               style={{
