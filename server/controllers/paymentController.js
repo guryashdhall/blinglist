@@ -1,15 +1,27 @@
+const mongoose = require("mongoose");
 const stripe = require("stripe")(
   "sk_test_51LIC1bE41Y5D29LDh8L9rJtAivoKhMhAxj7dp1oQlIlmiZ73wAg8mKWlFeO0tJkMVzsCknQIRMXyge0HzgEyIFtc00SYXO38ly"
 );
 
+const { Cart } = require("../models/Cart");
+const { Products } = require("../models/Product");
 const { Orders } = require("../models/Orders");
 const { GiftCards } = require("../models/GiftCard");
 const { PromoCode } = require("../models/PromoCode");
-const { response } = require("express");
 
 exports.makePayment = async (req, res) => {
   try {
-    const { token, user, orders, totalPayableAmount } = req.body;
+    const {
+      token,
+      user,
+      orders,
+      totalPayableAmount,
+      cartID,
+      quantity,
+      subTotal,
+      discount,
+      cartDetails,
+    } = req.body;
 
     return await stripe.customers
       .create({
@@ -26,19 +38,53 @@ exports.makePayment = async (req, res) => {
         });
       })
       .then(async () => {
+        let currentDate = new Date();
+
         const order = new Orders({
           userID: user.id,
           totalPrice: totalPayableAmount,
-          quantity: orders.length,
+          quantity: quantity,
           itemsList: orders,
+          status: "Order Placed",
+          retail: subTotal,
+          tax: 15,
+          discount: discount,
+          address: user.deliveryLocation,
+          delivery: currentDate.setDate(currentDate.getDate() + 15),
         });
 
         await order
           .save()
           .then((result) => {
-            return res.status(200).json({
-              success: true,
-              message: "Payment done! Orders are added to the order table!",
+            console.log("Result after saving orders: ", result);
+
+            Cart.findByIdAndDelete(cartID, async (err, docs) => {
+              if (err) {
+                return res
+                  .status(502)
+                  .json({ success: false, message: "Something went wrong!" });
+              }
+              console.log(cardDetails);
+              await cartDetails.map(async (item) => {
+                await Products.findByIdAndUpdate(
+                  cartDetails.id,
+                  {
+                    inventoryQuantity: item.inventoryQuantity - item.quantity,
+                  },
+                  (err, docs) => {
+                    if (err) {
+                      return res.status(502).json({
+                        success: false,
+                        message: "Something went wrong in updating!",
+                      });
+                    }
+                  }
+                );
+              });
+              return res.status(200).json({
+                success: true,
+                message: "Payment done! Orders are added to the order table!",
+              });
             });
           })
           .catch((err) => {
@@ -122,4 +168,25 @@ exports.checkPromoCode = async (req, res) => {
         .status(502)
         .json({ success: false, message: "Something went wrong!" });
     });
+};
+
+exports.getCartItems = async (req, res) => {
+  try {
+    const { userID } = req.params;
+
+    await Cart.find({ userid: userID })
+      .then((response) => {
+        console.log("Response: ", response);
+        return res.status(200).json({ success: true, data: response });
+      })
+      .catch((err) => {
+        return res
+          .status(502)
+          .json({ success: false, error: `Error in finding items! ${err}` });
+      });
+  } catch (error) {
+    return res
+      .status(502)
+      .json({ success: false, error: `Something went ${error}` });
+  }
 };

@@ -55,6 +55,21 @@ const PaymentService = {
         return response;
       });
   },
+
+  getUserCartItems: () => {
+    const userID = JSON.parse(localStorage.getItem("user"))._id;
+    console.log(userID);
+    return fetch(BACKEND_URL + `checkout/getUserCartItems/${userID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        return response;
+      });
+  },
 };
 
 export { PaymentService };

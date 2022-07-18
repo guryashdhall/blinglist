@@ -17,3 +17,9 @@ export const checkPromoCode = (promoCode) => {
     return response;
   });
 };
+
+export const getCartItems = () => {
+  return PaymentService.getUserCartItems().then((response) => {
+    return response;
+  });
+};

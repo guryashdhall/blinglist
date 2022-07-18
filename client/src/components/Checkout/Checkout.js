@@ -8,7 +8,11 @@ import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 import StripeCheckout from "react-stripe-checkout";
 
-import { checkoutPayment, checkPromoCode } from "../../store/actions/payment";
+import {
+  checkoutPayment,
+  checkPromoCode,
+  getCartItems,
+} from "../../store/actions/payment";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./Checkout.css";
@@ -17,8 +21,14 @@ import { isUserLoggedIn } from "../../Helpers/helper";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const [deliveryLocation, setDeliveryLocation] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+  const [cartDetails, setCartDetails] = useState();
+  const [cartID, setCartID] = useState();
+  const [cartIdList, setCartIdList] = useState([]);
   const [promoCode, setPromoCode] = useState("");
   const [disablePromoCodeButton, setDisablePromoCodeButton] = useState(false);
+  const [totalItemQuantity, setTotalItemQuantity] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -27,8 +37,39 @@ const Checkout = () => {
     let role = localStorage.getItem("role");
     if (isUserLoggedIn()) {
       if (role === "customer") {
-        setSubTotalAmount(15);
-        calculateTotalAmount(15);
+        getCartItems().then((response) => {
+          console.log(response.data[0]);
+          setCartItems(response.data[0].items);
+          setCartID(response.data[0]._id);
+          let items = response.data[0].items;
+          let totalCartAmount = 0,
+            totalItemsQuantityInCart = 0;
+
+          const cartItemList = items.map((item) => {
+            totalCartAmount =
+              totalCartAmount + item.productPrice * item.quantity;
+            totalItemsQuantityInCart = totalItemsQuantityInCart + item.quantity;
+            return {
+              id: item._id,
+              quantity: item.quantity,
+              inventoryQuantity: item.inventoryQuantity,
+            };
+          });
+
+          const productIDList = items.map((item) => {
+            return item._id;
+          });
+
+          setTotalItemQuantity(totalItemsQuantityInCart);
+          setCartIdList(productIDList);
+          setCartDetails(cartItemList);
+          calculateTotalAmount(totalCartAmount);
+          setSubTotalAmount(totalCartAmount);
+          if (discount !== 0) {
+            console.log(discount, totalAmount, subTotal);
+            applyDiscount(discount);
+          }
+        });
       } else {
         navigate("/admin");
       }
@@ -38,86 +79,84 @@ const Checkout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const itemDetails = [
-    {
-      image:
-        "https://cdn-fsly.yottaa.net/609426734f1bbfff95ac5607/ca.pandora.net/v~4b.5/dw/image/v2/AAVX_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw83b3044f/productimages/main/791678C01_RGB.JPG?sw=150&sh=150&sm=fit&sfrm=png&bgcolor=F5F5F5&yocs=1_",
-      item_title: "Tropical Starfish & Shell Clip Charm",
-      item_product_number: "Product number: 791678C01",
-      item_material: "Metal: Sterling Silver",
-      item_stones: "Type: Pendant",
-      item_color: "Color: Blue",
-      item_amount: "C$ 55.00",
-    },
-    {
-      image:
-        "https://cdn-fsly.yottaa.net/609426734f1bbfff95ac5607/ca.pandora.net/v~4b.5/dw/image/v2/AAVX_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw83b3044f/productimages/main/791678C01_RGB.JPG?sw=150&sh=150&sm=fit&sfrm=png&bgcolor=F5F5F5&yocs=1_",
-      item_title: "Tropical Starfish & Shell Clip Charm",
-      item_product_number: "Product number: 791678C01",
-      item_material: "Metal: Sterling Silver",
-      item_stones: "Stone: Pendant",
-      item_color: "Color: Blue",
-      item_amount: "C$ 55.00",
-    },
-  ];
-
   const makePayment = (token) => {
-    const id = JSON.parse(localStorage.getItem("user"))._id;
+    const user = JSON.parse(localStorage.getItem("user"));
     const body = {
       token: token,
-      totalPayableAmount: 1000,
-      orders: [id, id, id],
+      totalPayableAmount: parseFloat(totalAmount),
+      quantity: totalItemQuantity,
+      orders: cartIdList,
+      cartID: cartID,
+      subTotal: subTotal,
+      discount: discount,
+      cartDetails: cartDetails,
       user: {
-        id: id,
-        name: "Dhairya",
-        email: "doctordhairya@gmail.com",
+        id: user._id,
+        name: user.firstName + user.lastName,
+        email: user.email,
+        deliveryLocation: deliveryLocation,
       },
     };
 
-    checkoutPayment(body).then((result) => {
-      if (result.success === true) {
-        toast.success("Payment successfull!", {
-          position: "bottom-right",
-          theme: "dark",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          onClose: () => {
-            navigate("/reviews");
-          },
-        });
-      } else {
-        toast.error("Please fill all the fields!", {
-          position: "bottom-right",
-          theme: "dark",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
-    });
+    if (deliveryLocation === "") {
+      toast.error("Please add delivery address!", {
+        position: "bottom-right",
+        theme: "dark",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      checkoutPayment(body).then((result) => {
+        if (result.success === true) {
+          toast.success("Payment successfull!", {
+            position: "bottom-right",
+            theme: "dark",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            onClose: () => {
+              navigate("/reviews");
+            },
+          });
+        } else {
+          toast.error("Please fill all the fields!", {
+            position: "bottom-right",
+            theme: "dark",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      });
+    }
   };
 
   const calculateTotalAmount = (amount) => {
-    setTotalAmount(amount + 9.95 + amount * 0.15);
+    setTotalAmount(parseFloat(amount + 4.99 + amount * 0.15));
   };
 
   const setSubTotalAmount = (amount) => {
-    setSubTotal(amount);
+    setSubTotal(parseFloat(amount));
   };
 
   const setDiscountedAmount = (discountPrecent) => {
-    setDiscount(discountPrecent);
+    setDiscount(parseFloat(discountPrecent));
   };
 
   const applyDiscount = (discountPercent) => {
-    setTotalAmount(totalAmount - totalAmount * (discountPercent / 100));
+    setTotalAmount(
+      parseFloat(totalAmount - totalAmount * (discountPercent / 100)).toFixed(2)
+    );
   };
 
   const disableButton = () => {
@@ -138,7 +177,6 @@ const Checkout = () => {
       });
     } else {
       checkPromoCode(promoCode).then((response) => {
-        console.log(response.data[0].discount);
         if (response.success) {
           disableButton();
           setDiscountedAmount(response.data[0].discount);
@@ -156,7 +194,7 @@ const Checkout = () => {
         } else {
           toast.info("No such promo code exists!", {
             position: "bottom-right",
-            theme: "dark", 
+            theme: "dark",
             autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -179,7 +217,8 @@ const Checkout = () => {
             color="initial"
             className="heading-2"
           >
-            Your Bag ({itemDetails.length} Item)
+            Your Bag ({cartItems.length}{" "}
+            {cartItems.length === 1 ? "Item" : "Items"})
           </Typography>
           <Typography variant="p" color="initial" className="heading-3">
             Items are not reserved until payment is made.
@@ -191,50 +230,67 @@ const Checkout = () => {
           <Grid item xs={8} className="items-checklist">
             <Paper elevation={10} className="item-checklist-card">
               <Grid container>
-                {itemDetails.map((item) => {
+                {cartItems.map((item) => {
                   return (
-                    <Grid
-                      onClick={() => {
-                        navigate("/viewdetails");
-                      }}
-                      xs={12}
-                      container
-                      mb={3}
-                    >
-                      <Grid xs={4}>
-                        <img
-                          alt=""
-                          src={item.image}
-                          height="100%"
-                          width="90%"
-                        />
+                    <div style={{ marginBottom: "3%" }}>
+                      <Grid
+                        onClick={() => {
+                          navigate("/viewdetails");
+                        }}
+                        xs={12}
+                        container
+                        mb={3}
+                      >
+                        <Grid xs={4}>
+                          <img
+                            alt=""
+                            src={item.productImage}
+                            height="80%"
+                            width="90%"
+                          />
+                        </Grid>
+                        <Grid xs={6}>
+                          <Typography
+                            className="item-info-title"
+                            variant="subtitle2"
+                            gutterBottom
+                            component="div"
+                          >
+                            {item.productName}
+                          </Typography>
+                          <div>
+                            <Typography className="item-info-text">
+                              <b>Product number:</b> {item._id}
+                            </Typography>
+                            <hr />
+                            <Typography className="item-info-text">
+                              {item.productDescription}
+                            </Typography>
+                            <br />
+                            <Typography className="item-info-text">
+                              <b>Product Type:</b> {item.productType}
+                            </Typography>
+                            <Typography className="item-info-text">
+                              <b>Metal:</b> {item.metalType}
+                            </Typography>
+                            <Typography className="item-info-text">
+                              {item.item_stones}
+                            </Typography>
+                            <Typography className="item-info-text">
+                              <b>Color: </b>
+                              {item.productColor}
+                            </Typography>
+                            <Typography className="item-info-text">
+                              <b>Quantity Ordered: </b>
+                              {item.quantity}
+                            </Typography>
+                          </div>
+                        </Grid>
+                        <Grid xs={2} align="right">
+                          C${item.productPrice}
+                        </Grid>
                       </Grid>
-                      <Grid xs={6}>
-                        <Typography
-                          className="item-info-title"
-                          variant="subtitle2"
-                          gutterBottom
-                          component="div"
-                        >
-                          {item.item_title}
-                        </Typography>
-                        <div>
-                          <Typography className="item-info-text">
-                            {item.item_product_number}
-                          </Typography>
-                          <Typography className="item-info-text">
-                            {item.item_material}
-                          </Typography>
-                          <Typography className="item-info-text">
-                            {item.item_stones}
-                          </Typography>
-                          <Typography className="item-info-text">
-                            {item.item_color}
-                          </Typography>
-                        </div>
-                      </Grid>
-                      <Grid xs={2}>{item.item_amount}</Grid>
-                    </Grid>
+                    </div>
                   );
                 })}
               </Grid>
@@ -255,7 +311,7 @@ const Checkout = () => {
                 <div>
                   <span className="pricing-type">Shipping</span>
                 </div>
-                <div>C$ 9.95</div>
+                <div>C$ 4.99</div>
               </div>
               <div className="pricing-information">
                 <div>
@@ -277,6 +333,20 @@ const Checkout = () => {
                 </div>
                 <div>C$ {totalAmount}</div>
               </div>
+              <div className="deliveryAddress">
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Delivery Address"
+                  multiline
+                  fullWidth
+                  value={deliveryLocation}
+                  rows={4}
+                  placeholder="Add address..."
+                  onChange={(event) => {
+                    setDeliveryLocation(event.target.value);
+                  }}
+                />
+              </div>
               <div className="coupon-class">
                 <Typography variant="h6" gutterBottom component="div">
                   Have a coupon Code?
@@ -285,7 +355,7 @@ const Checkout = () => {
                   id="outlined-basic"
                   label="Apply Coupon Code"
                   variant="outlined"
-                  placeholder="123 456"
+                  placeholder="PROMO CODE"
                   className="coupon-input"
                   value={promoCode}
                   disabled={disablePromoCodeButton}
@@ -303,12 +373,10 @@ const Checkout = () => {
               <StripeCheckout
                 stripeKey={stripePaymentPublishKey}
                 token={(token) => makePayment(token)}
-                amount={100000}
+                amount={totalAmount * 100}
                 name="Buy Item"
               >
-                <Button onClick={makePayment} className="checkout-btn">
-                  CHECKOUT
-                </Button>
+                <Button className="checkout-btn">CHECKOUT</Button>
               </StripeCheckout>
             </Paper>
           </Grid>
