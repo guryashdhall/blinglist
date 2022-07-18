@@ -26,7 +26,6 @@ const ViewProduct = () => {
       console.log("Fetching data..." + localStorage.getItem("productDetailsId"));
       // Temporary
       const user_id = JSON.parse(localStorage.getItem("user"))._id;
-      localStorage.getItem("productDetailsId") ? localStorage.getItem("productDetailsId") : localStorage.setItem("productDetailsId", "62cdae4b200dc61b6c6080b2")
       const res = await axios.get(BACKEND_URL + "products/getproductsById?user_id=" + user_id + `&id=${localStorage.getItem("productDetailsId")}`);
       console.log(res.data.data)
       if (res.data.success) {

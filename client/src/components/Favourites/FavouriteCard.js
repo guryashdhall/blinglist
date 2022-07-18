@@ -145,7 +145,7 @@ export default function FavouriteCard({ data }) {
                 </Button>
               </td>
               <td>
-                <Button variant="outlined" onClick={() => navigate("/cart")}>
+                <Button variant="outlined" onClick={() => navigate("/cart",{state:{...product,quantity:1}})}>
                   Add to Cart&nbsp; {<AddShoppingCartOutlinedIcon />}
                 </Button>
               </td>
