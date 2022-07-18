@@ -24,12 +24,7 @@ app.use(cors());
 app.use(router);
 
 app.use(express.json());
-app.use(require('./router/auth'));
-app.use(require('./router/favourites'));
-app.use(require('./router/search'));
-app.use(require('./router/reveiws'));
-app.use(require('./router/products'));
-app.use(require('./router/cart'));
+
 
 app.get('/', (req, res) => {
   return res.send("The Blinglist Backend Server")
