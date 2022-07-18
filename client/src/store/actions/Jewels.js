@@ -31,3 +31,30 @@ export const  addToCart = (item) => {
   };
 };
 
+export const increase = (index) => {
+  return {
+    type: "INCREASE_QUANTITY",
+    index: index,
+  };
+};
+
+  export const decrease = (index) => {
+    return {
+      type: "DECREASE_QUANTITY",
+      index: index,
+    };
+};
+
+export const fetchCart = (cart) => {
+  return{
+    type: "FETCH_TO_CART",
+    cart: cart
+  }
+}
+export const deleteItem =(id) => {
+  return{
+    type: "REMOVE_ITEM",
+    id:id
+  } 
+}
+
