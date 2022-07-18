@@ -21,24 +21,31 @@ function Cart(props) {
         userid: JSON.parse(localStorage.getItem("user"))._id,
       })
       .then((data) => {
-        if (localStorage.getItem("cart") == null) {
-          localStorage.setItem("cart", JSON.stringify(data.data));
-          props.fetchCart(data.data);
-        } else {
-          console.log("inside else");
-          console.log(JSON.parse(localStorage.getItem("cart")));
-          props.fetchCart(JSON.parse(localStorage.getItem("cart")));
-          console.log(cart_products);
-          axios
-            .post("http://localhost:8080/cart/addCart", cart_products)
-            .then((response) => {
-              localStorage.setItem("cart", JSON.stringify(cart_products));
-              props.fetchCart(JSON.parse(localStorage.getItem("cart")));
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        if(data.data.items.length === 0){
+          localStorage.removeItem('cart')
         }
+        else{
+          if (localStorage.getItem("cart") == null) {
+            localStorage.setItem("cart", JSON.stringify(data.data));
+            props.fetchCart(data.data);
+          } else {
+            console.log("inside else");
+            console.log(JSON.parse(localStorage.getItem("cart")));
+            props.fetchCart(JSON.parse(localStorage.getItem("cart")));
+            console.log(cart_products);
+            axios
+              .post("http://localhost:8080/cart/addCart", cart_products)
+              .then((response) => {
+                console.log('response')
+                localStorage.setItem("cart", JSON.stringify(cart_products));
+                props.fetchCart(JSON.parse(localStorage.getItem("cart")));
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        }
+        
       });
   };
   const boxStyles = (Theme) => ({
