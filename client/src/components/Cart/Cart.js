@@ -25,6 +25,7 @@ const Cart = (props) => {
         userid: JSON.parse(localStorage.getItem("user"))._id,
       })
       .then((data) => {
+<<<<<<< HEAD
         console.log(data.data.items.length === 0);
         if (data.data.items.length === 0) {
           localStorage.removeItem("cart");
@@ -33,6 +34,8 @@ const Cart = (props) => {
             items: [],
           });
         } else {
+=======
+>>>>>>> ca5552d8c8034efc138d29d1b95ca01e5e06943c
           if (localStorage.getItem("cart") == null) {
             localStorage.setItem("cart", JSON.stringify(data.data));
             props.fetchCart(data.data);
@@ -52,7 +55,11 @@ const Cart = (props) => {
                 console.log(error);
               });
           }
+<<<<<<< HEAD
         }
+=======
+        
+>>>>>>> ca5552d8c8034efc138d29d1b95ca01e5e06943c
       });
   };
   const boxStyles = (Theme) => ({

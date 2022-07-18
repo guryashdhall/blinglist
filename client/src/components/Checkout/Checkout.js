@@ -122,7 +122,8 @@ const Checkout = () => {
             draggable: true,
             progress: undefined,
             onClose: () => {
-              navigate("/reviews");
+              localStorage.removeItem('cart')
+              navigate("/cart");
             },
           });
         } else {
