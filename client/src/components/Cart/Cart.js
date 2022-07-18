@@ -75,7 +75,7 @@ const Cart = (props) => {
 
 
   return (
-    <div>
+    <>
       <Box>
         <Typography variant="h2" sx={{ p: 2 }}>
           Your Cart
@@ -95,7 +95,7 @@ const Cart = (props) => {
           <Summary products={cart_products.items} />
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 };
 

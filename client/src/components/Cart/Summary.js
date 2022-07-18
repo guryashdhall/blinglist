@@ -47,9 +47,9 @@ function Summary(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cart_products.items.map((product) => {
+                {cart_products.items.map((product,index) => {
                   return (
-                    <TableRow>
+                    <TableRow key={index}>
                       <TableCell align="center">
                         {product.productName}
                       </TableCell>

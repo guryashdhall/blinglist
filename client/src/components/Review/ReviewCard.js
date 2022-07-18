@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Avatar, Rating, Stack } from "@mui/material";
 import { shallowEqual, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { setIntialReviewState } from "../../store/actions/Jewels.js";
