@@ -74,6 +74,7 @@ const Slider = ({ images, onClick }) => {
                   src={step.imgPath}
                   alt={step.label}
                   onClick={() => {
+                    localStorage.setItem("productDetailsId", step.productID);
                     navigate("/viewdetails");
                     //navigate(`/viewdetails/${step.productID}`);
                   }}

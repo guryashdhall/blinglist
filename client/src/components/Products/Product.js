@@ -46,7 +46,7 @@ const Product = () => {
         role === "customer" ? navigate("/products") : navigate("/admin");
         async function fetchData() {
           const res = await axios.get(
-            BACKEND_URL + `products/getproducts?id=${user._id}`
+            `${BACKEND_URL}products/getproducts?id=${user._id}`
           );
 
           if (res.data.success) {
@@ -95,6 +95,9 @@ const Product = () => {
     ClearFilter();
     const user = JSON.parse(localStorage.getItem("user"));
     if (keyword.length > 0) {
+      const resp=await axios.post(`${BACKEND_URL}search/addToSearch`, {
+        user_id: user._id, keyword: keyword
+      })
       let data = [];
       data = productsI.filter(product => {
         if (product._id.toLowerCase().includes(keyword.toLowerCase())) {
