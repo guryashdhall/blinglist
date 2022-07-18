@@ -20,15 +20,15 @@ import moment from 'moment';
 export default function ProductCard({ data }) {
   const navigate = useNavigate();
 
-  const [favourite, setFavourite] = useState(data.favourite ? true : false)
+  const [favourite, setFavourite] = useState(data.favourite)
 
   const removeFavourites = async (e) => {
     e.preventDefault();
     console.log("Removing favorites");
     const result = await axios.put(BACKEND_URL + "favourites/removefavourites", { user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data._id })
-    console.log(result.data)
+
     if (result.data.success) {
-      console.log(result.data)
+     
       setFavourite(false)
       toast.success("Product has been removed from wishlist successfully!", {
         position: "top-right",
@@ -57,16 +57,10 @@ export default function ProductCard({ data }) {
 
   const addToFavourites = async (e) => {
     e.preventDefault();
-    console.log("Adding favorites");
-    console.log(JSON.parse(localStorage.getItem("user"))._id)
-    console.log(data._id)
-    const result = await axios.post(BACKEND_URL + "favourites/addToFavourites", 
-    { user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data._id }
+    const result = await axios.post(BACKEND_URL + "favourites/addToFavourites",
+      { user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data._id }
     )
-    console.log(result.data)
-    console.log(result.data.success)
     if (result.data.success) {
-      console.log(result.data)
       setFavourite(true)
       toast.success("Product added to your wishlist!", {
         position: "top-right",
@@ -93,7 +87,7 @@ export default function ProductCard({ data }) {
     }
   }
 
-  const viewProductDetails = (e)=>{
+  const viewProductDetails = (e) => {
     e.preventDefault();
     console.log("View Product Details")
     localStorage.setItem('productDetailsId', data._id)
@@ -108,6 +102,8 @@ export default function ProductCard({ data }) {
         sx={{ maxWidth: 345, boxShadow: 5 }}
         xs={{ flex: 1 }}
       >
+        {/* {`data fav ${data.favourite} favourite ${favourite}`} */}
+ 
         <CardHeader
           action={
             favourite ?
@@ -183,12 +179,12 @@ export default function ProductCard({ data }) {
           <table align="center">
             <tr>
               <td>
-                <Button variant="outlined" id={`detail-${data._id}`} onClick={event=>viewProductDetails(event)}>
+                <Button variant="outlined" id={`detail-${data._id}`} onClick={event => viewProductDetails(event)}>
                   {<InfoOutlinedIcon />}&nbsp;View Details
                 </Button>
               </td>
               <td>
-                <Button variant="outlined" onClick={() => navigate("/cart")}>
+                <Button variant="outlined" onClick={() => navigate("/cart",{state:{...data,quantity:1}})}>
                   Add to Cart&nbsp; {<AddShoppingCartOutlinedIcon />}
                 </Button>
               </td>

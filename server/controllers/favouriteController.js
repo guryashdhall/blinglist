@@ -39,7 +39,7 @@ exports.addToFavourites = async (req, res) => {
 fetchProductDetails=(data)=>{
     return Promise.all(data.map(async favourite => {
         productData = await Products.find({ _id: favourite.productId })
-        return { user_data: favourite, product_details: productData[0] }
+        return productData[0] 
     }))
 }
 
@@ -66,6 +66,7 @@ exports.fetchFavourites = async (req, res) => {
             });
         } else if(favourites.length == 0) {
             return res.status(200).json({
+                data: [],
                 success: true,
                 message: `You have not added any favourites yet!`
             });
