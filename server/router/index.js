@@ -8,9 +8,8 @@ router.use("/search", require("./search"));
 router.use("/recommendation", require("./recommend"));
 router.use("/blogs", require("./blog"));
 router.use("/", require("./auth"));
-router.use("/", require("./favourites"));
-router.use("/", require("./search"));
-router.use("/", require("./reveiws"));
+router.use("", require("./favourites"));
+router.use("", require("./reveiws"));
 router.use("/", require("./products"));
 router.use("", require("./cart"));
 
