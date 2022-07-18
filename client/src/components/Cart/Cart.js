@@ -15,32 +15,39 @@ function Cart(props) {
     getCart();
   }, []);
   const getCart = async () => {
+    console.log("inside get ");
     await axios
       .post("http://localhost:8080/cart/getCart", {
         userid: JSON.parse(localStorage.getItem("user"))._id,
       })
       .then((data) => {
-        if (localStorage.getItem("cart") == null) {
-          localStorage.setItem("cart", JSON.stringify(data.data));
-          props.fetchCart(data.data);
-        } else {
-          props.fetchCart(JSON.parse(localStorage.getItem("cart")));
+        console.log(data.data.items.length === 0)
+        if(data.data.items.length === 0){
+          localStorage.removeItem('cart')
+          props.fetchCart({userid: JSON.parse(localStorage.getItem("user"))._id,items:[]})
         }
-      });
-  };
-  useEffect(() => {
-    saveCart();
-  }, []);
-  const saveCart = async () => {
-    await axios
-      .post("http://localhost:8080/cart/addCart", cart_products)
-      .then((response) => {
-        JSON.stringify(cart_products);
-        localStorage.setItem("cart", JSON.stringify(cart_products));
-        props.fetchCart(JSON.parse(localStorage.getItem("cart")));
-      })
-      .catch((error) => {
-        console.log(error);
+        else{
+          if (localStorage.getItem("cart") == null) {
+            localStorage.setItem("cart", JSON.stringify(data.data));
+            props.fetchCart(data.data);
+          } else {
+            console.log("inside else");
+            console.log(JSON.parse(localStorage.getItem("cart")));
+            props.fetchCart(JSON.parse(localStorage.getItem("cart")));
+            console.log(cart_products);
+            axios
+              .post("http://localhost:8080/cart/addCart", cart_products)
+              .then((response) => {
+                console.log('response')
+                localStorage.setItem("cart", JSON.stringify(cart_products));
+                props.fetchCart(JSON.parse(localStorage.getItem("cart")));
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        }
+        
       });
   };
   const boxStyles = (Theme) => ({
