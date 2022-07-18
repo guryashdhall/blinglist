@@ -17,10 +17,10 @@ import { BACKEND_URL } from "../../config/config";
 import { red } from "@mui/material/colors";
 import moment from 'moment';
 
-export default function FilterProductCard({ data }) {
+export default function FilterProductCard({ data, favouriteInitial, countI }) {
   const navigate = useNavigate();
-  let count = true;
   const [favourite, setFavourite] = useState(data.favourite)
+  const [count, setCount]= useState(countI)
  
   const removeFavourites = async (e) => {
     e.preventDefault();
@@ -28,6 +28,7 @@ export default function FilterProductCard({ data }) {
     const result = await axios.put(BACKEND_URL + "favourites/removefavourites", { user_id: JSON.parse(localStorage.getItem("user"))._id, product_id: data._id })
     console.log(result.data)
     if (result.data.success) {
+      setCount(1)
       console.log(result.data)
       setFavourite(false)
       toast.success("Product has been removed from wishlist successfully!", {
@@ -66,6 +67,7 @@ export default function FilterProductCard({ data }) {
     console.log(result.data)
     console.log(result.data.success)
     if (result.data.success) {
+      setCount(1)
       console.log(result.data)
       setFavourite(true)
       toast.success("Product added to your wishlist!", {
@@ -112,13 +114,20 @@ export default function FilterProductCard({ data }) {
 
         <CardHeader
           action={
-            favourite ?
+            count==0? favouriteInitial ?
               <IconButton id={data._id} aria-label="favourite" onClick={event => removeFavourites(event)}>
                 <FavoriteIcon sx={{ color: red[500] }} />
               </IconButton> :
               <IconButton id={data._id} aria-label="NotYetfavourite" onClick={event => addToFavourites(event)}>
                 <FavoriteBorderIcon sx={{ color: red[500] }} />
-              </IconButton>
+              </IconButton>:
+              favourite?
+              <IconButton id={data._id} aria-label="favourite" onClick={event => removeFavourites(event)}>
+              <FavoriteIcon sx={{ color: red[500] }} />
+            </IconButton> :
+            <IconButton id={data._id} aria-label="NotYetfavourite" onClick={event => addToFavourites(event)}>
+              <FavoriteBorderIcon sx={{ color: red[500] }} />
+            </IconButton>
           }
           title={data.productName.length > 22 ? data.productName.substring(0, 20) + "..." : data.productName}
           subheader={moment(new Date(data.createdAt).toISOString().

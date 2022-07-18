@@ -18,6 +18,7 @@ import Fab from '@mui/material/Fab';
 import Checkbox from '@mui/material/Checkbox';
 import Slider from '@mui/material/Slider';
 
+var fL=[]
 
 const Product = () => {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ const Product = () => {
   const [ringF, setRingF] = useState(false)
   const [necklaceF, setNecklaceF] = useState(false)
   const [earringF, setEarringF] = useState(false)
- 
+  const [favouritesList, setFavouritesList] = useState([]) 
+  const [productsFavourites, setProductsFavourites] = useState([]) 
+
   useEffect(() => {
     try {
       const user = JSON.parse(localStorage.getItem("user"))
@@ -49,6 +52,16 @@ const Product = () => {
           const res = await axios.get(BACKEND_URL + "products/getproducts?" + `id=${user._id}`)
           console.log(res.data.data)
           if (res.data.success) {
+            fL=[]
+            res.data.data.forEach(product => {
+              if (product.favourite) {
+                fL.push(true)
+              } else {
+                fL.push(false)
+              }
+            })
+            setFavouritesList(fL)
+            setProductsFavourites(fL)
             setProducts(res.data.data)
           } else {
             setProducts([])
@@ -57,6 +70,7 @@ const Product = () => {
         fetchData()
         let maxCost = 0;
         let minCost = 10000000;
+        fL = [];
         products.forEach(product => {
           if (product.productPrice > maxCost) {
             maxCost = product.productPrice;
@@ -64,10 +78,12 @@ const Product = () => {
           if (product.productPrice < minCost) {
             minCost = product.productPrice;
           }
+         
         })
         minCostSet(minCost)
         maxCostSet(maxCost)
         filterCostSet([minCostFilter, maxCostFilter])
+
       }
     }
     catch (error) { console.log(error) }
@@ -86,13 +102,38 @@ const Product = () => {
       const res = await axios.get(`${BACKEND_URL}search/products?id=${user._id}&keyword=${keyword}`)
       console.log(res.data.data)
       if (res.data.success) {
+        let mn=[]
+        res.data.data.forEach(product => {
+          if (product.favourite) {
+            mn.push(true)
+          } else {
+            mn.push(false)
+          }
+        })
+        setFavouritesList(mn)
+        setProductsFavourites(mn)
         setProducts(res.data.data)
+        console.log(favouritesList)
       }
     } else {
       const res = await axios.get(`${BACKEND_URL}products/getproducts?id=${user._id}`)
       console.log(res.data.data)
       if (res.data.success) {
+        setFavouritesList([])
+        let ef = []
+        
+        console.log(favouritesList)
+        res.data.data.forEach(product => {
+          if (product.favourite) {
+            ef.push(true)
+          } else {
+            ef.push(false)
+          }
+        })
+        setFavouritesList(ef)
+        setProductsFavourites(ef)
         setProducts(res.data.data)
+        console.log(favouritesList)
       }
     }
   }
@@ -108,6 +149,9 @@ const Product = () => {
   };
 
   const costFilterValueLable = (value) => {
+    if(value === 600){
+      return `CAD 600+`
+    }
     return `CAD ${value}`;
   }
 
@@ -128,9 +172,6 @@ const Product = () => {
       }
     }
     let filterData_temp = []
-    // console.log(filterData_temp)
-    // console.log(filter)
-    console.log(filter)
     filterData_temp = products.filter(product => {
 
       if ((filter.type.ring || filter.type.necklace || filter.type.earring) && (filter.availibility.available || filter.availibility.notavailable)) {
@@ -154,10 +195,18 @@ const Product = () => {
             if (filter.availibility.available && product.inventoryQuantity > 0) {
               if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
                 return product
+              } else if(filter.cost_max==600){
+                if (product.productPrice >= filter.cost.min) {
+                  return product
+                }
               }
             } else if (filter.availibility.notavailable && product.inventoryQuantity == 0) {
               if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
                 return product
+              } else if(filter.cost_max==600){
+                if (product.productPrice >= filter.cost.min) {
+                  return product
+                }
               }
             }
           }
@@ -171,6 +220,10 @@ const Product = () => {
             } else if (filter.availibility.notavailable && product.inventoryQuantity == 0) {
               if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
                 return product
+              } else if(filter.cost_max==600){
+                if (product.productPrice >= filter.cost.min) {
+                  return product
+                }
               }
             }
           }
@@ -179,14 +232,26 @@ const Product = () => {
         if (filter.type.ring && product.productType.toLowerCase() == 'ring') {
           if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
             return product
+          } else if(filter.cost_max==600){
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
         } else if (filter.type.necklace && product.productType.toLowerCase() == 'necklace') {
           if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
             return product
+          } else if(filter.cost_max==600){
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
         } else if (filter.type.earring && product.productType.toLowerCase() == 'earring') {
           if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
             return product
+          } else if(filter.cost_max==600){
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
         }
       } else if ((filter.availibility.available || filter.availibility.notavailable) && !(filter.type.ring || filter.type.necklace || filter.type.earring)) {
@@ -195,10 +260,18 @@ const Product = () => {
         if (filter.availibility.available && product.inventoryQuantity > 0) {
           if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
             return product
+          } else if(filter.cost_max==600){
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
         } else if (filter.availibility.notavailable && product.inventoryQuantity == 0) {
           if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
             return product
+          } else if(filter.cost_max==600){
+            if (product.productPrice >= filter.cost.min) {
+              return product
+            }
           }
         }
 
@@ -206,13 +279,25 @@ const Product = () => {
         console.log('C')
         if (product.productPrice >= filter.cost.min && product.productPrice <= filter.cost.max) {
           return product
+        } else if(filter.cost_max==600){
+          if (product.productPrice >= filter.cost.min) {
+            return product
+          }
         }
       }
     })
-    console.log(filterData_temp);
+    setFavouritesList([])
+    let fL = []
+    filterData_temp.forEach(product => {
+      if (product.favourite) {
+        fL.push(true)
+      } else {
+        fL.push(false)
+      }
+    })
+    setFavouritesList(fL)
     setFilterData([...filterData_temp]);
     setFilterApplied(true)
-
   }
 
   useEffect(() => {
@@ -278,7 +363,8 @@ const Product = () => {
     setRingF(temp)
     setNecklaceF(temp)
     setEarringF(temp)
-    filterCostSet([minCostFilter, maxCostFilter])
+    filterCostSet([0, 600])
+    setFavouritesList([])
   }
   return (
     <div>
@@ -365,7 +451,7 @@ const Product = () => {
                   <td colspan='3' style={{ fontFamily: 'Helvetica', paddingLeft: '20px', paddingRight: '20px' }}>
                     <Slider getAriaLabel={() => 'Cost'}
                       value={filterCost}
-                      min={50}
+                      min={0}
                       max={600}
                       onChange={handleFilterCostChange}
                       valueLabelDisplay="auto"
@@ -387,34 +473,6 @@ const Product = () => {
                   </td>
 
                 </tr>
-                {/* <tr>
-                  <td><h3 style={{ fontFamily: 'Helvetica' }}>Cost (CAD)</h3></td>
-
-                  <td colspan='3' style={{ fontFamily: 'Helvetica', paddingLeft: '20px', paddingRight: '20px' }}>
-                    <TextField getAriaLabel={() => 'mincost'}
-                      type="number"
-                      value={min}   
-                      min={minCostFilter}
-                      max={maxCostFilter}
-                      onChange={(e)=>{
-                        if(min<max){
-                          setMin(e.target.value);
-                        } 
-                      }}
-                    /></td>
-                  <td colspan='3' style={{ fontFamily: 'Helvetica', paddingLeft: '20px', paddingRight: '20px' }}>
-                  <TextField getAriaLabel={() => 'maxcost'}
-                      type="number"
-                      value={max}
-                      min={minCostFilter}
-                      max={maxCostFilter}
-                      onChange={(e)=>{
-                        if(max>min){
-                          setMax(e.target.value);
-                        } 
-                      }}
-                    /></td>
-                </tr> */}
                 <tr></tr>
                 <tr></tr>
                 <tr></tr>
@@ -438,16 +496,16 @@ const Product = () => {
               filterApplied ?
                 filterData == [] || filterData.length == 0 ?
                   <h3>No Filter Products found...</h3>
-                  : filterData.map((product) => (
+                  : filterData.map((product, index) => (
                     <Grid item>
-                      <FilterProductCard data={product} />
+                      <FilterProductCard data={product} favouriteInitial={favouritesList[index]} countI={0} />
                     </Grid>
                   ))
                 : products.length == 0 ?
                   <h3>No Products found...</h3>
-                  : products.map((product) => (
+                  : products.map((product, index) => (
                     <Grid item>
-                      <ProductCard data={product} />
+                      <ProductCard data={product} favouriteInitial={productsFavourites[index]} countI={0}/>
                     </Grid>
                   ))
             }

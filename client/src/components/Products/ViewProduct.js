@@ -29,9 +29,9 @@ const ViewProduct = () => {
       const res = await axios.get(BACKEND_URL + "products/getproductsById?user_id=" + user_id + `&id=${localStorage.getItem("productDetailsId")}`);
       console.log(res.data.data)
       if (res.data.success) {
+        setFavourites(res.data.data.favourite)
         setProducts(res.data.data)
         console.log(product.favourite)
-        setFavourites(product.favourite)
       }
     }
     fetchData()
