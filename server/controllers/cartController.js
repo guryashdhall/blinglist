@@ -20,7 +20,13 @@ exports.getCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ userid: req.body.userid });
     res.status(200);
-    res.send(cart);
+    if(cart !== null){
+      res.send(cart);
+    }
+    else{
+      res.send({userid : req.body.userid,items:[]})
+    }
+    
   } catch (error) {
     res.status(404);
     res.send({ error: 404 });
