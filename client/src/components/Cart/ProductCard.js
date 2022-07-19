@@ -13,6 +13,7 @@ import Subtract from "@mui/icons-material/Remove";
 import { connect, useSelector } from "react-redux";
 import { increase, decrease, deleteItem } from "../../store/actions/Jewels";
 import axios from 'axios'
+import { ToastContainer, toast } from "react-toastify";
 const Pricestyles = (Theme) => ({
   minWidth: "90%",
   m: 4,
@@ -43,17 +44,46 @@ function ProductCard(props) {
   useEffect(() => {
     setProduct(props.products.quantity);
   }, [props.products.quantity]);
-  const handleSubtract = async () => {
-    var temp = quantity - 1;
+  const handleSubtract = async (id) => {
+    if(quantity >= 1){
+      var temp = quantity - 1;
     setProduct(temp);
     await props.decrease(props.index);
     localStorage.setItem("cart", JSON.stringify(cart_products));
+    }
+    else{
+      handleRemove(id)
+      toast.success("Item Removed Successfully", {
+        position: "top-right",
+        theme: "dark",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
   const handleAdd = async () => {
-    var temp = quantity + 1;
-    setProduct(temp);
-    await props.increase(props.index);
-    localStorage.setItem("cart", JSON.stringify(cart_products));
+    if(quantity < props.products.inventoryQuantity){
+      var temp = quantity + 1;
+      setProduct(temp);
+      await props.increase(props.index);
+      localStorage.setItem("cart", JSON.stringify(cart_products));
+    }
+    else{
+      toast.error("Maximum Product Quantity Reached", {
+        position: "top-right",
+        theme: "dark",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   const handleRemove = async (id) => {
@@ -79,15 +109,18 @@ function ProductCard(props) {
               {props.products.productName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {"Type:" + " " + props.products.productType}
+              Type : {props.products.productType}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {props.products.productDescription}
+              Metal : {props.products.metalType}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Product Color : {props.products.metalType}
             </Typography>
             <Box sx={{ mt: 2 }}>
               <IconButton
                 sx={{ mt: 1, color: "blue" }}
-                onClick={handleSubtract}
+                onClick={() => {handleSubtract(props.products._id)}}
               >
                 <Subtract />
               </IconButton>
@@ -126,6 +159,7 @@ function ProductCard(props) {
             />
           </Grid>
         </Grid>
+        <ToastContainer/>
       </Box>
     </>
   );

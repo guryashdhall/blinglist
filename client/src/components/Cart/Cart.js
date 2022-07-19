@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Image from "mui-image";
 
+
 const Cart = (props) => {
   const location = useLocation();
   const cart_products = useSelector((state) => state.jewelsReducer.cart);
