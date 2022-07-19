@@ -13,7 +13,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../../config/config";
 import moment from "moment";
 
-export default function FavouriteCard({ data }) {
+export default function FavouriteCard({ data, setFavourites, favourites }) {
   const navigate = useNavigate();
 
   const removeFavourites = async (e) => {
@@ -28,18 +28,19 @@ export default function FavouriteCard({ data }) {
     );
 
     if (result.data.success) {
+      let temp=favourites.filter(f=>{
+        if(f._id!=data._id) return f;
+      })
+      setFavourites(temp);
       toast.success("Product has been removed successfully!", {
         position: "top-right",
         theme: "dark",
-        autoClose: 1000,
+        autoClose: 300,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        onClose: () => {
-          window.location.reload(false);
-        },
       });
     } else {
       toast.error(

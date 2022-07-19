@@ -535,7 +535,7 @@ const Favourites = () => {
             ) : (
               favourites.map((favourite) => (
                 <Grid item>
-                  <FavouriteCard data={favourite} />
+                  <FavouriteCard data={favourite} setFavourites={setFavourites} favourites={favourites}/>
                 </Grid>
               ))
             )}
