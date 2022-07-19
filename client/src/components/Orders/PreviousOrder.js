@@ -65,6 +65,7 @@ function PreviousOrder() {
           progress: undefined,
         });
       }
+      window.location.reload(false);
     });
   };
 
