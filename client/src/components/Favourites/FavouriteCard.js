@@ -1,6 +1,7 @@
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
+import CardActions from '@mui/material/CardActions';
 import { IconButton, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,8 +29,8 @@ export default function FavouriteCard({ data, setFavourites, favourites }) {
     );
 
     if (result.data.success) {
-      let temp=favourites.filter(f=>{
-        if(f._id!=data._id) return f;
+      let temp = favourites.filter(f => {
+        if (f._id !== data._id) return f;
       })
       setFavourites(temp);
       toast.success("Product has been removed successfully!", {
@@ -105,8 +106,8 @@ export default function FavouriteCard({ data, setFavourites, favourites }) {
             marginTop: "50",
           }}
         />
-
-        <CardContent style={{ height: "7vw" }}>
+        <CardContent >
+            <div>
           <table width="100%" maxWidth="100%">
             <tr>
               <td style={{ textAlign: "left" }}>
@@ -139,43 +140,48 @@ export default function FavouriteCard({ data, setFavourites, favourites }) {
             <tr style={{ textAlign: "left" }}>
               <b>Description:</b>
             </tr>
-          </table>
-          <Typography textAlign="justify">
-            {data.productDescription.length > 99
-              ? data.productDescription.substring(0, 96) + "..."
-              : data.productDescription.length === 0
-              ? "No description available"
-              : data.productDescription}
-          </Typography>
-        </CardContent>
-        <div>
-          <table align="center">
             <tr>
-              <td>
-                <Button
-                  variant="outlined"
-                  onClick={(event) => viewProductDetails(event)}
-                >
-                  {" "}
-                  {<InfoOutlinedIcon />}&nbsp;View Details
-                </Button>
-              </td>
-              <td>
-                <Button
-                  variant="outlined"
-                  onClick={() =>
-                    navigate("/cart", { state: { ...data, quantity: 1 } })
-                  }
-                >
-                  Add to Cart&nbsp; {<AddShoppingCartOutlinedIcon />}
-                </Button>
-              </td>
+              <td colSpan={2}><Typography textAlign="justify">
+                {data.productDescription.length > 99
+                  ? data.productDescription.substring(0, 96) + "..."
+                  : data.productDescription.length === 0
+                    ? <>No description available<br/><br/><br/></>
+                    : data.productDescription}
+              </Typography></td>
             </tr>
           </table>
-          <br />
-        </div>
+          </div>
+        </CardContent>
+        <CardActions xs={{ flex: 1 }} disableSpacing>
+          <div>
+            <table align="center">
+              <tr>
+                <td>
+                  <Button
+                    variant="outlined"
+                    onClick={(event) => viewProductDetails(event)}
+                  >
+                    {" "}
+                    {<InfoOutlinedIcon />}&nbsp;View Details
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    variant="outlined"
+                    onClick={() =>
+                      navigate("/cart", { state: { ...data, quantity: 1 } })
+                    }
+                  >
+                    Add to Cart&nbsp; {<AddShoppingCartOutlinedIcon />}
+                  </Button>
+                </td>
+              </tr>
+            </table>
+            <br />
+          </div>
+        </CardActions>
       </Card>
       <ToastContainer />
-    </div>
+    </div >
   );
 }
