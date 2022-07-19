@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Controller defining payment methods using stripe, and getting items for cart.
+ ***/
 const mongoose = require("mongoose");
 const stripe = require("stripe")(
   "sk_test_51LIC1bE41Y5D29LDh8L9rJtAivoKhMhAxj7dp1oQlIlmiZ73wAg8mKWlFeO0tJkMVzsCknQIRMXyge0HzgEyIFtc00SYXO38ly"

@@ -90,7 +90,7 @@ const Jewels = () => {
           toast.success("Product edited successfully", {
             position: "bottom-right",
             theme: "dark",
-            autoClose: 5000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -101,7 +101,7 @@ const Jewels = () => {
           toast.success("Product could not be edited. Please try again!", {
             position: "bottom-right",
             theme: "dark",
-            autoClose: 5000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -118,7 +118,7 @@ const Jewels = () => {
           toast.success("Added product successfully!", {
             position: "bottom-right",
             theme: "dark",
-            autoClose: 5000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -129,7 +129,7 @@ const Jewels = () => {
           toast.error("Please fill all the fields!", {
             position: "bottom-right",
             theme: "dark",
-            autoClose: 5000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,

@@ -1,4 +1,10 @@
-import React, { useEffect } from "react";
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Input field for taking amount from user that is to be added to gift card.
+ ***/
+import React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";

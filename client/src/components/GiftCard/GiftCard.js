@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Parent component of SelectGiftCard, PayForGiftCard, PayableAmount.
+ ***/
 import React, { useEffect, useState } from "react";
 import { Grid, Button } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
@@ -250,7 +256,7 @@ const GiftCard = () => {
       toast.error("Please fill all the fields!", {
         position: "bottom-right",
         theme: "dark",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -275,7 +281,7 @@ const GiftCard = () => {
             {
               position: "bottom-right",
               theme: "dark",
-              autoClose: 5000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -288,7 +294,7 @@ const GiftCard = () => {
           toast.error("Something went wrong!", {
             position: "bottom-right",
             theme: "dark",
-            autoClose: 5000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,

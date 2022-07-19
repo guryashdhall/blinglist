@@ -95,8 +95,6 @@ export default function SignIn() {
     });
   };
 
-  // const [checked, setChecked] = useState(true)
-
   const onhandleSubmit = (e) => {
     e.preventDefault();
     if (userInfo.errors.email === "" && userInfo.errors.password === "") {
@@ -106,7 +104,7 @@ export default function SignIn() {
             toast.success(response.data.message, {
               position: "top-right",
               theme: "dark",
-              autoClose: 2000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -124,7 +122,7 @@ export default function SignIn() {
             toast.error(response.data.message, {
               position: "top-right",
               theme: "dark",
-              autoClose: 2000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -218,7 +216,6 @@ export default function SignIn() {
                   label="Password"
                   type="password"
                   id="password"
-                  // autoComplete="current-password"
                   value={userInfo.password}
                   error={userInfo.errors.password !== ""}
                   helperText={userInfo.errors.password}
@@ -240,7 +237,6 @@ export default function SignIn() {
                     color: "white",
                   }}
                   onSubmit={<SuccessAlert />}
-                  // onClick={(e) => { onhandleSubmit(e); }}
                 >
                   Log In
                 </Button>

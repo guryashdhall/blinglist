@@ -57,7 +57,7 @@ function PreviousOrder() {
         toast.success("Order Cancelled successfully", {
           position: "bottom-right",
           theme: "dark",
-          autoClose: 5000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
