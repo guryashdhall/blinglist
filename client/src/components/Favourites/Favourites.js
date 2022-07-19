@@ -43,7 +43,7 @@ const Favourites = () => {
 
         async function fetchData() {
           const res = await axios.get(
-            BACKEND_URL + `favourites/fetchfavourites?id=${user._id}`
+            `${BACKEND_URL}favourites/fetchfavourites?id=${user._id}`
           );
           if (res.data.success) {
             setFavourites(res.data.data);

@@ -16,10 +16,10 @@ import { BACKEND_URL } from "../../config/config";
 import { red } from "@mui/material/colors";
 import moment from "moment";
 
-export default function FilterProductCard({ data }) {
+export default function FilterProductCard({ data, favouriteInitial, countI }) {
   const navigate = useNavigate();
-
-  const [favourite, setFavourite] = useState(data.favourite);
+  const [favourite, setFavourite] = useState(data.favourite)
+  const [count, setCount] = useState(countI)
 
   const removeFavourites = async (e) => {
     e.preventDefault();
@@ -33,7 +33,9 @@ export default function FilterProductCard({ data }) {
     );
 
     if (result.data.success) {
-      setFavourite(false);
+      setCount(1)
+      console.log(result.data)
+      setFavourite(false)
       toast.success("Product has been removed from wishlist successfully!", {
         position: "top-right",
         theme: "dark",
@@ -72,7 +74,9 @@ export default function FilterProductCard({ data }) {
     );
 
     if (result.data.success) {
-      setFavourite(true);
+      setCount(1)
+      console.log(result.data)
+      setFavourite(true)
       toast.success("Product added to your wishlist!", {
         position: "top-right",
         theme: "dark",
@@ -118,12 +122,8 @@ export default function FilterProductCard({ data }) {
 
         <CardHeader
           action={
-            favourite ? (
-              <IconButton
-                id={data._id}
-                aria-label="favourite"
-                onClick={(event) => removeFavourites(event)}
-              >
+            count === 0 ? favouriteInitial ? (
+              <IconButton id={data._id} aria-label="favourite" onClick={event => removeFavourites(event)}>
                 <FavoriteIcon sx={{ color: red[500] }} />
               </IconButton>
             ) : (
@@ -134,7 +134,14 @@ export default function FilterProductCard({ data }) {
               >
                 <FavoriteBorderIcon sx={{ color: red[500] }} />
               </IconButton>
-            )
+            ) :
+              favourite ? (
+                <IconButton id={data._id} aria-label="favourite" onClick={event => removeFavourites(event)}>
+                  <FavoriteIcon sx={{ color: red[500] }} />
+                </IconButton>) : (
+                <IconButton id={data._id} aria-label="NotYetfavourite" onClick={event => addToFavourites(event)}>
+                  <FavoriteBorderIcon sx={{ color: red[500] }} />
+                </IconButton>)
           }
           title={
             data.productName.length > 22
@@ -197,8 +204,8 @@ export default function FilterProductCard({ data }) {
             {data.productDescription.length > 99
               ? data.productDescription.substring(0, 96) + "..."
               : data.productDescription.length === 0
-              ? "No description available"
-              : data.productDescription}
+                ? "No description available"
+                : data.productDescription}
           </Typography>
         </CardContent>
         <div>
