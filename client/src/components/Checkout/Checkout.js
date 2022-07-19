@@ -337,7 +337,7 @@ const Checkout = () => {
                 <div>
                   <span>Total</span>
                 </div>
-                <div>C$ {totalAmount}</div>
+                <div>C$ {totalAmount.toFixed(2)}</div>
               </div>
               <div className="deliveryAddress">
                 <TextField
