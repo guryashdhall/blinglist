@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getNewArrivalsProducts,
   getMostPopularProducts,
+  getYouMayLikeProducts,
 } from "../../store/actions/recommendation";
 import { isUserLoggedIn } from "../../Helpers/helper";
 
@@ -26,6 +27,12 @@ const Recommendation = () => {
   const [earringMpImages, setEarringMpImages] = useState([]);
   const [necklaceMpImages, setNecklaceMpImages] = useState([]);
   const [ringMpImages, setRingMpImages] = useState([]);
+
+  const [earringYmlImages, setEarringYmlImages] = useState([]);
+  const [necklaceYmlImages, setNecklaceYmlImages] = useState([]);
+  const [ringYmlImages, setRingYmlImages] = useState([]);
+
+  const userid = JSON.parse(localStorage.getItem('user'))._id
 
   useEffect(() => {
     if (isUserLoggedIn()) {
@@ -110,6 +117,42 @@ const Recommendation = () => {
         }
         setEarringMpImages(mp_earring);
       });
+
+      var yml_earring = [];
+      var yml_necklace = [];
+      var yml_ring = [];
+
+      getYouMayLikeProducts(userid).then((result) => {
+        for (var i = 0; i < result["products1"].length; i++) {
+          var arr1 = {
+            label: result["products1"][i]["productName"],
+            imgPath: result["products1"][i]["productImage"],
+            productID: result["products1"][i]["_id"]
+          };
+          yml_earring.push(arr1);
+        }
+        setEarringYmlImages(yml_earring);        
+
+        for (var i = 0; i < result["products2"].length; i++) {
+          var arr2 = {
+            label: result["products2"][i]["productName"],
+            imgPath: result["products2"][i]["productImage"],
+            productID: result["products2"][i]["_id"]
+          };
+          yml_ring.push(arr2);
+        }
+        setRingYmlImages(yml_ring);
+
+        for (var i = 0; i < result["products3"].length; i++) {
+          var arr3 = {
+            label: result["products3"][i]["productName"],
+            imgPath: result["products3"][i]["productImage"],
+            productID: result["products3"][i]["_id"]
+          };
+          yml_necklace.push(arr3);
+        }
+        setNecklaceYmlImages(yml_necklace);
+      })
     } else {
       navigate("/");
     }
@@ -169,13 +212,13 @@ const Recommendation = () => {
             }}
           >
             <Slider
-              images={earringImages}
+              images={earringYmlImages}
             />
             <Slider 
-              images={earringImages}
+              images={ringYmlImages}
             />
             <Slider
-              images={earringImages}
+              images={necklaceYmlImages}
             />
           </Grid>
         ) : (

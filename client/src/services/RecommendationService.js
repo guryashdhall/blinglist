@@ -54,6 +54,22 @@ const RecommendationService = {
         return data;
       });
   },
+
+  getYouMayLikeProducts: (userid) => {
+    const token = "jwt-token";
+
+    return fetch(BACKEND_URL + `recommendation/youmaylike/${userid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      });
+  },
 }
 
 export { RecommendationService };
