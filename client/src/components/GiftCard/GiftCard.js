@@ -287,9 +287,11 @@ const GiftCard = () => {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
+              onClose: () => {
+                navigate("/recommendation");
+              },
             }
           );
-          navigate("/recommendation");
         } else {
           toast.error("Something went wrong!", {
             position: "bottom-right",

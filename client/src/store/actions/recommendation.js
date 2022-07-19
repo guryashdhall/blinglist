@@ -23,3 +23,9 @@ export const getMostPopularProducts = () => {
     return searchProducts;
   });
 };
+
+export const getYouMayLikeProducts = (userid) => {
+  return RecommendationService.getYouMayLikeProducts(userid).then((searchProducts) => {
+    return searchProducts;
+  });
+};
