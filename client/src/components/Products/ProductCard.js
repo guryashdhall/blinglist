@@ -157,7 +157,7 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
           }}
         />
 
-        <CardContent style={{ height: "7vw" }}>
+        <CardContent>
           <table width="100%" maxWidth="100%">
             <tr>
               <td style={{ textAlign: "left" }}>
@@ -195,7 +195,7 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
             {data.productDescription.length > 99
               ? data.productDescription.substring(0, 96) + "..."
               : data.productDescription.length === 0
-              ? "No description available"
+              ? <>No description available<br/><br/><br/></>
               : data.productDescription}
           </Typography>
         </CardContent>
