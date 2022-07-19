@@ -6,6 +6,7 @@
 
 const { Products } = require("../models/Product");
 const { Orders } = require("../models/Orders");
+const { Search } = require("../models/Search");
 
 exports.getSearchProducts = async (req, res) => {
   try {
@@ -61,6 +62,41 @@ exports.getMostPopularProducts = async (req, res) => {
           });
         }
       })
+  } catch (error) {
+    res.status(404).json({ message: error.message, success: false });
+  }
+}
+
+exports.getYouMayLikeProducts = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userSearchProducts = await Search.find({ userId: id })
+    const products1 = []
+
+    for (var i = 0; i < userSearchProducts.length; i++) {
+      const keyword = userSearchProducts[i]["keyword"]
+
+      const searchedProduct = await Products.find({
+        $or: [
+          { productName: { $regex: new RegExp(keyword, "i") } },
+          { productDescription: { $regex: new RegExp(keyword, "i") } },
+          { productType: { $regex: new RegExp(keyword, "i") } },
+          { productColor: { $regex: new RegExp(keyword, "i") } },
+          { metalType: { $regex: new RegExp(keyword, "i") } },
+        ],
+      });
+      products1.push(searchedProduct)
+    }
+
+    var newArr = [];
+    for (var k = 0; k < products1.length; k++) {
+      newArr = newArr.concat(products1[k]);
+    }
+
+    const products2 = await Products.find({ productType: "ring" }).limit(3)
+    const products3 = await Products.find({ productType: "necklace" }).limit(3)
+
+    res.status(200).json({ products1: newArr, products2: products2, products3: products3, success: true });
   } catch (error) {
     res.status(404).json({ message: error.message, success: false });
   }
