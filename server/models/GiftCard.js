@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Model for Gift Card.
+ ***/
 const mongoose = require("mongoose");
 
 const giftCardSchema = new mongoose.Schema(

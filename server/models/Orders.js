@@ -1,6 +1,9 @@
-// **Name** : Suchitra Dhamu
-// **Banner ID** : B0897187
-// **Group Id** : 7
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Model for order schema.
+ ***/
 
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;

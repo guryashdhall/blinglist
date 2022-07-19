@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: API calls to backend for payment for checkout, getting gift card, and getting cart items.
+ ***/
 import { BACKEND_URL } from "../config/config";
 
 const PaymentService = {

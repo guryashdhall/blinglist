@@ -38,7 +38,7 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
       toast.success("Product has been removed from wishlist successfully!", {
         position: "top-right",
         theme: "dark",
-        autoClose: 400,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -51,7 +51,7 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
         {
           position: "top-right",
           theme: "dark",
-          autoClose: 500,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -77,7 +77,7 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
       toast.success("Product added to your wishlist!", {
         position: "top-right",
         theme: "dark",
-        autoClose: 500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -90,7 +90,7 @@ export default function ProductCard({ data, favouriteInitial, countI }) {
         {
           position: "top-right",
           theme: "dark",
-          autoClose: 400,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

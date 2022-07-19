@@ -55,7 +55,7 @@ const ViewProduct = () => {
       toast.success("Product has been removed from wishlist successfully!", {
         position: "top-right",
         theme: "dark",
-        autoClose: 300,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -68,7 +68,7 @@ const ViewProduct = () => {
         {
           position: "top-right",
           theme: "dark",
-          autoClose: 500,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -95,7 +95,7 @@ const ViewProduct = () => {
       toast.success("Product added to your wishlist!", {
         position: "top-right",
         theme: "dark",
-        autoClose: 300,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -108,7 +108,7 @@ const ViewProduct = () => {
         {
           position: "top-right",
           theme: "dark",
-          autoClose: 400,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

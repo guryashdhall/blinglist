@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Element for displaying the payable amount for gift card
+ ***/
 import React from "react";
 import { Paper, Typography, Grid } from "@mui/material";
 

@@ -49,7 +49,7 @@ const Jewel = ({ jewel, setCurrentProductId, getPro}) => {
         toast.success("Product deleted successfully!", {
           position: "bottom-right",
           theme: "dark",
-          autoClose: 5000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -62,7 +62,7 @@ const Jewel = ({ jewel, setCurrentProductId, getPro}) => {
         toast.error("Product cannot be deleted. Please try again!", {
           position: "bottom-right",
           theme: "dark",
-          autoClose: 5000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -78,7 +78,7 @@ const Jewel = ({ jewel, setCurrentProductId, getPro}) => {
     toast.success("Please edit the product from the form above.", {
       position: "bottom-right",
       theme: "dark",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

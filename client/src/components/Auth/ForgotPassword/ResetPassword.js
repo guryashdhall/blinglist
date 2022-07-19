@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import NavBar from "../../NavBar";
 import SuccessAlert from "../../SuccessAlert";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { isUserLoggedIn } from "../../../Helpers/helper";
@@ -125,7 +125,7 @@ const PasswordReset = () => {
             toast.success(res.data.message, {
               position: "top-right",
               theme: "dark",
-              autoClose: 2000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -139,7 +139,7 @@ const PasswordReset = () => {
             toast.error(res.data.message, {
               position: "top-right",
               theme: "dark",
-              autoClose: 2000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -229,11 +229,12 @@ const PasswordReset = () => {
           className="form-input-btn"
           variant="contained"
           type="submit"
-          style={{ background: "#000000" }}
+          style={{ background: "#000000", marginBottom: "1%" }}
           onClick={onhandleSubmit}
         >
           Submit
         </Button>
+        <Link to={"/"}>Go Back</Link>
       </form>
       <ToastContainer />
     </div>
