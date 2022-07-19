@@ -122,7 +122,7 @@ export default function FilterProductCard({ data, favouriteInitial, countI }) {
 
         <CardHeader
           action={
-            count == 0 ? favouriteInitial ? (
+            count === 0 ? favouriteInitial ? (
               <IconButton id={data._id} aria-label="favourite" onClick={event => removeFavourites(event)}>
                 <FavoriteIcon sx={{ color: red[500] }} />
               </IconButton>

@@ -73,10 +73,11 @@ function PreviousOrder() {
     navigate("/viewdetails");
   };
 
-  const toCart = (e) => {
-    e.preventDefault();
+  const toCart = (data) => {
+    //e.preventDefault();
     <Cart />;
-    navigate("/cart");
+    // navigate("/cart");
+    navigate("/cart", { state: { ...data, quantity: 1 } })
   };
 
   return (
@@ -343,7 +344,7 @@ function PreviousOrder() {
                                   opacity: [0.9, 0.8, 0.7],
                                 },
                               }}
-                              onClick={toCart}
+                              onClick={toCart(item)}
                             >
                               Repurchase
                             </Button>

@@ -132,7 +132,7 @@ const ViewProduct = () => {
         >
           Product Details
         </Typography>
-        {product==undefined || product==null || product.length==0? <></> :
+        {product===undefined || product===null || product.length===0? <></> :
           <div>
             <Grid container spacing={2}>
               <Grid item xs={12}>

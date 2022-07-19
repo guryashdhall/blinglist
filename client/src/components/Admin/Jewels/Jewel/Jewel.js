@@ -94,6 +94,7 @@ const Jewel = ({ jewel, setCurrentProductId, getPro}) => {
         <CardMedia
           className={classes.media}
           onClick={() => {
+            localStorage.setItem("productDetailsId", jewel._id);
             navigate("/viewdetails");
             //navigate(`/viewdetails/${jewel._id}`);
           }}
@@ -101,7 +102,7 @@ const Jewel = ({ jewel, setCurrentProductId, getPro}) => {
             jewel.productImage ||
             "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
           }
-          title={"Aayushi"}
+          title={jewel.productName}
         />
 
         <Typography
