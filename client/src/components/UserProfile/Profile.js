@@ -107,6 +107,10 @@ const Profile = () => {
         })
         .then((res) => {
           if (res.data.success === true) {
+            let user = JSON.parse(localStorage.getItem("user"));
+            user.firstName = res.data.user.firstName;
+            user.lastName = res.data.user.lastName;
+            localStorage.setItem("user", user);
             toast.success(res.data.message, {
               position: "top-right",
               theme: "dark",
