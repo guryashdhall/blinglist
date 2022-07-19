@@ -12,8 +12,9 @@ import Plus from "@mui/icons-material/Add";
 import Subtract from "@mui/icons-material/Remove";
 import { connect, useSelector } from "react-redux";
 import { increase, decrease, deleteItem } from "../../store/actions/Jewels";
-import axios from 'axios'
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { BACKEND_URL } from "../../config/config";
 const Pricestyles = (Theme) => ({
   minWidth: "90%",
   m: 4,
@@ -45,14 +46,13 @@ function ProductCard(props) {
     setProduct(props.products.quantity);
   }, [props.products.quantity]);
   const handleSubtract = async (id) => {
-    if(quantity >= 1){
+    if (quantity >= 1) {
       var temp = quantity - 1;
-    setProduct(temp);
-    await props.decrease(props.index);
-    localStorage.setItem("cart", JSON.stringify(cart_products));
-    }
-    else{
-      handleRemove(id)
+      setProduct(temp);
+      await props.decrease(props.index);
+      localStorage.setItem("cart", JSON.stringify(cart_products));
+    } else {
+      handleRemove(id);
       toast.success("Item Removed Successfully", {
         position: "top-right",
         theme: "dark",
@@ -66,13 +66,12 @@ function ProductCard(props) {
     }
   };
   const handleAdd = async () => {
-    if(quantity < props.products.inventoryQuantity){
+    if (quantity < props.products.inventoryQuantity) {
       var temp = quantity + 1;
       setProduct(temp);
       await props.increase(props.index);
       localStorage.setItem("cart", JSON.stringify(cart_products));
-    }
-    else{
+    } else {
       toast.error("Maximum Product Quantity Reached", {
         position: "top-right",
         theme: "dark",
@@ -88,14 +87,11 @@ function ProductCard(props) {
 
   const handleRemove = async (id) => {
     await props.remove(id);
-    await axios 
-    .post("http://localhost:8080/cart/addCart", cart_products)
-    .then((response) => {
-    })
-    .catch((error) => {
-    });
+    await axios
+      .post(BACKEND_URL + "cart/addCart", cart_products)
+      .then((response) => {})
+      .catch((error) => {});
     localStorage.setItem("cart", JSON.stringify(cart_products));
-    
   };
   return (
     <>
@@ -120,7 +116,9 @@ function ProductCard(props) {
             <Box sx={{ mt: 2 }}>
               <IconButton
                 sx={{ mt: 1, color: "blue" }}
-                onClick={() => {handleSubtract(props.products._id)}}
+                onClick={() => {
+                  handleSubtract(props.products._id);
+                }}
               >
                 <Subtract />
               </IconButton>
@@ -159,7 +157,7 @@ function ProductCard(props) {
             />
           </Grid>
         </Grid>
-        <ToastContainer/>
+        <ToastContainer />
       </Box>
     </>
   );

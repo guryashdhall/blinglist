@@ -9,7 +9,7 @@ import { connect, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Image from "mui-image";
-
+import { BACKEND_URL } from "../../config/config";
 
 const Cart = (props) => {
   const location = useLocation();
@@ -17,7 +17,7 @@ const Cart = (props) => {
   useEffect(() => {
     if (location.state) {
       props.setItem(location.state);
-      localStorage.setItem('cart',JSON.stringify(cart_products))
+      localStorage.setItem("cart", JSON.stringify(cart_products));
     }
   }, [cart_products]);
   useEffect(() => {
@@ -27,7 +27,7 @@ const Cart = (props) => {
 
   const getCart = async () => {
     await axios
-      .post("http://localhost:8080/cart/getCart", {
+      .post(BACKEND_URL + "cart/getCart", {
         userid: JSON.parse(localStorage.getItem("user"))._id,
       })
       .then((data) => {
@@ -37,13 +37,12 @@ const Cart = (props) => {
         } else {
           props.fetchCart(JSON.parse(localStorage.getItem("cart")));
           axios
-            .post("http://localhost:8080/cart/addCart", cart_products)
+            .post(BACKEND_URL + "cart/addCart", cart_products)
             .then((response) => {
               localStorage.setItem("cart", JSON.stringify(cart_products));
               props.fetchCart(JSON.parse(localStorage.getItem("cart")));
             })
-            .catch((error) => {
-            });
+            .catch((error) => {});
         }
       });
   };
@@ -72,8 +71,6 @@ const Cart = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-
   return (
     <>
       <Box>
@@ -82,24 +79,26 @@ const Cart = (props) => {
         </Typography>
       </Box>
       <Grid container sx={boxStyles} direction="row" justifyContent="center">
-        {cart_products.items.length === 0?
-        <Image src = {"https://www.valeorx.com/static/media/empty-cart.60e68bfd.png"}/>
-        :
-        <>
-        <Grid container item xs={12} md={8}>
-          {cart_products.items.map((products, index) => {
-            return (
-              <Grid item xs={12} md={8} sx={{ mb: 1, mt: 1 }} key={index}>
-                <ProductCard products={products} index={index} />
-              </Grid>
-            );
-          })}
-        </Grid>
-        <Grid item xs={12} md={3} sx={{ mb: 6, mr: 2, mt: 1 }}>
-          <Summary products={cart_products.items} />
-        </Grid>
-        </>
-        } 
+        {cart_products.items.length === 0 ? (
+          <Image
+            src={"https://www.valeorx.com/static/media/empty-cart.60e68bfd.png"}
+          />
+        ) : (
+          <>
+            <Grid container item xs={12} md={8}>
+              {cart_products.items.map((products, index) => {
+                return (
+                  <Grid item xs={12} md={8} sx={{ mb: 1, mt: 1 }} key={index}>
+                    <ProductCard products={products} index={index} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+            <Grid item xs={12} md={3} sx={{ mb: 6, mr: 2, mt: 1 }}>
+              <Summary products={cart_products.items} />
+            </Grid>
+          </>
+        )}
       </Grid>
     </>
   );
