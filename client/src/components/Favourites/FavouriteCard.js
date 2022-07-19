@@ -30,7 +30,7 @@ export default function FavouriteCard({ data, setFavourites, favourites }) {
 
     if (result.data.success) {
       let temp = favourites.filter(f => {
-        if (f._id != data._id) return f;
+        if (f._id !== data._id) return f;
       })
       setFavourites(temp);
       toast.success("Product has been removed successfully!", {
