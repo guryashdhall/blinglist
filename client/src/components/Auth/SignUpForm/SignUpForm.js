@@ -4,9 +4,8 @@
  * @email : guryash.dhall@dal.ca
  ***/
 
-
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { validateEmail } from "../../../Helpers/validateInfo";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
@@ -210,7 +209,7 @@ const FormSignUp = () => {
           toast.success(response.data.message, {
             position: "top-right",
             theme: "dark",
-            autoClose: 2000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -224,7 +223,7 @@ const FormSignUp = () => {
           toast.error(response.data.message, {
             position: "top-right",
             theme: "dark",
-            autoClose: 2000,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -393,11 +392,12 @@ const FormSignUp = () => {
           className="form-input-btn"
           variant="contained"
           type="submit"
-          style={{ background: "#000000" }}
+          style={{ background: "#000000", marginBottom: "1%" }}
           onClick={onhandleSubmit}
         >
           Register
         </Button>
+        <Link to={"/"}>Already have an account? Login</Link>
       </form>
       <ToastContainer />
     </div>

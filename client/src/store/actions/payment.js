@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Actions defined for calling services for making payment to checkout and get gift card, and get cart items.
+ ***/
 import { PaymentService } from "../../services/PaymentService";
 
 export const checkoutPayment = (params) => {

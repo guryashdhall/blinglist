@@ -31,7 +31,7 @@ export default function FavouriteCard({ data }) {
       toast.success("Product has been removed successfully!", {
         position: "top-right",
         theme: "dark",
-        autoClose: 500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

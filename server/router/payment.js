@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: Defining routes for checkout, gift card payment, and getting cart items.
+ ***/
 const router = require("express").Router();
 
 const {

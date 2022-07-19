@@ -110,7 +110,7 @@ const Profile = () => {
             toast.success(res.data.message, {
               position: "top-right",
               theme: "dark",
-              autoClose: 2000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -124,7 +124,7 @@ const Profile = () => {
             toast.error(res.data.message, {
               position: "top-right",
               theme: "dark",
-              autoClose: 2000,
+              autoClose: 1000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,

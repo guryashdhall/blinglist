@@ -1,3 +1,9 @@
+/***
+ * @author : Dhairya Analbhai Doctor
+ * @bannerID : B00864868
+ * @email : dh973257@dal.ca
+ * @description: React componnent for taking information from the user.
+ ***/
 import React from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
