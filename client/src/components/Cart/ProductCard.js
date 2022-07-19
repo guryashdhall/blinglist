@@ -12,6 +12,7 @@ import Plus from "@mui/icons-material/Add";
 import Subtract from "@mui/icons-material/Remove";
 import { connect, useSelector } from "react-redux";
 import { increase, decrease, deleteItem } from "../../store/actions/Jewels";
+import axios from 'axios'
 const Pricestyles = (Theme) => ({
   minWidth: "90%",
   m: 4,
@@ -57,7 +58,14 @@ function ProductCard(props) {
 
   const handleRemove = async (id) => {
     await props.remove(id);
+    await axios 
+    .post("http://localhost:8080/cart/addCart", cart_products)
+    .then((response) => {
+    })
+    .catch((error) => {
+    });
     localStorage.setItem("cart", JSON.stringify(cart_products));
+    
   };
   return (
     <>
