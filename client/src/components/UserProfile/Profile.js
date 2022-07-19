@@ -121,7 +121,7 @@ const Profile = () => {
               draggable: true,
               progress: undefined,
               onClose: () => {
-                navigate("/resetPwd");
+                navigate("/recommendation");
               },
             });
           } else {
