@@ -8,6 +8,8 @@ import Summary from "./Summary";
 import { connect, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import Image from "mui-image";
+
 
 const Cart = (props) => {
   const location = useLocation();
@@ -34,7 +36,6 @@ const Cart = (props) => {
           props.fetchCart(data.data);
         } else {
           props.fetchCart(JSON.parse(localStorage.getItem("cart")));
-
           axios
             .post("http://localhost:8080/cart/addCart", cart_products)
             .then((response) => {
@@ -42,7 +43,6 @@ const Cart = (props) => {
               props.fetchCart(JSON.parse(localStorage.getItem("cart")));
             })
             .catch((error) => {
-              console.log(error);
             });
         }
       });
@@ -75,13 +75,17 @@ const Cart = (props) => {
 
 
   return (
-    <div>
+    <>
       <Box>
         <Typography variant="h2" sx={{ p: 2 }}>
           Your Cart
         </Typography>
       </Box>
       <Grid container sx={boxStyles} direction="row" justifyContent="center">
+        {cart_products.items.length === 0?
+        <Image src = {"https://www.valeorx.com/static/media/empty-cart.60e68bfd.png"}/>
+        :
+        <>
         <Grid container item xs={12} md={8}>
           {cart_products.items.map((products, index) => {
             return (
@@ -94,8 +98,10 @@ const Cart = (props) => {
         <Grid item xs={12} md={3} sx={{ mb: 6, mr: 2, mt: 1 }}>
           <Summary products={cart_products.items} />
         </Grid>
+        </>
+        } 
       </Grid>
-    </div>
+    </>
   );
 };
 
