@@ -1,76 +1,159 @@
-# CSCI5709: Project - The Blinglist (Summer 2022)
+# The BlingList
+
+The Blinglist is an online ecommerce web application used to buy jewellery. This web application entirely built using JavaScript and is deployed on heroku.
 
 ---
-
-## Group: 7
-## Application Name: The Blinglist
-
-## Team Members:
-
-- *Parvish Vijay Gajjar*
-- *Dhairya Doctor*
-- *Aayushi Gandhi*
-- *Suchitra Dhamu*
-- *Aditya Satendra Dixit*
-- *Guryash Singh Dhall*
+## Authors of the whole Project
+---
+- [Dhairya Analbhai Doctor - B00864868](dh973257@dal.ca) - (Maintainer)
+- [Aayushi Gandhi - B00890697](ay753882@dal.ca) - (Maintainer)
+- [Suchitra Dhamu - B00897187](sc632007@dal.ca) - (Maintainer)
+- [Aditya Satendra Dixit - B00874076](ad433393@dal.ca) - (Maintainer)
+- [Guryash Singh Dhall - B00910690](gr622265@dal.ca) - (Maintainer)
+- [Parvish Vijay Gajjar - B00912090](pr222321@dal.ca)- (Maintainer)
 
 ---
-
-### Technologies used: ReactJS (Frontend), ExpressJS(Backend), and MongoDB (NoSQL Database)
-
-### Link to The Blinglist Web Application
-
-- [The Blinglist](https://theblinglist.herokuapp.com/)
-
-### Link to GitLab Repository
-
-- [The Blinglist Repository](https://git.cs.dal.ca/doctor/theblinglist)
-
-#### Pre-requisite: nodejs along with npm package should be installed in the system.
-
-### This repository contains the backend and frontend code for the project of "The Blinglist". To get started with this repository, follow the following steps:
-<br>
-
-#### 1. Open terminal (Git cmd or new terminal in visual studio code) in your local machine
-#### 2. In terminal, reach to destinatin(using cd route_to_the_location) where you want to clone the repo(for example, On Desktop)
-#### 3. Clone the repository using following command
-       ../Desktop> git clone https://git.cs.dal.ca/doctor/theblinglist.git
-<br>
-
-#### To run the client-side server
-
-#### 1. Make sure you have cloned the repo, go inside the directory
-       
-       ../Desktop> cd theblinglist/client
-
-#### 2. Now install all the dependencies by using the following command,
-
-        ../Desktop/theblinglist/client>npm install
-
-#### 3. Start the app using the following command,
-
-        ../Desktop/theblinglist/client>npm start
-
-Voila! Your client-side application is now live on your localhost :tada:
-
-### Repository Link Of each of the Group Members
-
-- [Parvish Vijay Gajjar](https://git.cs.dal.ca/doctor/theblinglist/-/tree/dev_parvish)
-- [Dhairya Doctor](https://git.cs.dal.ca/doctor/theblinglist/-/tree/dev_dhariya)
-- [Aayushi Gandhi](https://git.cs.dal.ca/doctor/theblinglist/-/tree/dev_aayushi_gandhi)
-- [Suchitra Dhamu](https://git.cs.dal.ca/doctor/theblinglist/-/tree/dev_suchitra)
-- [Aditya Satendra Dixit](https://git.cs.dal.ca/doctor/theblinglist/-/tree/dev_aditya)
-- [Guryash Singh Dhall](https://git.cs.dal.ca/doctor/theblinglist/-/tree/dev_guryash)
-
+## Application Details
 ---
 
-## References
+### BlingList Git Repository Link
+- [BlingList Git Repository](https://git.cs.dal.ca/doctor/theblinglist)
 
-- [1] "React Card component - Material UI", Mui.com, 2022. [Online]. Available: [MUI Card](https://mui.com/material-ui/react-card/). 
-- [2] "React Icon Component - Material UI", Mui.com, 2022. [Online]. Available: [MUI Icons](https://mui.com/material-ui/icons/). 
-- [3] "Heroku", Dashboard.heroku.com, 2022. [Online]. Available: [Heroku](https://dashboard.heroku.com/apps).
-- [4] "React – A JavaScript library for building user interfaces", Reactjs.org, 2022. [Online]. Available: [React](https://reactjs.org/).
-- [5] "React Stepper component - Material UI", Mui.com, 2022. [Online]. Available: https://mui.com/material-ui/react-stepper/. [Accessed: 16- Jun- 2022].
-- [6] 2022. [Online]. Available: https://balsamiq.com/. [Accessed: 16- Jun- 2022].
-- [7] "Flowchart Maker & Online Diagram Software", App.diagrams.net, 2022. [Online]. Available: https://app.diagrams.net/. [Accessed: 16- Jun- 2022].
+### BlingList Frontend Deployment URL
+- [BlingList FrontEnd URL](http://theblinglist.herokuapp.com/)
 
+### Blinglist Backend Deployment URL
+- [BlingList Backend URL](https://theblinglist-backend.herokuapp.com/)
+
+### Application features list along with their task
+1. User management **(Guryash Singh Dhall - B00910690)**
+   - User Registration
+   - User Login
+   - Forget Password
+   - View Profile
+   - Edit Profile
+  
+2. Blog **(Guryash Singh Dhall - B00910690)**
+   - Add a blog
+   - View all blogs
+   - View blogs of the logged user
+  
+3. User Dashboard **(Aayushi Gandhi - B00890697)**
+   - Show products based on user search.
+   - Show recently arrived products.
+   - Show most popular products (Products bought by most of the customers).
+   - Show products with most reviews.
+
+4. Admin Interface **(Aayushi Gandhi - B00890697)**
+   - Add products
+   - Delete products
+   - Edit products
+
+5. Search, Sort, Filter, and View Products **(Parvish Vijay Gajjar - B00912090)**
+   - View product details
+   - Searching and Filtering API
+
+6. Add to favorites **(Parvish Vijay Gajjar - B00912090)**
+   - Add products to favorites
+   - Remove products from favorites
+   - View logged in user favorites list
+  
+7. Find a store **(Suchitra Dhamu - B00897187)**
+   - Display store info including timings
+   - Search item on location page
+  
+8. Manage orders **(Suchitra Dhamu - B00897187)**
+   - View previous orders
+   - Filter previous orders
+   - Reorder same orders
+  
+9.  Add to cart **(Aditya Satendra Dixit - B00874076)**
+    - Adding product to cart
+    - Increase or Decrease number of items in the cart
+    - Remove items from the cart
+  
+10. Reviews **(Aditya Satendra Dixit - B00874076)**
+    - Add a review
+    - View all reviews given to the products
+  
+11. Checkout **(Dhairya Doctor - B00864868)**
+    - Stripe payment integration
+    - View all products that are to be bought
+    - Calculate amount to be paid (Apply promocode discount, taxes, shipping cost)
+  
+12. Get a Gift Card **(Dhairya Doctor - B00864868)**
+    - Select gift card from the list of gift card
+    - Collect user basic information
+    - Collect amount to be added to the gift card
+    - Stripe payment integration
+
+---
+## Prerequisites
+---
+Following are the things we need to install for developing application using MERN stack.
+
+1. Node JS
+2. Javascript
+3. React
+4. Mongo Compass
+5. NPX Plugin
+
+---
+## Technoglogy Used:
+---
+### Frontend Technology Used:
+1. [Node](https://nodejs.org/en/)
+2. [React](https://reactjs.org/) - Library for building user interfaces
+3. [MUI](https://mui.com/) - For Styling Components
+4. [Stripe](https://stripe.com/docs) - For Payment Integration
+
+### Backend Technology Used:
+1. NodeJS
+2. ExpressJS
+
+### Database Used:
+1. MongoDB
+
+### Deployment Platform
+1. Heroku
+
+---
+## How to install?
+---
+
+1. First you need to clone the project using follwoing command
+
+```bash
+git clone https://git.cs.dal.ca/doctor/theblinglist.git
+```
+2. Navigate to **theblinglist** folder
+```bash
+cd theblinglist
+```
+
+3. Navigate to client folder, install dependencies, and start the application
+```bash
+cd client
+npm install
+npm run dev
+```
+
+4. Navigate back to server folder, install dependencies and start the sever
+```bash
+cd server
+npm install
+npm start
+```
+
+5. Now your application will be running.
+6. Open [http://localhost:3000/](http://localhost:3000/) in your browser.
+
+# References
+
+[1] "React – A JavaScript library for building user interfaces", _Reactjs.org_, 2022. [Online]. Available: https://reactjs.org/. [Accessed: 01-July- 2022]
+
+[2] "Continuous Delivery | Heroku Dev Center", _Devcenter.heroku.com_, 2022. [Online]. Available: https://devcenter.heroku.com/categories/continuous-delivery. [Accessed: 02- July- 2022]
+
+[3] "MUI: The React component library you always wanted", V5-0-6.mui.com, 2022. [Online]. Available: https://v5-0-6.mui.com/. [Accessed: 03- July- 2022].
+
+[4] "Stripe Checkout", Stripe.com, 2022. [Online]. Available: https://stripe.com/docs/payments/checkout. [Accessed: 04- Jul- 2022].
